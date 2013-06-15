@@ -1,3 +1,7 @@
+# Generic
+*.DS_Store
+
+# Latex 
 *.acn
 *.acr
 *.alg

@@ -1,0 +1,345 @@
+\documentclass[12pt,spanish,letterpaper]{article}
+\usepackage[spanish,activeacute]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm,amsfonts,amsmath,fancyhdr,dsfont,hyperref,amssymb,multicol,graphicx,float,booktabs,arydshln,hhline,colortbl}
+%% SWAP THE COMMENT IN THE FOLOWING LINES TO USE COLOR BORDERS IN TABLES
+%\usepackage[usenames,dvipsnames]{color}
+\usepackage{xcolor}
+\newtheorem{teo}{Teorema}[section]
+\newtheorem{cor}{Corolario}[section]
+\newtheorem{lem}{Lema}[section]
+\newtheorem{defi}{Definición}[section]
+\newtheorem{prop}{Proposición}[section]
+\pagestyle{fancy}
+\fancyhead[LE,LO]{\footnotesize{\sc{Diego Rivera Villagra}}} %Header Left
+\fancyhead[CE,CO]{\footnotesize{\sc{}}} %Header Center
+\fancyhead[RE,RO]{\footnotesize{\sc{CC6908 - Introducción al Trabajo de Título}}} %Header Right
+\fancyfoot[LE,LO]{\footnotesize{}} %Footer Left
+\fancyfoot[CE,CO]{\footnotesize{\thepage}} %Footer Center
+\fancyfoot[RE,RO]{\footnotesize{}} %Footer Right
+\headwidth 6.5in
+\hoffset 0in
+\voffset 0in
+\oddsidemargin 0in
+\marginparwidth 0in
+\marginparsep 0in
+\headsep 0.15in
+\topmargin 0in
+\textwidth 6.5in
+\textheight 8.5in
+%Comandos para mostrar correctamente las demostraciones
+\newcommand{\halmos}{\rule{2mm}{2mm}}
+\renewcommand{\qedsymbol}{\halmos}
+%Comandos definidos míos
+\newcommand\VRule[1][\arrayrulewidth]{\vrule width #1}
+\newcommand{\paren}[1]{\left(#1\right)}
+\newcommand{\parencuad}[1]{\left[#1\right]}
+\newcommand{\parenllav}[1]{\left\{#1\right\}}
+\newcommand{\deriv}[2]{\frac{d #1}{d #2}}
+\newcommand{\derivpar}[2]{\frac{\partial #1}{\partial #2}}
+\newcommand{\overarc}[1]{\stackrel \frown {#1}}
+\thispagestyle{empty}
+\begin{document}
+\thispagestyle{empty}
+\begin{minipage}{\textwidth}
+	Universidad de Chile\\
+	Facultad de Ciencias Físicas y Matemáticas\\
+	Departamento de Ciencias de la Computación\\
+	CC6908 - Introducción al Trabajo de Título
+\end{minipage}
+\vfill
+\begin{minipage}{\textwidth}
+	\begin{center}
+		\huge{Optimización del rendimiento de sockets UDP en aplicaciones multithreads}
+	\end{center}
+\end{minipage}
+\vfill
+\begin{minipage}{\textwidth}
+	\begin{tabular}{c}
+		\hline
+		José Miguel Piquer\\
+		jpiquer@dcc.uchile.cl\\
+		Profesor Guía
+	\end{tabular}
+	\hfill
+	\begin{tabular}{c}
+		\hline
+		Diego Rivera Villagra\\
+		drivera@dcc.uchile.cl\\
+		Alumno
+	\end{tabular}
+	\vspace{1.5cm}
+\end{minipage}
+\begin{minipage}{\textwidth}
+	\null
+	\hfill
+	\begin{minipage}{3.25in}
+		\begin{tabular}{rl}
+			Nombre:&Diego Arturo Guillermo Alejandro\\
+			&Rivera Villagra\\
+			Correo:&drivera@dcc.uchile.cl\\
+			Teléfono:&(02) 6437466\\
+			Móvil:&(09) 85292698\\
+			Fecha:&18 de Julio de 2012
+		\end{tabular}
+	\end{minipage}
+\end{minipage}
+\newpage
+\pagenumbering{roman}
+\tableofcontents
+\newpage
+\pagenumbering{arabic}
+\section{Motivación}
+\subsection{Contexto}
+\par Los servidores DNS son los encargados de traducir las direcciones de internet (como por ejemplo \textquotedblleft www.dcc.uchile.cl\textquotedblright) en las direcciones IP de los servidores que representan. Es por esto que el simple hecho de un crecimiento del internet (en el sentido de aumentar la cantidad de usuarios conectados a la red), provoca una mayor carga en los servidores DNS.
+\par Las consultas DNS están programadas para ser transportadas sobre el protocolo de transferencia UDP (User Datagram Protocol), ya que no es crítico si los paquetes de la consulta se llegasen a perder (recordemos que UDP, en contraste con TCP, no posee un mecanismo para asegurar la entrega de la información), y, en caso de que pierdan, realizar nuevamente la consulta no satura en demasía la red.
+\par Por otro lado, los grandes aumentos de demanda de los servicios de Internet en este tiempo (en gran medida debido a la aparición de los smartphones), los servidores DNS de todo el mundo han tenido un considerable aumento de carga, lo que ha llevado a tener que escalar estos sistemas distribuidos.
+\par Sin embargo, el aumentar la oferta para resolver estas consultas no es trivial. La primera aproximación de escalamiento es incrementar la capacidad de la máquina que corre el software DNS. Sin embargo, esta aproximación ha demostrado no solucionar el problema. En NICLABS Chile están conscientes de esto, y han llegado a crear otras formas para poder satisfacer la sobredemanda creciente en su servicio de DNS.
+\par En cifras, estos problemas llegan a tal nivel que un servidor DNS no es capaz de procesar más de 80.000 consultas por segundo, y este problema no se ve solucionado al comprar mejor hardware. Sin embargo, se ha comprobado empíricamente que una configuración de 2 máquinas virtuales en la misma máquina física llega a atender las 160.000 consultas por segundo. Es un extraño fenómeno que amerita ser estudiado.
+\par Con todo esto, se observa la real importancia de poder mejorar el rendimiento de estos servidores por sobre lo que rinden actualmente.
+\subsection{Problemática a resolver}
+\par Como se muestra en las páginas que siguen, se detectó un problema en la implementación de los sockets UDP, cuando éstos son utilizados concurrentemente por varios threads.
+\par Este problema radica en el primordial hecho de que el paralelizar la ejecución de una aplicación simple (como lo son los tests utilizados para detectar este problema) no representa una ganancia de rendimiento en absoluto. En otras palabras, el escribir y/o leer concurrentemente en un mismo socket UDP no agiliza la transmisión de datos.
+\par Sin ir más lejos, a priori se observa que el problema impacta de tal manera que las lecturas o escrituras en el socket se realizan de manera secuencial, eliminando cualquier ganancia de procesamiento que se puede ganar usando threads.
+\par Esto permite deducir prematuramente, que el cuello de botella se encuentra en la implementación de los sockets, ya que realizando otro tipo de llamadas al sistema como por ejemplo, el escribir en una cola FIFO en el sistema de archivos, resulta hasta 1 orden de magnitud más rápido que escribir en el socket.
+\subsection{Relevancia del problema}
+\par Dado el preámbulo, se puede observar que el problema repercute directamente en la capacidad de atención de consultas de los servidores DNS, ya que este servicio utiliza el protocolo UDP de comunicación. Es principalmente por este comportamiento anómalo que la mayor parte de los sofwares de DNS no logran ganancias de rendimiento considerables al activar sus opciones de multithread.
+\par Una forma de solucionar este problema es (como se mencionó antes) la configuración de máquinas virtuales en la misma máquina física, con lo que se logra atender más requerimientos que si se paralelizara la ejecución de una sola instancia del software. Esto da los indicios de que el problema se encuentra en la implementación de los sockets más que en cómo están programadas las aplicaciones que usan este protocolo.
+\par El solucionar este problema, impactaría directamente en todos los servidores DNS, logrando que éstos atiendan más consultas sin llegar a recurrir a soluciones \textquotedblleft parche\textquotedblright\ como las que se mencionan en el párrafo anterior.
+\section{Alternativas analizadas}
+% FIXME : Chequear si esto es realmente necesario o no
+\par Antes de abordar los experimentos que más adelante se describen, se analizaron las posibles causas del fenómeno del cual se tenían pocos antecedentes:
+\subsection{Sincronización a nivel de aplicación}
+\par La primera alternativa analizada fue la de cuestionar la sincronización de las escrituras y lecturas sobre los sockets a nivel de aplicación. Estas sincronizaciones se realizan a través de las primitivas provistas por la librería pthreads, más allá de utilizar primitivas definidas en el mismo programa.
+\par En las aplicaciones que utilizan concurrencia se deben utilizar estas primitivas de sincronización, ya que dependen directamente de mecanismos de exclusión del Kernel de Linux, los cuales garantizan atomicidad de las operaciones y la inhibición de las interrupciones tanto de software como de hardware.
+\par Sin embargo se descartó que una solución pudiese ser la correcta utilización de estas interfaces de sincronización, ya que, como se menciona en las investigaciones \ref{paper1} y \ref{paper2}, se han detectado empíricamente ineficiencias al activar las opciones de utilización de varios threads de programas ampliamente usados como \emph{memcached} y \emph{BIND}.
+\par Además, en ambas publicaciones se intenta dar una solución a este problema de rendimiento desde el punto de vista del nivel de aplicación, pero, también, se menciona que el Kernel necesita ser modificado para poder seguir incrementando la eficiencia de los sockets. Es en esta área en donde se recomiendo trabajar para obtener los mejores resultados de performance.
+\subsection{Chequear la implementación de los sockets}
+\par Como antes se ha mencionado (y en los papers \ref{paper1} y \ref{paper2}), es en el espacio del núcleo en donde se requiere hacer las mayores modificaciones de los sockets UDP para alcanzar mejores niveles de rendimiento al utilizar threads sobre ellos.
+\par Por esto mismo es que se ha decido analizar este comportamiento, ya que requiere comprender a cabalidad el funcionamiento actual de los sockets UDP en Linux, generar pruebas sobre ellos e identificar los posibles puntos de falla, sobre todo en donde las primitivas de sincronización del Kernel intervienen.
+\section{Objetivos}
+\par Con la realización de esta memoria, se persiguen los siguientes objetivos primarios:
+\begin{itemize}
+	\item Realizar mediciones sobre el performace de los sockets UDP en distintas arquitecturas, utilizando, de preferencia, la versión 3.0 del Kernel Linux.
+	\item Investigar el origen del problema en la implementación de los sockets UDP, estudiando el Kernel de Linux en su versión 3.0.
+\end{itemize}
+\par Asimismo, con esto se buscan los siguientes objetivos secundarios:
+\begin{itemize}
+	\item Comprender los mecanismos de sincronización de threads y procesos del Kernel de Linux.
+	\item Aislar las posibles causas del problema de escalamiento de los sockets UDP.
+\end{itemize}
+\section{Metodología}
+\par Para la correcta realización del proyecto, se utilizará una metodología experimental consistente en los siguientes pasos:
+\begin{enumerate}
+	\item Definición de las pruebas de stress que se realizarán. Estas pruebas deben prepararse de tal manera que aclaren que el problema se encuentra en la implementación de los sockets UDP en el Kernel.
+	\item Ejecución de las pruebas en distintas arquitecturas. Las pruebas que se diseñen en el paso anterior, deberán ser ejecutadas en distintas arquitecturas físicas, con el fin de eliminar los comportamientos anómalos generados en algunas arquitecturas de computadores.
+	\item Investigar en el código fuente del Kernel de Linux la implementación de los sockets UDP, y detectar posibles causas del problema. Esto se realizará con el fin de aislar el problema e identificar los puntos del código fuente que podrían ser los originadores del cuello de botella.
+	\item Reejecutar las pruebas para ver si se logra alguna mejora en el rendimiento de las pruebas. Con esto se pretende identificar exactamente el o los puntos conflictivos del código.
+\end{enumerate}
+\par Transversalmente, se debe investigar en papers sobre indicios de este problema, de los cuales no se han logrado encontrar suficientes mediciones hasta el momento. Sin embargo, se encontró un estudio (ver \ref{paper4}) en donde se realizan pruebas de esfuerzo sobre los sockets UDP y, mayoritariamente, TCP.
+\par Rescatable de esta investigación son las conclusiones a las que llega, las cuales podrían ser de vital importancia para este proyecto. Éstas son recomendaciones en general para poder paralelizar el trabajo de los sockets en las implementaciones de Unix. Entre estas recomendaciones se encuentran:
+\begin{enumerate}
+	\item Preservar el orden de paquetes.
+	\item El checksum del paquete tiene cierta influencia en el \emph{speedup} al paralelizar.
+	\item Primitivas atómicas pueden hacer la diferencia.
+	\item Sincronización con primitivas simples de bloqueo son mejores.
+\end{enumerate}
+\par De todas estas, las 2 últimas son las que, a priori, deberían ser tomadas más en cuenta, debido a que se sospecha que el problema se encuentra en las primitivas de sincronización del Kernel.
+\newpage
+\section{Trabajo Adelantado}
+\subsection{Mediciones preliminares realizadas}
+\par Para mostrar la existencia del problema, se diseñaron algunos test que medían la capacidad de los sockets UDP. Los detalles se muestra a continuación.
+\subsubsection{Metodología empleada}
+% FIXME : COLOCAR EL LINK AL CÓDIGO O REFERENCIA A LOS ANEXOS SI SE ANEXA EL CÓDIGO
+\par A modo de obtener evidencia clara para determinar la existencia del, se realizaron pruebas de stress sobre los sockets UDP en una máquina con las siguientes características:
+\begin{itemize}
+	\item Sistema Operativo Ubuntu Linux 12.04 - Kernel 3.2.0-26
+	\item Procesador Intel Core i5 520M 2.4GHz
+	\item Memoria RAM 4GB @ 800 MHz
+\end{itemize}
+\par Por otro lado, los programas de pruebas que se programaron (código disponible en \url{http://users.dcc.uchile.cl/~drivera/test.tar.gz}) se basan en un escenario típico de un servicio DNS. Un programa servidor encargado de leer 500.000 paquetes de 10 bytes de largo y una aplicación cliente encargado de escribir estos paquetes de manera constante en el socket.
+\par Se utilizó una conexión en el loop local, con el fin de eliminar el ruido introducido por las interfaces de red e incluso, la congestión. Sobre este servidor, se varió la cantidad de threads desde 1 a 8, cada uno atendiendo la misma cantidad de 500.000 paquetes.
+\par Sobre el servidor (encargado de leer en el socket), se midió el tiempo que tarda en procesar todos los paquetes (500.000 por cada thread), en donde el tiempo se medirá desde que se termina de recibir el primer paquete hasta que se ha recibido el último.
+\par Con estos datos, se generarán gráficos los cuales serán interpretados para analizar el fenómeno observado.
+\par Estos datos se cruzarán con los datos obtenidos de la lectura sobre una cola FIFO en el sistema de archivos (con las mismas características del experimento anterior), y con los datos obtenidos de una configuración de comunicación a través del uso de 2 sockets (cada uno cumpliendo las características del experimento más arriba descrito) paralelos.
+\par La explicación de los archivos de fuente es la siguiente:
+\begin{itemize}
+	\item \textbf{\emph{tclient.c:}} Cliente para escribir paquetes sobre un socket UDP. Escribe ilimitadamente hasta que el socket es cerrado desde el otro extremo.
+	\item \textbf{\emph{mtsevrer.c:}} Servidor que lee paquetes a través de un socket UDP, utilizando una cantidad fija de threads (definido en \verb?NTHREADS?).
+	\item \textbf{\emph{p2client2.c:}} Cliente para escribir paquetes sobre una cola FIFO en el sistema de archivos. Escribe ilimitadamente hasta que el archivo es cerrado desde el otro extremo.
+	\item \textbf{\emph{p2mtserver2.c:}} Servidor que lee paquetes a través de una cola FIFO, utilizando una cantidad fija de threads (definido en \verb?NTHREADS?).
+	\item \textbf{\emph{mtserverbuf.c:}} Servidor que lee paquetes a través de un socket UDP utilizando un buffer de 1 MB.
+	\item \textbf{\emph{mtuserver.c:}} Servidor que lee paquetes a través de un socket Unix sobre el loopback.
+	\item \textbf{\emph{tuclient.c:}} Cliente que escribe paquetes desde un socket Unix sobre el loopback.
+	\item \textbf{\emph{mttcpserver.c:}} Servidor que lee paquetes en un socket TCP sobre el loopback.
+	\item \textbf{\emph{ttclient.c:}} Cliente que escribe paquetes en un socket TCP sobre el loopback.
+	\item \textbf{\emph{tester.c:}} Implementación de threads que usan una estructura de caja para sincronizarse. Se proveen 2 implementaciones de estas cajas:
+	\begin{itemize}
+		\item \emph{tbox-mutex}: Implementación de caja utilizando mutexes como primitiva de sincronización.
+		\item \emph{tbox-semN}: Implementación de caja utilizando 10 buffers y un semáforo.
+	\end{itemize}
+\end{itemize}
+\subsubsection{Consideraciones}
+\par De los experimentos descritos anteriormente, se deben realizar los siguientes alcances:
+\begin{itemize}
+	\item La dimensión que se variará es el número de threads usados en el servidor para atender requerimientos. Otros posibles parámetros (como la congestión de la red, la estabilidad del enlace, entre otros) se dejaron afuera con el fin de simplificar el problema y no introducir ruido innecesario. El utilizar el loop local garantiza que el problema que se identifica está en la implementación del protocolo de red y no en la red misma.
+	\item Esta primera aproximación de las pruebas contempla una cantidad fija de paquetes por cada thread. En una segunda aproximación se pretende dejar fija la cantidad de paquetes y distribuirlos en la cantidad de threads a analizar. Esto permitiría obtener resultados más precisos al medir el tiempo en que distintas cantidades de thread tardan en procesar exactamente la misma cantidad de paquetes.
+\end{itemize}
+\subsection{Resultados obtenidos}
+\par Los programas de pruebas fueron ejecutados, obteniendo los siguientes resultados:
+\subsubsection{Lectura en cola FIFO con threads}
+\begin{multicols}{2}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.4]{./img2/fifo.png}
+		\caption{Paquetes por segundo vs threads, en cola fifo}
+	\end{figure}
+	% \begin{figure}[H]
+	% 	\centering
+	% 	\includegraphics[scale=0.5]{./img/timefifo.png}
+	% 	\caption{Tiempo vs threads, en cola fifo}
+	% \end{figure}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|}
+		\hline
+		Threads&Tiempo(s)\\
+		\hline
+		1&0.79\\
+		2&2.7\\
+		4&6.75\\
+		8&12\\
+		\hline
+		\end{tabular}
+		\caption{Datos medición cola FIFO}
+	\end{table}
+\end{multicols}
+\subsubsection{Lectura en socket UDP con threads}
+\begin{multicols}{2}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.4]{./img2/UDP.png}
+		\caption{Paquetes por segundo vs threads, en socket UDP}
+	\end{figure}
+	% \begin{figure}[H]
+	% 	\centering
+	% 	\includegraphics[scale=0.5]{./img/timesock+thread.png}
+	% 	\caption{Tiempo vs threads, en cola sockets + threads}
+	% \end{figure}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|}
+		\hline
+		Threads&Tiempo(s)\\
+		\hline
+		1&1.28\\
+		2&3.48\\
+		4&7.1\\
+		8&14.6\\
+		\hline
+		\end{tabular}
+		\caption{Datos medición socket UDP}
+	\end{table}
+\end{multicols}
+\subsubsection{Lectura en sockets TCP con threads}
+\begin{multicols}{2}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.4]{./img2/TCP.png}
+		\caption{Paquetes por segundo vs threads, en socket TCP}
+	\end{figure}
+	% \begin{figure}[H]
+	% 	\centering
+	% 	\includegraphics[scale=0.5]{./img/timesock+par.png}
+	% 	\caption{Tiempo vs threads, en cola sockets paralelos + threads}
+	% \end{figure}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|}
+		\hline
+		Threads&Tiempo(s)\\
+		\hline
+		1&0.21\\
+		2&0.67\\
+		4&2.95\\
+		8&7.1\\
+		\hline
+		\end{tabular}
+		\caption{Datos obtenidos medición socket TCP}
+	\end{table}
+\end{multicols}
+\subsubsection{Sincronización con Mutex}
+\begin{multicols}{2}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.4]{./img2/mutex.png}
+		\caption{Paquetes por segundo vs thread utilizando sincronización con mutex}
+	\end{figure}
+	% \begin{figure}[H]
+	% 	\centering
+	% 	\includegraphics[scale=0.5]{./img/timesock+par.png}
+	% 	\caption{Tiempo vs threads, en cola sockets paralelos + threads}
+	% \end{figure}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|}
+		\hline
+		Threads&Tiempo(s)\\
+		\hline
+		1&0.07\\
+		2&0.63\\
+		4&1.79\\
+		8&5.8\\
+		\hline
+		\end{tabular}
+		\caption{Datos medición mutex}
+	\end{table}
+\end{multicols}
+\subsubsection{Sincrionización con Semaforos}
+\begin{multicols}{2}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[scale=0.4]{./img2/sem.png}
+		\caption{Paquetes por segundo vs thread utilizando sincronización con semáforos}
+	\end{figure}
+	% \begin{figure}[H]
+	% 	\centering
+	% 	\includegraphics[scale=0.5]{./img/timesock+par.png}
+	% 	\caption{Tiempo vs threads, en cola sockets paralelos + threads}
+	% \end{figure}
+	\begin{table}[H]
+		\centering
+		\begin{tabular}{|c|c|}
+		\hline
+		Threads&Tiempo(s)\\
+		\hline
+		1&6.69\\
+		2&14.8\\
+		4&27.3\\
+		8&58.85\\
+		\hline
+		\end{tabular}
+		\caption{Datos medición semáforo}
+	\end{table}
+\end{multicols}
+\subsection{Discusión de los resultados}
+\par De los gráficos antes expuestos, podemos observar el comportamiento lineal que tiene el tiempo en función de los threads lo que sugiere, al menos, que la introducción de múltiples hilos de ejecución en el servidor no aumenta la eficiencia del proceso.
+\par Este efecto es el que amerita ser investigado en profundidad para poder analizar si es posible repararlo y, proponer algunas soluciones en caso de ser pertinente. Con esto se busca que el rendimiento de los sockets sea al menos completamente lineal, es decir, que no haya diferencias con la ejecución lineal en el proceso de la misma cantidad de paquetes, o al menos se pueda observar un pequeño overhead debido a la sincronización de los threads.
+\par Sin ir más lejos, una propuesta de estructuras de datos concurrente (como por ejemplo, el utiliza un buffer de lectura o escritura por cada thread) podría llevar a mejorar el rendimiento de los sockets. Sin embargo esto no será corroborado hasta que se realicen pruebas más exhaustivas.
+\section{Cronograma}
+\par Para este proyecto, se pensaron las siguientes fases con su respectivo tiempo estimado:
+\begin{itemize}
+	\item \textbf{Búsqueda del cuello de botella (3 meses):} En esta fase se pretenden generar tests cada vez más específicos que permitan aislar la sección del código en el Kernel que está originando el problema de rendimiento.
+	\item \textbf{Implementación de Mejoras (1 mes):} Durante este periodo, se busca diseñar e implementar las soluciones del problema aislado en el punto anterior.
+	\item \textbf{Mediciones y retroalimentación de las mejoras (1 mes):} Con esto se busca medir cualquier efecto (negativo o positivo) sobre el rendimiento de los sockets con la implementación del caso anterior.
+	\item \textbf{Escritura del documento de la memoria (1 mes):} Finalmente, se reserva el último mes del trabajo para la redacción del informe final. Esto sin perjuicio de que este trabajo se realice de manera paralela mientras se ejecuten las fases anteriores.
+\end{itemize}
+\newpage
+\section{Referencias Bibliográficas}
+\begin{enumerate}
+	\item Scaling memcached at Facebook - \url{http://www.facebook.com/note.php?note\_id=39391378919} \label{paper1}
+	\item Implementation and Evaluation of Moderate Parallelism in the BIND9 DNS Server - \url{http://static.usenix.org/events/usenix06/tech/full\_papers/jinmei/jinmei\_html/}\label{paper2}
+	\item Yunhong Gu, Robert L. Grossman - Optimizing UDP-based Protocol Implementations\label{paper3}
+	\item Erich M. Nahum, David J. Yates, James F. Kurose, Don Towsley - University of Massachusetts - Performance Issues in Parallelized Network Protocols\label{paper4}
+\end{enumerate}
+\end{document}

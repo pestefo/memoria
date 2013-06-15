@@ -1,0 +1,391 @@
+%!TEX encoding = UTF-8 Unicode
+%
+%  Visualización Espacio/Temporal de Eventos Noticiosos
+%
+%  Created by Camilo Palma Pradena on 2012-04-15.
+%
+\documentclass[10pt]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,activeacute]{babel}
+\usepackage{fullpage}
+\usepackage{boxedminipage}
+\usepackage[pdftex]{graphicx}
+\usepackage{url}
+
+\begin{document}
+	\thispagestyle{empty}
+	\begin{minipage}{\textwidth}
+		Universidad de Chile\\
+		Facultad de Ciencias Físicas y Matemáticas\\
+		Departamento de Ciencias de la Computación\\
+		CC6908 - Introducción al Trabajo de Título
+	\end{minipage}
+	\vfill
+	\begin{minipage}{\textwidth}
+		\begin{center}
+			\huge{Visualización Espacio/Temporal de Eventos Noticiosos}
+		\end{center}
+	\end{minipage}
+	\vfill
+	
+	\begin{minipage}{\textwidth}
+		\begin{tabular}{c}
+			\hline
+			Bárbara Poblete Labra\\
+			bpoblete@dcc.uchile.cl\\
+			Profesor Guía
+		\end{tabular}
+		\hfill
+		\begin{tabular}{c}
+			\hline
+			Camilo Palma Pradena\\
+			cpalma@dcc.uchile.cl\\
+			Alumno
+		\end{tabular}
+		\vspace{1cm}
+	\end{minipage}
+	\begin{minipage}{\textwidth}
+		\null
+		\hfill
+		\begin{minipage}{2in}
+			\begin{tabular}{rl}
+				Nombre:&Camilo Palma Pradena\\
+				Correo:&cpalma@dcc.uchile.cl\\
+				Teléfono:&(02) 6726979\\
+				Móvil:&(09) 74851472\\
+				Fecha:&\today
+			\end{tabular}
+		\end{minipage}
+	\end{minipage}
+
+	\newpage
+
+\begin{abstract}
+	El objetivo de este informe es identificar y acotar el problema de visualizar eventos noticiosos, con el fin de saber qué está ocurriendo en el mundo en un determinado intervalo de tiempo. Se muestran las soluciones actuales que se acercan en esta dirección y luego se propone como solución una visualización capaz de mostrar si un evento ocurre a nivel global o local, su relevancia y finalmente su ubicación geográfica y temporal. Finalmente se describe el trabajo realizado a la fecha y se presenta el trabajo por realizar.
+\end{abstract}
+
+\section{Introducción}
+	Actualmente existe una gran cantidad de fuentes de información disponibles en Internet, como periódicos \emph{online}, \emph{blogs}, canales de televisión online y videos. Estas fuentes también pueden entregar información asociada a eventos concretos en el mundo. 
+	
+	Otra fuente de información es \emph{Twitter}\footnote{\url{http://twitter.com/}}, red de información que permite a los usuarios escribir, recibir y leer mensajes de a lo más 140 caracteres. Esta fuente ha tenido un aumento exponencial del número de mensajes diarios (\emph{tweets}) que se envían a través de esta red social (1 millón en 2009, 65 millones en 2010 y 200 millones en 2011)\footnote{\url{http://blog.twitter.com/2011/06/200-million-tweets-per-day.html}}. Estos \emph{tweets} pueden mostrar opiniones, hechos, ideas, sentimientos, publicidad, etc., entre los cuales algunos pueden corresponder a eventos concretos en el mundo.
+	
+	Para una persona puede ser difícil revisar todas estas fuentes a nivel de país, o incluso a nivel de ciudad en el caso de las grandes ciudades para saber qué está pasando.
+	
+	Dado el contexto anterior, el problema que se quiere abordar es el poder visualizar la información asociada a eventos noticiosos en el mundo. En particular, se quiere visualizar los eventos noticiosos reportados por medios de información en Internet, de una forma compacta y representativa. 
+	
+	Algunos los problemas existentes en la materia de visualización de datos son:
+	
+	\begin{itemize}
+		\item Cómo utilizar apropiadamente el espacio limitado para un conjunto grande de datos.
+		\item Cómo mostrar los atributos de los datos en el caso de que tengan mucha dimensionalidad.
+		\item Cómo utilizar interacciones efectivas en la visualización.
+	\end{itemize}
+	
+	Además, la visualización de grandes volúmenes de datos geo-temporales presenta algunos desafíos importantes.
+	
+	A lo largo de este informe se plantean soluciones para estos problemas en el contexto particular de la visualización de eventos noticiosos.
+	
+\section{Estado del Arte}
+
+	Para visualizar eventos se ocupan distintas fuentes, entre las más comunes se encuentran \emph{Twitter} y páginas \emph{web} de noticias. A continuación se detallan las funcionalidades que ofrecen las aplicaciones existentes y las desventajas con respecto al tema que se desea abordar.
+
+\subsection{Aplicaciones Basadas en \emph{Twitter}}
+
+\subsubsection*{Twitris+\footnote{\url{http://twitris.knoesis.org/}}}
+
+	Desarrollada por estudiantes de doctorado de \emph{Wright State University}, el objetivo de \emph{Twitris+}\cite{twitris} es analizar eventos grandes a través de \emph{tweets}, entregando distintas métricas para un evento: 
+
+	\begin{itemize}
+		\item \emph{Tweets} georeferenciados en tiempo real.
+		\item \emph{Trending topics} (tendencias) más utilizados en ciertos lugares mostrando su variación.
+		\item \emph{Tweets}, noticias, \emph{hashtags} y usuarios más relevantes del evento.
+		\item Análisis de sentimiento: se clasifican \emph{tweets} de manera positiva o negativa.
+		\item Análisis de la red de usuarios: grafo de interacciones entre usuarios.
+	\end{itemize}
+
+	Las desventajas que tiene la aplicación son:
+
+	\begin{itemize}
+		\item Eventos fijos: \emph{2012 U.S. Presidential Election, India Against Corruption, Occupy Wall Stret Protest.}
+		\item Sólo se puede visualizar un evento a la vez.
+	\end{itemize}
+	
+	\begin{figure}[h!]
+		\centering
+	    \includegraphics[scale=0.36]{./img/Twitris.png}
+		\caption{\textbf{Twitris+}: Keywords de las elecciones en Estados Unidos}
+		\label{twitris}
+	\end{figure}
+
+\subsubsection*{TwitInfo\footnote{\url{http://twitinfo.csail.mit.edu/}}}
+	TwitInfo\cite{twitinfo} fue desarrollada con el fin de visualizar en una línea de tiempo distintos \emph{keywords} identificando tópicos. Fue desarrollada por investigadores del \emph{MIT}. Sus funcionalidades son las siguentes:
+
+	\begin{itemize}
+		\item Logra identificar eventos y los asocia a un conjunto de \emph{keywords} a partir de una consulta.
+		\item Georeferencia \emph{tweets} del evento.
+		\item Se pueden visualizar distintos intervalos de tiempo: 1 minutos, 5 minutos, 1 hora, 1 día, 5 días, 1 mes, 3 meses, 6 meses, 1 año.
+		\item Grafica el sentimiento promedio de los \emph{tweets} (positivo o negativo).
+	\end{itemize}
+
+	Las desventajas son:
+
+	\begin{itemize}
+		\item \emph{Keywords} que se pueden ingresar están fijos y desactualizados.
+		\item No es en tiempo real.
+	\end{itemize}
+
+	\begin{figure}[h!]
+		\centering
+	    \includegraphics[scale=0.36]{./img/TwitInfo.png}
+		\caption{\textbf{TwitInfo}: Eventos identificados con el keyword ``obama''}
+		\label{twitinfo}
+	\end{figure}
+
+\subsubsection*{Trendistic\footnote{\url{http://trendistic.indextank.com/}}}
+
+	Aplicación desarrollada por una empresa adquirida por \emph{Linkedin}, ofrece las siguientes funcionalidades:
+
+	\begin{itemize}
+		\item Grafica actividad en \emph{Twitter} para un conjunto de \emph{keywords}.
+		\item Actividad puede ser graficada en las últimas 24 horas, 7 días, 30 días, 90 días.
+	\end{itemize}
+
+	Las desventajas que posee son:
+
+	\begin{itemize}
+		\item No posee georeferenciación de eventos.
+		\item No se pueden identificar distintos eventos simultáneamente, es decir, solamente es posible identificar eventos bajo un mismo \emph{keyword}.
+	\end{itemize}
+
+	\begin{figure}[h!]
+		\centering
+	    \includegraphics[scale=0.5]{./img/Trendistic.png}
+		\caption{\textbf{Trendistic}: Distribución de \emph{tweets} con la palabra ``earthquake''}
+		\label{trendistic}
+	\end{figure}
+
+\subsection{Aplicaciones Basadas en Noticias}
+\subsubsection*{Newsmap\footnote{\url{http://newsmap.jp/}}}
+
+	Aplicación hecha sobre la \emph{API} de \emph{Google News\footnote{\url{https://developers.google.com/news-search/}}}. Posee las siguientes características:
+
+	\begin{itemize}
+		\item Noticias de un conjunto de países: Argentina, Australia, Austria, Brasil, Canada, Francia, Alemania, India, Italia, México, Holanda, Nueva Zelanda, España, Reino Unido, Estados Unidos.
+		\item Noticias clasificadas en: Mundo, Nacional, Negocios, Tecnología, Deportes, Entretenimiento y Salud.
+		\item Los intervalos de tiempo que pueden ser visualizados son: noticias de hace menos de 10 minutos, más de 10 minutos o más de 1 hora.
+	\end{itemize}
+
+	Desventajas:
+
+	\begin{itemize}
+		\item No es posible fijar un intervalo de tiempo distinto a los mencionados anteriormente.
+		\item Cantidad de noticias limitada por el espacio en pantalla.
+		\item No es en tiempo real. Se debe recargar la página para visualizar noticias que están ocurriendo.
+	\end{itemize}
+
+	\begin{figure}[h!]
+		\centering
+	    \includegraphics[scale=0.5]{./img/Newsmap.png}
+		\caption{\textbf{Newsmap}: Noticias del mundo}
+		\label{newsmap}
+	\end{figure}
+
+
+\section{Descripción del Problema}
+	El problema que se quiere abordar es el de visualizar eventos noticiosos, con el fin de saber qué está ocurriendo en el mundo ahora o en un determinado intervalo de tiempo.
+
+	Para realizar una visualización de los datos, primero es necesario recolectar datos desde las distintas fuentes existentes en Internet. El desafío existente en este punto es obtener la mayor cantidad de información posible con la mayor cantidad de atributos posible. Para esto se utilizará la \emph{API} de \emph{Google News}, la cual ofrece las noticias más relevantes de una determinada ubicación.
+	
+	Luego de obtener un conjunto de datos, el siguiente desafío es limpiar los datos, es decir, descartar los atributos que no son interesantes de ser visualizados. Además, en caso de que los datos no proporcionen toda la información necesaria para su visualización, puede ser necesario calcular atributos nuevos a partir de los datos obtenidos. Por ejemplo, en el caso de \emph{Google News}, los datos no vienen agrupados por eventos. Podría ser necesario hacer \emph{clustering} sobre las noticias para poder formar un evento, que es el que finalmente se quiere visualizar. Dado que se quiere mostrar la visualización en tiempo real, se debiese hacer \emph{clustering online}, es decir, \emph{clustering} a medida que se van agregando nuevos datos. Esto es computacionalmente costoso y podría ser inviable\cite{doccluster}.
+	
+	Un paso intermedio entre la visualización y el proceso de datos debiese ser la validación de que los datos adquiridos y calculados son correctos. De todas formas, la visualización debiese ser capaz de mostrar inconsistencias en los datos, por ejemplo, la correcta construcción de los \emph{clusters}.
+	
+	Finalmente, después de tener los datos procesados, se vuelve al problema de visualización de eventos. Como se mencionó anteriormente, algunos de los problemas existentes en el área de visualización de datos son:
+	
+	\begin{enumerate}
+		\item Cómo utilizar apropiadamente el espacio limitado para un conjunto grande de datos.
+		\item Cómo mostrar los atributos de los datos en el caso de que tengan mucha dimensionalidad.
+		\item Cómo utilizar interacciones efectivas en las visualizaciones.
+	\end{enumerate}
+	
+	Para el problema de visualización de eventos, estos problemas influyen en el desarrollo de una solución. El primer problema tiene relación con las limitaciones físicas del dispositivo en el cual se visualizarán los datos. Es inviable visualizar 1 millón noticias en una pantalla con una resolución de 1280x800 pixeles. También tiene relación con la cantidad de información que es cómoda de leer por una persona. Se debe encontrar un equilibrio entre mostrar mucha información y que esta pueda ser transmitida de forma correcta. Asimismo, no puede quedar información relevante fuera de la visualización.
+	
+	El segundo problema se refiere a cómo mostrar la mayor cantidad de atributos de los datos sin sobrecargar la visualización. Sería deseable poder representar la mayor cantidad de atributos posibles, pero se puede caer en la sobre-codificación (\emph{over-encoding}). La codificación se refiere a la característica que tendrá el dato en la visualización, tal como tamaño, color, forma y posición. La codificación de los atributos depende del tipo del atributo. Un atributo puede ser Cuantitativo, Ordinal o Nominal. Para cada uno de estos tipos existen codificaciones que son más apropiadas para entregar expresividad y efectividad. Mackinclay\cite{mackinlay} muestra que codificación es la más apropiada según el tipo de atributo. Para no caer en la sobre-codificación, se debe notar que existen atributos que pueden no aportar información al mensaje que se desea entregar con la visualización.
+	
+	El último problema entra en el área de Interacción Humano-Computador (HCI). Se considera que la Interacción Humano-Computador es uno de los problemas más complejos en la visualización científica\cite{visproblems}. Aún se investiga como hacer visualizaciones efectivas e intuitivas. En particular, para el caso de visualizar eventos, están los desafíos para poder generar vistas que muestren más atributos de los datos y poder navegar sobre los eventos.
+	
+\section{Propuesta de Solución}
+
+	En la revisión de las aplicaciones que se acercan en la dirección de visualizar eventos, se puede apreciar que la mayoría de estas no puede visualizar varios eventos a la vez, no actualizan su información en tiempo real o los intervalos de tiempo que se pueden elegir están restringidos. La solución propuesta espera resolver estos problemas.
+
+	La solución que se propone para el problema de visualización de eventos, es una aplicación \emph{web}. Esta consiste en una visualización de noticias georeferenciadas, agrupadas en \emph{clusters} representativos de cada evento. Cada cluster representará en forma agregada propiedades de un evento: relevancia, lugar de ocurrencia, fecha de ocurrencia y se podría determinar si el evento ocurrió a nivel local o global. Para lograr lo anterior, esta aplicación debe ser capaz de recolectar información utilizando la \emph{API} de \emph{Google News}.
+	
+	La solución se divide en tres ramas, las cuales son: ``recolección de datos'', ``limpieza y proceso de datos'' y ``visualización'', las cuales se detallan en la siguiente sección. A modo de resumen, los objetivos principales de la solución son:
+	
+\begin{itemize}
+	\item Recolectar noticias desde \emph{Google News} periódicamente.
+	\item Armar \emph{clusters} de noticias,
+	\item Calcular ubicación de los \emph{clusters}.
+	\item Definir si un evento ocurre a nivel local o global.
+	\item Visualizar \emph{clusters}.
+	\item Posibilidad de interactuar con la visualización para filtrar noticias por fecha y ubicación.
+	\item Analizar posibilidad de incluir categoría de la noticia en la visualización.
+\end{itemize}	
+
+\subsection{Recolección de Datos}
+
+	Para recolectar datos se investigó las \emph{APIs} de \emph{Google News} y \emph{Feedzilla\footnote{\url{http://www.feedzilla.com/api-overview}}}. Estas \emph{APIs} proveen consultas de búsqueda según distintos parámetros. En particular, se pueden consultar las últimas noticias más relevantes asociadas a categorías. Por ejemplo en el caso de \emph{Google News}, las categorías disponibles para consultar son: titulares principales, mundo, negocios, nacional, ciencia y tecnología, elecciones, política, entretenimiento, deportes y salud. En el caso de \emph{Feedzilla} se tienen las siguentes categorías: deportes, arte, blogs, negocios, celebridades, columnas, entretenimiento, eventos, cosas divertidas, general, salud, hobbies, industria, internet, tecnologías de la información entre otras.
+	
+	Los datos entregados por las consultas son noticias en formato \emph{JSON (JavaScript Object Notation)}. Este formato estándar es texto plano diseñado para ser leído por humanos y máquinas. Es usado para transmitir datos estructurados en la red.
+	
+	\emph{Google News} entrega los siguientes datos por noticia: contenido, url, título, publicador, fecha de publicación, lenguaje, ubicación, imagen y noticias relacionadas. \emph{Feedzilla} por su parte entrega: url, título, resumen, fecha de publicación, autor y fuente.
+	
+	\emph{Google News} posee una ventaja por sobre \emph{Feedzilla}, la cual es que la primera \emph{API} entrega relaciones entre noticias (noticias relacionadas). Esto puede ser útil para construir \emph{clusters} sin necesidad de procesar la información con algoritmos de \emph{clustering}. Por esto se utilizará \emph{Google News} como fuente de noticias.
+	
+	Para manejar la recolección de datos, su almacenamiento se utilizará el programación \emph{python}, el \emph{framework} MVC \emph{Django} y una base de datos relacional \emph{MySQL}. La decisión de utilizar estas tecnologías pasa por la experiencia que se tiene en estas y porque son suficientes para cumplir los objetivos planteados.
+	
+\subsection{Limpieza y Procesamiento de Datos}
+	Los datos extraídos de \emph{Google News} pueden traer información que no es relevante en la construcción de la visualización. También, puede no traer toda la información que su \emph{API} dice que trae. Un ejemplo de esto último es la ubicación, la cual en la mayoría de las noticias extraídas no está presente. Dado que se quiere mostrar la georeferencia de los eventos, se deben filtrar estas noticias o calcular su ubicación. Para esto existen herramientas que son capaces de entregar una ubicación geográfica a partir de un texto, como por ejemplo \emph{Placemaker\footnote{\url{http://developer.yahoo.com/geo/placemaker/}}}.
+	
+	Otro dato que no proporciona \emph{Google News} es si una noticia es mencionada a nivel local o global. Por ejemplo, si una noticia es publicada solamente en el país de origen del evento, se dice que esta es local. Si se menciona en otros países es global. Para calcular este atributo se deben desarrollar heurísticas.
+
+\subsection{Visualización}	
+
+	Una visualización es una forma de ``resumir'' visualmente información relevante. Para entregar la mayor cantidad de información posible en la visualización, que esta sea legible y que entregue información relevante sobre qué ocurre en el mundo se propone una visualización (Figura \ref{lineatiempo}). Cada círculo pertenece a un evento y posee distintas propiedades (codificaciones), las que reflejan distintas características de los eventos: radio de los círculos representan relevancia, el borde si es un evento local o global y el color el continente.
+
+\begin{table}
+\centering
+\begin{tabular}{|c|c|c|}
+\hline
+Quantitative & Ordinal & Nominal\\
+\hline
+Position & Position & Position\\
+Length & Density & Hue\\
+Angle & Saturation & Texture\\
+Slope & Hue & Connection\\
+Area & Texture & Containment\\
+Volume & Connection & Density\\
+Density & Containment & Saturation\\
+Saturation & Length & Shape\\
+Hue & Angle & Length\\
+Texture & Slope & Angle\\
+Connection & Area & Slope\\
+Containment & Volume & Area \\
+Shape & Shape & Volume\\
+\hline
+\end{tabular}
+\caption{Mackinlay's Ranking\cite{mackinlay}}
+\label{tab:mackinlay}
+\end{table}
+
+	La relevancia es un atributo cuantitativo, y según el ranking propuesto por Mackinlay (Figura \ref{tab:mackinlay}), la mejor opción sería utilizar la posición para reflejar este atributo. La justificación para no hacer esto es que los eventos deben estar distribuidos a lo largo de la pantalla para una mejor percepción. Se deja libre el eje Y para poder distribuir los círculos a lo largo de la pantalla. Además, en el caso de que la mayoría de los eventos fuese poco relevante o muy relevantes, la ubicación correspondiente a tal característica siempre estaría llena. Por esto, se ocupa la segunda mejor opción para describir atributos cuantitativos que es el largo o tamaño.
+	
+	En el caso de la ubicación temporal se ocupa el eje X, el cual es la mejor opción para describir atributos de cuantitativos como la fecha. La ubicación el cual es un atributo nominal se asocia con su mejor opción después de la posición, el color. Finalmente, si el local o global (atributo nominal) se asocia con un borde el cual podría verse como una textura. Esta es la tercera mejor opción después de la posición y los colores.
+	
+	Un atributo que sería interesante de mostrar es la clasificación de la noticia, como deporte, salud, negocios, etc. Para esto se podría utilizar el eje libre Y, pero se debe evaluar si esto no lleva a una sobre-codificación de los atributos. Otra opción podría ser dejar el eje Y para la ubicación espacial y utilizar colores para mostrar la clasificación.
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[scale=0.3]{./img/Visualizacion.png}
+	\caption{\textbf{Propuesta de Linea de Tiempo}}
+	\label{lineatiempo}
+\end{figure}
+
+	Por el lado de las interacciones con la visualización, se proponen funcionalidades para que el usuario pueda navegar a través de los contenidos que le interesen, por ejemplo la posibilidad de ver más eventos de un cierto país, o poder navegar a través de las noticias de cierto continente o de un cierto evento y lo más importante poder navegar en el tiempo. También se propone que se pueda elegir un intervalo de tiempo, ajustando el número de noticias que se visualizan para no abrumar al usuario con tanta información en el caso de ser un intervalo de tiempo grande.
+
+	La implementación de la visualización se realizará utilizando \emph{HTML5} y el lenguaje de programación \emph{Javascript}. Además, se utilizará una librería diseñada para el manejo de información y su posterior visualización llamada D3 (Data-Driven Documents)\cite{d3}.
+
+\section{Trabajo Realizado}
+
+A continuación se detalla la implementación realizada a la fecha. Esta implementación juega el papel de prueba de concepto, lo que sirve para mostrar la dificultad del problema.
+
+\subsection{Servidor de Desarrollo}
+
+	Actualmente se cuenta con un servidor de desarrollo en el Departamento de Ciencias de la Computación de la Universidad de Chile (DCC). En este servidor está disponible el prototipo de la aplicación\footnote{\url{http://eventsvis.dcc.uchile.cl}}, el cual está desarrollado en el lenguaje de programación \emph{python}, el \emph{framework} MVC \emph{Django} y una base de datos relacional \emph{MySQL}. Por otro lado, se tiene bajo versionamiento el desarrollo de la aplicación en un servidor \emph{SVN} provisto por también por el DCC.
+
+\subsection{Conexión con API de Google News}
+
+Se ha realizado un \emph{script} en el lenguaje de programación \emph{python}, capaz de consultar la \emph{API} de \emph{Google News} para obtener las noticias más relevantes de distintas categorías. Estas categorías son: titulares principales, mundo, negocios, nacional, ciencia y tecnología, elecciones, política, entretenimiento, deportes y salud. Las noticias obtenidas con este \emph{script} son almacenadas en la base de datos del servidor.
+
+\subsection{Visualización}
+
+	El avance en el tema principal del trabajo se puede apreciar en la Figuras \ref{actual1} y  \ref{actual2}. Estas figuras muestran los eventos agrupados en \emph{clusters} y el contenido de un \emph{cluster} específico seleccionado. Si bien existen datos que aún no se obtienen, tales como la ubicación de las noticias y si es local o global (si se trata de una noticia comentada en todo el mundo o no), ya se tiene implementada su visualización. Esto se hace suponiendo que se tienen los datos.
+
+	Por otra parte, faltan elementos por programar en la visualización, los cuales se detallan en la siguiente sección.
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[scale=0.65]{./img/actual1.png}
+	\caption{Estado actual de la visualización}
+	\label{actual1}
+\end{figure}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[scale=0.65]{./img/actual2.png}
+	\caption{Noticias asociadas a \emph{cluster} seleccionado}
+	\label{actual2}
+\end{figure}
+
+\section{Trabajo por Realizar}
+
+\subsection{Cron}
+
+	Es necesario programar un \emph{cron} capaz de ejecutar el \emph{script} recolector de noticias cada cierto tiempo. Se debe experimentar para saber el periodo de ejecución apropiado del \emph{script} para maximizar la cantidad de noticias recolectadas. Por ejemplo, si el \emph{script} se ejecuta cada dos días, es muy probable que no se recolecten todas las noticias ocurridas en estos dos días debido al límite de noticias que es posible consultar con la \emph{API}. Por otro lado, si el \emph{script} corre muy seguido, es probable que recolecte pocas noticias nuevas.
+	
+	Además, esta funcionalidad debe ser implementada cuando se definan los datos que son necesarios para determinar la ubicación, la relevancia y si se trata de una noticia global o local. Esto para no recolectar datos que podrían no servir si se requieren más datos para determinar los atributos anteriores.
+
+\subsection{Ubicación}
+
+	En un principio, la \emph{API} de \emph{Google News} proveía la información de la ubicación. Al realizar la recolección de noticias, se constató que el dato de la ubicación no viene incluido en la información. De todas formas, existen herramientas para obtener la ubicación de una pagina web o de un texto, como por ejemplo \emph{Placemaker}. Esta \emph{API} de \emph{Yahoo!} es capaz de determinar de qué ubicación es el texto que se le introduce. Este atributo debe ser calculado.
+
+\subsection{Local o Global}
+
+	Se debe determinar una heurística para determinar si una noticia es difundida solamente en su país de origen o en todo el mundo. El enfoque que se quiere implementar es el de comparar la ubicación de la página en que es publicada con la ubicación de la noticia obtenida anteriormente con \emph{Placemaker}.
+
+\subsection{Relevancia}
+
+	La heurística utilizada hasta el momento para determinar la relevancia de una noticia es la cantidad de noticias relacionadas. Este enfoque no es suficiente debido a que \emph{Google News} limita la cantidad de noticias relacionadas por noticias. Una solución para este problema podría ser buscar nuevamente en \emph{Google News} cada noticia relacionada para obtener más noticias relacionadas. Esta cantidad de noticias relacionadas podría sumarse a la de la noticia original, obteniendo un número más preciso que el actual.
+
+\subsection{Visualización}
+
+	Se debe encontrar una forma de visualizar la categoría de la noticias, es decir, si la noticia se trata de deportes, salud, etc. También se deben implementar los distintos filtros propuestos para navegar a través de las noticias, como por ejemplo los filtros por ubicación. Por último, se debe implementar la visualización dado un intervalo de tiempo. Para lo último se debe definir una cantidad de \emph{clusters} que sea razonable de visualizar, tanto por espacio en la pantalla como por la capacidad de recepción de información de una persona. Se deben escoger los \emph{clusters} más relevantes a ser visualizados dada la cantidad anterior.
+
+\newpage
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+
+\bibitem{twitris}
+Amit Sheth, Hemant Purohit, Ashutosh Jadhav, Pavan Kapanipathi, Lu Chen,
+\emph{Understanding Events Through Analysis of Social Media}.
+Proc. WWW 2011.
+
+\bibitem{twitinfo}
+Adam Marcus, Michael S. Bernstein, Osama Badar, David R. Karger, Samuel Madden, Robert C. Miller,
+\emph{TwitInfo: Aggregating and Visualizing Microblogs for Event Exploration}.
+CHI 2011.
+
+\bibitem{doccluster}
+Nicholas O. Andrews and Edward A. Fox,
+\emph{Recent Developments in Document Clustering}.
+
+\bibitem{mackinlay}
+Jock Mackinlay,
+\emph{Automating the Design of Graphical Presentations of Relational Information.}
+ACM Transactions on Graphics (TOG), 1986.
+
+\bibitem{visproblems}
+Chris Johnson,
+\emph{Top Scientific Visualization Research Problems.}
+IEEE, 2004.
+
+\bibitem{d3}
+Michael Bostock, Vadim Ogievetsky, Jeffrey Heer,
+\emph{D3: Data-Driven Documents.}
+IEEE Trans. Visualization and Comp. Graphics (Proc. InfoVis), 2011.
+
+\end{thebibliography}
+
+\end{document}

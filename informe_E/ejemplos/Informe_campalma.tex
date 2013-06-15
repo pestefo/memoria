@@ -1,0 +1,347 @@
+%!TEX encoding = UTF-8 Unicode
+%
+%  Visualización Espacio/Temporal de Eventos Noticiosos
+%
+%  Created by Camilo Palma Pradena on 2012-04-15.
+%
+\documentclass[10pt]{article}
+
+% Use utf-8 encoding for foreign characters
+\usepackage[utf8]{inputenc}
+\usepackage[spanish,activeacute]{babel}
+
+% Setup for fullpage use
+\usepackage{fullpage}
+
+% Uncomment some of the following if you use the features
+%
+% Running Headers and footers
+%\usepackage{fancyhdr}
+
+% Multipart figures
+%\usepackage{subfigure}
+
+% More symbols
+%\usepackage{amsmath}
+%\usepackage{amssymb}
+%\usepackage{latexsym}
+
+% Surround parts of graphics with box
+\usepackage{boxedminipage}
+
+% Package for including code in the document
+%\usepackage{listings}
+
+\usepackage[pdftex]{graphicx}
+
+% URLs
+\usepackage{url}
+
+%
+%\newenvironment{itemize}{
+%\begin{itemize}
+%  \setlength{\itemsep}{1pt}
+%  \setlength{\parskip}{0pt}
+%  \setlength{\parsep}{0pt}
+%}{\end{itemize}}
+
+\begin{document}
+
+	\begin{titlepage}
+	\begin{minipage}{12cm}
+	\begin{flushleft}
+	Universidad de Chile\\
+	Facultad de Ciencias Físicas y Matemáticas\\
+	Departamento de Ciencias de la Computación\\
+	CC6908 - Introducción al Trabajo de Título
+	\end{flushleft}
+	\end{minipage}
+	\vfill
+	\begin{center}
+	\huge Visualización Espacio/Temporal de Eventos Noticiosos
+	\end{center}
+	\vfill
+	\begin{flushright}
+		\begin{tabular}{ll}
+		\bf{Alumno} & :  Camilo Palma Pradena\\ 
+		\bf{Correo Electrónico} & :   \texttt{cpalma@dcc.uchile.cl}\\
+		\bf{Teléfono} & :  7-4851472\\
+		\bf{Profesora Guía} & :  Bárbara Poblete Labra\\
+		\bf{Fecha} & :  \today\\
+
+		\end{tabular}
+	\end{flushright}
+	\end{titlepage}
+
+\begin{abstract}
+El objetivo de este informe es identificar y acotar el problema de obtener información concisa para saber qué está ocurriendo en el mundo. Hecho esto, se investigará cuáles son las soluciones actuales que se acercan en esta dirección y se propondrá como solución una visualización de eventos noticiosos georeferenciados en tiempo real. Al final del informe se evaluará la dificultad de la solución mediante una prueba de concepto.
+
+\end{abstract}
+
+\section{Introducción}
+
+Actualmente, existe una gran cantidad de fuentes de información disponibles en Internet. Una de estas fuentes es \emph{Twitter}\footnote{\url{http://twitter.com/}}, red de información que permite a los usuarios escribir, recibir y leer mensajes de a lo más 140 caracteres. Esta fuente ha tenido un aumento exponencial en el número de mensajes diarios (\emph{tweets}) que se envían a través de esta red social (1 millón en 2009, 65 millones en 2010 y 200 millones en 2011)\footnote{\url{http://blog.twitter.com/2011/06/200-million-tweets-per-day.html}}. Estos mensajes pueden mostrar opiniones, hechos, ideas, sentimientos, publicidad, etc., los cuales algunos pueden corresponder a eventos concretos en el mundo. 
+
+Existen otras fuentes de información en Internet, como periódicos \emph{online}, \emph{blogs}, canales de televisión y videos. Para una persona puede ser difícil revisar todas estas fuentes a nivel de país, o incluso a nivel de ciudad en el caso de las grandes ciudades para saber qué está pasando.
+
+Por lo anterior, el problema que se quiere abordar es el de obtener información concisa para saber qué pasó en el mundo en un intervalo de tiempo o qué está pasando en tiempo real. Asumiendo que se tienen fuentes de información que describen eventos en el mundo, el problema se divide en organizar esta información visualmente, procesarla para obtener más información y mostrarla en tiempo real.
+
+La solución que se presenta es una aplicación \emph{web} que recolecta noticias, las agrupa según su relación en eventos, decide si un evento ocurre a nivel mundial o solamente a nivel local y visualiza esta información. Además, permite navegar a través de los eventos de un mismo lugar, a través del tiempo y a través de las noticias de un evento, todo esto en tiempo real.
+
+\section{Estado del Arte}
+
+Para visualizar eventos se ocupan distintas fuentes, entre las más comunes se encuentran \emph{Twitter} y páginas \emph{web} de noticias. A continuación se detallan las funcionalidades que ofrecen las aplicaciones existentes y las desventajas con respecto al tema que se desea abordar.
+
+\subsection{Aplicaciones Basadas en \emph{Twitter}}
+
+\subsubsection*{Twitris+\footnote{\url{http://twitris.knoesis.org/}}}
+
+Desarrollada por estudiantes de doctorado de \emph{Wright State University}, el objetivo de \emph{Twitris+}\cite{twitris} es analizar eventos grandes a través de \emph{tweets}, entregando distintas métricas para un evento: 
+
+\begin{itemize}
+	\item \emph{Tweets} georeferenciados en tiempo real.
+	\item \emph{Trending topics} (tendencias) más utilizados en ciertos lugares mostrando su variación.
+	\item \emph{Tweets}, noticias, \emph{hashtags} y usuarios más relevantes del evento.
+	\item Análisis de sentimiento: se clasifican \emph{tweets} de manera positiva o negativa.
+	\item Análisis de la red de usuarios: grafo de interacciones entre usuarios.
+\end{itemize}
+
+Las desventajas que tiene la aplicación son:
+
+\begin{itemize}
+	\item Eventos fijos: \emph{2012 U.S. Presidential Election, India Against Corruption, Occupy Wall Stret Protest.}
+	\item Sólo se puede visualizar un evento a la vez.
+\end{itemize}
+
+\subsubsection*{TwitInfo\footnote{\url{http://twitinfo.csail.mit.edu/}}}
+TwitInfo\cite{twitinfo} fue desarrollada con el fin de visualizar en una línea de tiempo distintos \emph{keywords} identificando tópicos. Fue desarrollada por investigadores del \emph{MIT}. Sus funcionalidades son las siguentes:
+
+\begin{itemize}
+	\item Logra identificar eventos y los asocia a un conjunto de \emph{keywords} a partir de una consulta.
+	\item Georeferencia \emph{tweets} del evento.
+	\item Se pueden visualizar distintos intervalos de tiempo: 1 minutos, 5 minutos, 1 hora, 1 día, 5 días, 1 mes, 3 meses, 6 meses, 1 año.
+	\item Grafica el sentimiento promedio de los \emph{tweets} (positivo o negativo).
+\end{itemize}
+
+Las desventajas son:
+
+\begin{itemize}
+	\item \emph{Keywords} que se pueden ingresar están fijos y desactualizados.
+	\item No es en tiempo real.
+\end{itemize}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[scale=0.36]{./img/TwitInfo.png}
+	\caption{\textbf{TwitInfo}: Eventos identificados con el keyword ``obama''}
+	\label{twitinfo}
+\end{figure}
+
+\subsubsection*{Trendistic\footnote{\url{http://trendistic.indextank.com/}}}
+
+Aplicación desarrollada por una empresa adquirida por \emph{Linkedin}, ofrece las siguientes funcionalidades:
+
+\begin{itemize}
+	\item Grafica actividad en \emph{Twitter} para un conjunto de \emph{keywords}.
+	\item Actividad puede ser graficada en las últimas 24 horas, 7 días, 30 días, 90 días.
+\end{itemize}
+
+Las desventajas que posee son:
+
+\begin{itemize}
+	\item No posee georeferenciación.
+	\item No se pueden identificar distintos eventos simultáneamente.
+\end{itemize}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[scale=0.5]{./img/Trendistic.png}
+	\caption{\textbf{Trendistic}: Distribución de \emph{tweets} con la palabra ``earthquake''}
+	\label{trendistic}
+\end{figure}
+
+\subsection{Aplicaciones Basadas en Noticias}
+\subsubsection*{Newsmap\footnote{\url{http://newsmap.jp/}}}
+
+Aplicación hecha sobre la \emph{API} de \emph{Google News}. Posee las siguientes características:
+
+\begin{itemize}
+	\item Noticias de un conjunto de países: Argentina, Australia, Austria, Brasil, Canada, Francia, Alemania, India, Italia, México, Holanda, Nueva Zelanda, España, Reino Unido, Estados Unidos.
+	\item Noticias clasificadas en: Mundo, Nacional, Negocios, Tecnología, Deportes, Entretenimiento y Salud.
+	\item Noticias de menos de 10 minutos, más de 10 minutos o más de 1 hora.
+\end{itemize}
+
+Desventajas:
+
+\begin{itemize}
+	\item No es posible ir a un cierto intervalo de tiempo.
+	\item Cantidad de noticias limitada por el espacio en pantalla.
+	\item No es en tiempo real.
+\end{itemize}
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[scale=0.5]{./img/Newsmap.png}
+	\caption{\textbf{Newsmap}: Noticias del mundo}
+	\label{newsmap}
+\end{figure}
+
+\section{Descripción del Problema}
+El problema que se quiere abordar es el de informar en tiempo real a la gente sobre que está ocurriendo en el mundo, o qué ocurrió en algún intervalo de tiempo.
+
+Asumiendo que se tiene la información más relevante y que se quiere mostrar esta información visualmente, surgen nuevos problemas como el de distribuir visualmente esta información y también procesar esta gran cantidad de información. 
+
+La distribución visual de los elementos es un factor importante dada la gran cantidad de eventos que ocurren en el mundo en un intervalo de tiempo. Se debe encontrar la cantidad de información precisa que debe ser mostrada a una persona sin que falte información o sin mostrar una cantidad ilegible de información, es decir, encontrar la granularidad precisa de la información sin dejar de lado la información importante.
+
+Por otro lado, el procesamiento de esta información posee distintos fines, por ejemplo, resumir la información o obtener más información. Resumir la información para poder distribuirla visualmente y obtener más información en el caso de que la información proporcionada no entregue todo lo necesario.
+
+\section{Solución Propuesta}
+
+La solución que se propone es una aplicación \emph{web}, que consiste en una visualización de noticias georeferenciadas, agrupadas en \emph{clusters} llamados eventos. Se propone también que en esta aplicación exista la posibilidad de diferenciar entre eventos locales y globales, y que además exista la posibilidad de ver estos eventos en tiempo real o en un intervalo de tiempo dado.
+
+Se propone, en un comienzo, considerar cada noticia como un evento y luego ir refinando la noción de evento mediante un \emph{clustering} de noticias. Además, se quiere comenzar con heurísticas simples para resolver si un evento es local o global y para ubicar geográficamente el suceso para empezar a construir la visualización lo antes posible. Luego de obtener la visualización se irán refinando estas heurísticas para obtener una mejor solución.
+
+Para obtener datos se utilizarán noticias obtenidas desde \emph{APIs} disponibles como \emph{Google News\footnote{\url{https://developers.google.com/news-search/}}} y \emph{Feedzilla\footnote{\url{http://www.feedzilla.com/api-overview}}}. Esto se mostrará en un \emph{browser} utilizando \emph{HTML5}, y la información se manejará utilizando el lenguaje de programación \emph{python}, el \emph{framework} \emph{Django} y una base de datos \emph{MySQL}.
+
+Asumiendo que se tienen los datos, el problema se separa en dos partes:
+
+\begin{itemize}
+	\item Organizar información visualmente
+	\item Procesar información
+\end{itemize}
+
+Los enfoques utilizados para atacar estar partes se detallan a continuación.
+
+\subsection{Organización Visual}
+
+Para obtener la mayor cantidad de información posible, que esta sea legible y que entregue información relevante sobre qué ocurre en el mundo se propone una visualización (Figura \ref{lineatiempo}), donde cada círculo posee distintas propiedades las que reflejan distintas características de los eventos: radio de los círculos representan relevancia, el borde si es un evento local o global y el color el continente.
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[scale=0.3]{./img/Visualizacion.png}
+	\caption{\textbf{Propuesta de Linea de Tiempo}}
+	\label{lineatiempo}
+\end{figure}
+
+Por otro lado se proponen funcionalidades para que el usuario pueda navegar a través de los contenidos que le interesen, por ejemplo la posibilidad de ver más eventos de un cierto país, o poder navegar a través de las noticias de cierto continente o de un cierto evento y lo más importante poder navegar en el tiempo.
+
+\subsection{Procesar Información}
+
+Las noticias entregadas por las \emph{API}s de noticias entregan los siguientes atributos: 
+
+\begin{itemize}
+	\item Título
+	\item Autor
+	\item URL
+	\item Resumen
+	\item Fecha de Publicación
+\end{itemize}
+
+A pesar de tener esta información, se necesita encontrar información adicional, tal como la ubicación geográfica de la noticia. También se necesita poder agrupar noticias que hablen de lo mismo e identificar si un evento es local o global. Lo último se refiere a si un evento es comentada en todo el mundo o sólo en la localidad que ocurrió.
+
+Dado que lo principal es la visualización de datos, la idea es partir con heurísticas simples que permitan desde temprano obtener datos para realizar la visualización. Luego se irán refinando estas heurísticas para ir obteniendo datos cada vez más precisos.
+
+Para comenzar a recolectar datos, la georeferenciación se puede obtener mediante la \emph{API} de \emph{Yahoo!} llamada \emph{Placemaker\footnote{\url{http://developer.yahoo.com/geo/placemaker/}}}, la cual recibe un texto o una \emph{URL} y entrega la ubicación sobre la cual habla el texto con una cierta confianza. Para saber si una noticia es local o global, en un principio bastaría con comparar la georeferenciación entregada por \emph{Placemaker} con el país del medio que entrega la noticia. Finalmente para agrupar noticias parecidas, hacer \emph{clustering} de estas mediante una función de similitud.
+
+\section{Prueba de Concepto}
+
+Una prueba de concepto tiene como objetivo evaluar la dificultad del problema, además de verificar que el concepto es susceptible de ser explotado. Para esto, se realizó una implementación incompleta que se describe a continuación.
+
+\subsection{Obtención de la información}
+
+Para recolectar datos se utilizó la \emph{API} de \emph{Feedzilla}, la cual permite obtener 100 noticias por consulta. Estas consultas pueden realizarse en una categoría en particular, como Deportes, Salud, Computación. De estas categorías existen 34. Se realizó una consulta por cada una de las categorías obteniéndose 3306 noticias con título, autor, url, resumen, fecha de publicación. Para el manejo de información se utilizó el lenguaje de programación \emph{python} y una base de datos \emph{MySQL}.
+
+La distribución de las fechas de las noticias recolectadas se aprecia en la Figura \ref{histograma}.
+
+\begin{figure}[h!]
+	\centering
+    \includegraphics[scale=0.5]{./img/Histograma.png}
+	\caption{\textbf{Histograma}: Frecuencia de Fechas de Datos Recolectados}
+	\label{histograma}
+\end{figure}
+
+Se puede observar que el 90\% de las noticias pertenencen a los días cercanos a la consulta. También se recolectaron noticias de una fecha lejana al día de la consulta, esto puede ser por categorías que no reciben muchas noticias o porque la \emph{API} dejó de clasificar noticias en estas categorías.
+
+\subsection{Georeferenciación}
+
+Se realizó una prueba con un conjunto de 10 noticias, comparando el verdadero lugar de origen de la noticia con el lugar entregado por la \emph{API} \emph{Placemaker}. La consulta a esta \emph{API} entrega resultados con confianza mayor a 0,8. Este valor es configurable. 
+
+Los resultados obtenidos se muestra en el Cuadro \ref{placemaker}.
+
+\begin{table}\footnotesize
+	\begin{center}
+	\begin{tabular}{|l|l|l|l|}
+	\hline
+	Noticia & Por URL & Por Resumen & Lugar Original\\
+	\hline
+	\hline
+	1 & EE.UU. & - & EE.UU.\\
+	\hline
+	2 & Ucrania & - & Sin Lugar\\
+	\hline
+	3 & Ucrania & EE.UU. & EE.UU.\\
+	\hline
+	4 & Rusia & Rusia & Rusia\\
+	\hline
+	5 & Ucrania & - & Sin Lugar\\
+	\hline
+	6 & Ucrania & - & Cabo Verde\\
+	\hline
+	7 & EE.UU. & EE.UU. & EE.UU.\\
+	\hline
+	8 & Ucrania & - & EE.UU.\\
+	\hline
+	9 & Ucrania & EE.UU. & Sin Lugar\\
+	\hline
+	10 & EE.UU. & EE.UU. & EE.UU.\\
+	\hline
+	\end{tabular}
+	\caption{\textbf{Resultados \emph{Placemaker}}}
+	\label{placemaker}
+	\end{center}
+\end{table}
+
+Se puede apreciar que existen noticias que no pertenecen a un lugar en específico, como por ejemplo un resumen de la funcionalidad de un producto.
+
+También se puede notar que Ucrania aparece en la mayoría de las búsquedas por \emph{URL}, esto puede ser porque en la página de la noticia pueden haber otros elementos tales como publicidad que distorsionan el texto analizado por \emph{Placemaker}. Otra razón por la que podría ocurrir esto es por que la \emph{URL} proporcionada por \emph{Feedzilla} no es directamente el sitio de la noticia y ocurren redirecciones que no son tomadas en cuenta por \emph{Placemaker}.
+
+\subsection{Agrupación de Noticias}
+Para agrupar noticias que corresponden a un mismo evento se revisaron distintos algoritmos de \emph{clustering} ofrecidos por el software \emph{Orange\footnote{\url{http://orange.biolab.si/}}}, el cual a su vez ofrece integración con el lenguaje \emph{python}. Un algoritmo de \emph{clustering} entrega grupos formados por los elementos que son más similares entre sí.
+
+Para realizar \emph{clustering} de documentos no se utilizan los algoritmos clásicos, se deben tener distintas consideraciones. En la referencia \cite{doccluster} se muestran distintas alternativas y se hace notar la problemática de realizar \emph{clustering online}, es decir, \emph{clustering} donde la entrada va variando a medida que avanza el tiempo. La problemática consiste en el costo computacional que poseen los algoritmos de \emph{clustering}.
+
+\subsection{Global o Local}
+En la determinación de si un evento es mundialmente comentado o solamente en la localidad que ocurre, la heurística más simple es comparar el lugar de cada noticia que compone el evento entregado por \emph{Placemaker} con el lugar geográfico del medio en que se publica la noticia. Si alguna noticia o cierto porcentaje de las noticias son publicadas en medios extranjeros con respecto al lugar en el que realmente ocurre, entonces se trata de un evento global. Existen herramientas para localizar geográficamente una dirección \emph{IP}\footnote{\url{http://www.geobytes.com/IpLocator.htm?GetLocation}} y realizar el proceso anterior.
+
+\section{Conclusiones}
+
+La prueba de concepto muestra que es posible recolectar datos desde las \emph{API}s disponibles (al menos 1500 por día). Esta cantidad ya es elevada para ser leída por una persona. Por lo demás se quieren encontrar más fuentes de información, obteniendo aún más noticias, lo que muestra el desafío existente en la visualización. 
+
+Por otro lado, es posible georeferenciar el contenido de una noticia con una precisión cercana al 50\%, con lo que ya se tiene un punto de partida para poder visualizar noticias en tiempo real georeferenciadas. De todas formas se debe refinar la entrada que se le entrega a la herramienta \emph{Placemaker}, y habiendo hecho esto se podría determinar si una noticia es local o global.
+
+Para encontrar un evento basado en el \emph{clustering} de noticias es necesario seguir investigando sobre los algoritmos existentes y probar que estos algoritmos pueden asegurar que la información se pueda mostrar en tiempo real.
+
+Finalmente, debido a las carencias que tienen las herramientas existentes para visualizar eventos y a los problemas que se desprenden de la prueba de concepto de la solución propuesta, como por ejemplo la precisión de la georeferenciación y la dificultad de hacer \emph{clustering online}, se muestra que el problema es susceptible de ser explotado.
+
+\newpage
+
+\bibliographystyle{plain}
+\begin{thebibliography}{9}
+
+\bibitem{twitinfo}
+Adam Marcus, Michael S. Bernstein, Osama Badar, David R. Karger, Samuel Madden, Robert C. Miller,
+\emph{TwitInfo: Aggregating and Visualizing Microblogs for Event Exploration}.
+CHI 2011.
+
+\bibitem{doccluster}
+Nicholas O. Andrews and Edward A. Fox,
+\emph{Recent Developments in Document Clustering}.
+
+\bibitem{twitris}
+Amit Sheth, Hemant Purohit, Ashutosh Jadhav, Pavan Kapanipathi, Lu Chen,
+\emph{Understanding Events Through Analysis of Social Media}.
+Proc. WWW 2011.
+
+
+\end{thebibliography}
+\end{document}
