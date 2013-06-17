@@ -1,0 +1,47 @@
+\chapter{Especificación del Problema}
+% Conceptos para que el lector entienda y pueda leer depsués
+
+\section{Merco Teórico}
+% Conceptos: test method, unit test, TDD
+
+
+
+\section{Motivación}
+\subsection{Contexto: Test como ``conductores'' del diseño}
+\par Durante el desarrollo de un software uno de las actividades principales es el testeo de los requerimientos. Existen variadas técnicas, metodologías y artefactos relacionados a esta actividad. En particular, la creación de pruebas automatizadas es una práctica cotidiana en cualquier proyecto de software e inclusive es actualmente considerado parte de los artefactos generados durante éste. \\
+
+\par En particular las metodologías ágiles dan una importancia fundamental a los tests de tal manera que está prohibido agregar una nueva funcionalidad sin, previamente, haber escrito un test que lo valide[\ref{tdd-beck}]. Esta queda documentado en el libro de Robert Cecil Martin (más conocido como``Uncle Bob'')[\ref{unclebob}] uno de los escritores del manifiesto ágil[\ref{agilemanifiesto}] quien declara:
+
+\begin{quote}
+\emph{``The iteration between writing test cases and code is very rapid [...]. As a result, a very complete body of test cases grows along with the code.''}
+\end{quote}
+
+\par Uno de los ejemplos más conocidos de implementación de estos principios es la metodología de Desarrollo Dirigido por Pruebas o \emph{Test-Driven Development}[\ref{tdd-beck}] el cual propone que la implementación de una funcionalidad del software debiera seguir los siguientes pasos:\\
+
+\begin{enumerate}
+\item Escribir un test que valide el funcionamiento esperado de la nueva característica
+\item Escribir código base mínimo que haga pasar dicho test
+\item Refactorizar el código
+\end{enumerate}
+
+\par En la práctica, aplicando TDD se obtiene una gran cantidad de pruebas unitarias (unit tests) que representan los casos de prueba de la aplicación (Test Cases). Cada Unit Test contiene varios métodos de tests (test methods) que cubren los distintos aspectos a verificar en la funcionalidad que se está testeando.
+
+\subsection{Problema: Muchos tests, mal diseñados y lentos.}
+
+\par La comunidad de ingeniería de software ha producido herramientas efectivas y buenas prácticas para lograr refactorizaciones en el código base que otorguen un buen diseño de código. Sin embargo, en cuanto al código de los tests unitarios no es así. De hecho, estos son raramente modificados y carecen del cuidado que se le da al código base y no se piensa en su modularidad ni extensibilidad. 
+
+% ACTUALMENTE SOLO LES IMPORTA EL COVERAGE
+\par Por lo cual no es difícil encontrar deficiencias como \textbf{solapamientos} entre test methods o más general, entre test cases. Estos solapamientos pueden ser de carácter estático: duplicación de código, o bien dinámicos, es decir que dos tests methods tienen ejecuciones similares y por consiguiente testean lo mismo. 
+\par Estas deficiencias en el diseño y calidad del código de las pruebas unitarias tiene consecuencias importantes en la calidad del código testeado y en el mismo proceso de desarrollo:
+\begin{itemize}
+\item \textbf{Performance} Debido a los solapamientos previamente mencionados, muchas veces existe \textbf{ejecución redundante} que va en contra de las características deseables de una suite de tests[\ref{tdd-beck}]. Muchas veces los tests dejan de ejecutarse con la frecuencia deseada.
+\item \textbf{Debugging} Otra deficiencia conocida es cuando al correr los tests en presencia de un defecto, éste se queda en evidencia por muchos tests methods, lo cual dificulta la identificación de la causa del bug y su corrección. Coloquialmente se hace más difícil responder la pregunta: \emph{¿Cuál test miro primero?}
+\end{itemize}
+ 
+\par De esta manera la confiabilidad en el producto y su calidad se ven impactadas negativamente. 
+
+\par Un caso muy claro del impacto del mal diseño y poco cuidado en los tests sucede en la práctica de \textbf{Integración Contínua} (Continuous Integration)[\ref{contint}]. En esta práctica cada \emph{feature} se implementa tan pronto como es posible, se testea y se pasa a producción de inmediato. De esta manera el equipo de desarrollo realiza varias integraciones por día y el cliente obtiene rápidamente las nuevas funcionalidades a medida que las solicita. \\
+
+\par A modo de ejemplo, la empresa MediaGeniX\footnote{MediaGeniX, \url{http://www.mediagenix.tv}} realiza la integración continua desde hace un tiempo. Ahí, 30 desarrolladores trabajan sobre el mismo producto y cada uno de ellos construye varias versiones al día. Cada versión que se va a pasar a producción debe pasar su suite de pruebas que comprende alrededor de 30.000 tests. Ellos realizan al menos 3 integraciones diarias en promedio por lo cual recurren a técnicas de paralelización de ejecución de tests para lograrlo. Esto introduce un alto costo económico asociado al los recursos de hardware(servidores, clusters) y además un alto costo en tiempo.\\
+
+\par Esto evidencia la relevancia de mejorar la performance mediante la refactorización y restructuración de los unit tests.
