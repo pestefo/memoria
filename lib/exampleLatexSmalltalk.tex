@@ -1,0 +1,70 @@
+\documentclass{article}
+\usepackage{xcolor}
+\usepackage{listings}
+\input{macros}
+
+\begin{document}
+
+This is a plain example:
+
+\begin{code}
+fuelExample
+	| sourceArray loadedArray |
+	sourceArray := Array 
+		with: 'a string' 
+		with: Transcript
+		with: 42
+		with: #foo.
+	"Store to a file"
+	FLSerializer serialize: sourceArray toFileNamed: 'example.FL'.
+	"Load from the file"
+	loadedArray := FLMaterializer materializeFromFileNamed: 'example.FL'.
+	"Check that the materialized Transcript is the right singleton instance."
+	loadedArray second show: loadedArray first; flush.
+	self validateMaterializedGraph: loadedArray.
+\end{code}
+
+This is how you can define pieces of bold, italics and underline:
+
+\begin{code}
+<b>fuelExample</b>
+	| sourceArray loadedArray |
+	sourceArray := Array
+		with: 'a string' 
+		with: Transcript
+		with: 42
+		with: #foo.
+	"Store to a file"
+	<i>FLSerializer serialize: sourceArray toFileNamed: 'example.FL'.</i>
+	"Load from the file"
+	<u>loadedArray := FLMaterializer materializeFromFileNamed: 'example.FL'.</u>
+	"Check that the materialized Transcript is the right singleton instance."
+	loadedArray second show: loadedArray first; flush.
+	self validateMaterializedGraph: loadedArray.
+\end{code}
+
+This is another environment if you want to show number lines:
+
+\begin{codeWithLineNumbers}
+<b>fuelExample</b>
+	| sourceArray loadedArray |
+	sourceArray := Array
+		with: 'a string' 
+		with: Transcript
+		with: 42
+		with: #foo.
+	"Store to a file"
+	<i>FLSerializer serialize: sourceArray toFileNamed: 'example.FL'.</i>
+	"Load from the file"
+	<u>loadedArray := FLMaterializer materializeFromFileNamed: 'example.FL'.</u>
+	"Check that the materialized Transcript is the right singleton instance."
+	loadedArray second show: loadedArray first; flush.
+	self validateMaterializedGraph: loadedArray.
+\end{codeWithLineNumbers}
+
+
+
+
+
+
+\end{document}

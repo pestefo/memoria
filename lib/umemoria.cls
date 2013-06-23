@@ -192,3 +192,5 @@
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\1}{\mathbf{1}}
 \let\epsilon\varepsilon
+
+\input{lib/latexSmalltalk} %% Smalltalk code in Latex
