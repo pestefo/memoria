@@ -53,7 +53,38 @@ Visualizacion --> inspección
 %  ---* TSMethod  *---
 \subsubsection{Las clase {\tt TSMethod} }
 \par El profiling de Spy es orientado a los métodos, por tanto en esta clase es donde se registran todos los datos de la ejecución para caracterizar a los tests y poder diferenciarlos.
-\par 
+\par Su comportamiento está dividido en dos partes principalmente: los métodos de profiling donde se registran los datos de ejecución, y sus accesores, métodos que entregan la información obtenida. Los métodos de profiling son dos: {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: } (ver código en \ref{code:before-run} y en \ref{code:after-run})
+
+%== Codigo: \ref{code:before-run} y en \ref{code:after-run}
+\begin{codeWithLineNumbers}
+beforeRun: methodName with: listOfArguments in: receiver
+	| testMethod |
+	testMethod := self profiler class currentTestMethod.
+	currentTestMethodSpy := 
+			spyMethodMapping at: testMethod ifAbsentPut: 
+				[ self profiler >> testMethod class name >> testMethod selector ].
+		
+	"Local copy of instrumented test method"	
+	self addTestMethod: currentTestMethodSpy.
+
+	"ADD RECEIVER"
+	self updateReceiversWith: receiver for: currentTestMethodSpy.
+
+	"SIDE EFFECTS"
+	receiverSnapshot := receiver snapshotAsInteger.
+
+\end{codeWithLineNumbers}\label{code:before-run} 
+
+\begin{codeWithLineNumbers}
+afterRun: methodName with: listOfArguments in: receiver
+
+	"Count if it was a change in the receiver state"
+	(receiver snapshotAsInteger ~= receiverSnapshot) ifTrue: [self plusOneIn: stateChanges at: currentTestMethodSpy ]. 
+
+	currentTestMethodSpy := nil.
+	receiverSnapshot := nil.
+
+\end{codeWithLineNumbers}\label{code:after-run} 
 
 %  ---* TSTestMethod  *---
 \subsubsection{Las clase {\tt TSTestMethod} }
