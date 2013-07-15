@@ -4,12 +4,41 @@
 
 \par Esta pregunta deja al descubierto la diferencia que existe entre el análisis estático y dinámico del software, es decir, qué tan similares son dos tests desde el punto de vista de el código y de su ejecución. Es decir, si tengo dos tests que varían en una línea: ¿Cuan grande es el cambio desde el punto de vista de su ejecución?
 
-\section{Métricas de similitud}\seclabel{exp1-metricas-sim}
+\section{Metodología}
+
+\par El experimento consta entonces de verificar si existe o no correlación alguna entre la similitud de código (o \emph{estática}) y la similitud de ejecución (p \emph{dinámica}). Para ellos se escogio dos métricas de similitud, una por cada contexto, y se realizó comparaciones de todos los tests de todos los unit tests de un software. Este experimento se corrió en 6 softwares: \emph{Roassal}\footnote{pag}, \emph{Roassal}\footnote{pag}, \emph{Roassal}\footnote{pag}, \emph{Roassal}\footnote{pag}, \emph{Roassal}\footnote{pag},
+
+\subsection{Métricas de similitud}\seclabel{exp1-metricas-sim}
 \par Para esto, se realizó un experimento que compara la similitud estática y dinámica de los test. Para ello se escogió una métrica de similitud para cada contexto, ambas normalizadas con valores entre $\left[ 0 , 1 \right]$ donde un valor muy cercano a $0$ significa que los elementos son poco similares o muy diferentes, y por su parte, un valor muy cerano a 1 indica que los elementos son muy parecidos. 
 
 % 0<delta(tr,tb)<1 --> $0\leq \delta(t_r,t_b) \leq 1$
 \par La métrica estática, $f(t_a,t_b)$, compara el código de los test según el número de líneas que tienen en común contra el total de líneas entre ambos (sin contar líneas iguales)\footnote{No se consideraron las líneas en blanco}. Más formalmente, sea $L_{t_a}$ el conjunto de líneas que componen el código del test $t_a$ y  $L_{t_b}$ de $t_b$ respectivamente. $f$ se define como: $f(t_a,t_b)= \dfrac{\abs{L_{t_a} \cap L_{t_b}}}{\abs{L_{t_a} \cup L_{t_b}}}$.
 
-%=== Ejemplo
-
 \par La métrica dinámica, $g(t_a,t_b)$, compara la cobertura de cada test según los métodos ejectuados. Es decir, el número de métodos ejecutados en común contra el total de métodos (de las clases del código base) llamados durante la ejecución de ambos métodos. Su definición formal es: sea $T_{t_a}$ el conjunto de métodos llamados durante la ejecución del test $t_a$ y  $T_{t_b}$ de $t_b$ respectivamente. $g$ se define como: $g(t_a,t_b)= \dfrac{\abs{T_{t_a} \cap T_{t_b}}}{\abs{T_{t_a} \cup T_{t_b}}}$.
+
+
+
+%=== Ejemplo
+\begin{codeWithLineNumbers}
+<i>testAddingColoredElement</i>
+	canvas := ROView new.
+	el1 := ROBox green element.
+	el2 := ROBox red element.
+	canvas add: el1; add: el2.
+	self shouldnt: [ canvas open ] raise: Error
+
+<i>testVisualizingBigClasses</i>
+	canvas := ROView new.
+	Collection withAllSubclasses do: [ :cls |
+		cls numberOfMethods > 10
+			ifTrue: [ el := ROBox red element ]
+			ifFalse: [ el := ROBox green element ].
+		canvas add: el ].
+	self shouldnt: [ canvas open ] raise: Error
+\end{codeWithLineNumbers}\codelabel{ejemplo-stat-dyn} 
+
+\par En el ejemplo anterior se muestran dos métodos de test que básicamente
+
+
+The test simply checks that the creation of this simple visualization does not raise any error when being opened.
+This visualization represents some classes and paints a class with a color that indicates a particular condition. Each sub- classes of the Collection Pharo class is associated to a box. If a class has more than ten methods, the box is paint in red, green otherwise. The two tests testAddingColoredElement and testVisualizingBigClasses have 95\% of common tested methods. The 5\% difference is due to some caches that are activated when the number of boxes exceed a particular threshold (behavior not shown on the source code given above)
