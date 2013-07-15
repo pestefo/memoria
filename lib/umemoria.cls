@@ -63,6 +63,12 @@
 \newenvironment{intro}{\addcontentsline{toc}{chapter}{\protect\numberline{}Introducción}\chapter*{Introducción}}{\vfill\null}
 \newenvironment{conclusion}{\addcontentsline{toc}{chapter}{\protect\numberline{}Conclusión}\chapter*{Conclusión}}{\vfill\null}
 
+%% Parentesis varios
+\providecommand{\parent}[1]{\left( #1 \right)}  % Parentesis()
+\providecommand{\llave}[1]{\left\{ #1 \right\}} % Parentesis{}
+\providecommand{\corch}[1]{\left[  #1 \right]}  % Parentesis[]
+\providecommand{\abs}[1]{\vert  #1 \vert}  % Parentesis[]
+
 %% Teoremas, proofs, etc
 \renewenvironment{proof}[1][\proofname] {\par\pushQED{\qed}\normalfont\topsep6\p@\@plus6\p@\relax\trivlist\item[\hskip\labelsep\scshape\footnotesize#1\@addpunct{.}]\ignorespaces}{\popQED\endtrivlist\@endpefalse}
 
