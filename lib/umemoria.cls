@@ -200,3 +200,4 @@
 \let\epsilon\varepsilon
 
 \input{lib/latexSmalltalk} %% Smalltalk code in Latex
+\input{lib/graficos} %% Graficos, Referencias(\secref, \figref) y abreviaturas (ie, etc, et. al.)
