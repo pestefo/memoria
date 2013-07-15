@@ -8,5 +8,8 @@
 \par Para esto, se realizó un experimento que compara la similitud estática y dinámica de los test. Para ello se escogió una métrica de similitud para cada contexto, ambas normalizadas con valores entre $\left[ 0 , 1 \right]$ donde un valor muy cercano a $0$ significa que los elementos son poco similares o muy diferentes, y por su parte, un valor muy cerano a 1 indica que los elementos son muy parecidos. 
 
 % 0<delta(tr,tb)<1 --> $0\leq \delta(t_r,t_b) \leq 1$
-\par La métrica estática, $f(t_a,t_b)$, compara el código de los test según el número de líneas que tienen en común contra el total de líneas entre ambos (sin contar líneas iguales). Más formalmente, sea $L_{t_a}$ el conjunto de líneas que componen el código del test $t_a$ y  $L_{t_b}$ de $t_b$ respectivamente. $f$ se define como: $f(t_a,t_b)= \dfrac{\abs{L_{t_a} \cap L_{t_b}}}{\abs{L_{t_a} \cup L_{t_b}}}$.
+\par La métrica estática, $f(t_a,t_b)$, compara el código de los test según el número de líneas que tienen en común contra el total de líneas entre ambos (sin contar líneas iguales)\footnote{No se consideraron las líneas en blanco}. Más formalmente, sea $L_{t_a}$ el conjunto de líneas que componen el código del test $t_a$ y  $L_{t_b}$ de $t_b$ respectivamente. $f$ se define como: $f(t_a,t_b)= \dfrac{\abs{L_{t_a} \cap L_{t_b}}}{\abs{L_{t_a} \cup L_{t_b}}}$.
 
+%=== Ejemplo
+
+\par La métrica dinámica, $g(t_a,t_b)$, compara la cobertura de cada test según los métodos ejectuados. Es decir, el número de métodos ejecutados en común contra el total de métodos (de las clases del código base) llamados durante la ejecución de ambos métodos. Su definición formal es: sea $T_{t_a}$ el conjunto de métodos llamados durante la ejecución del test $t_a$ y  $T_{t_b}$ de $t_b$ respectivamente. $g$ se define como: $g(t_a,t_b)= \dfrac{\abs{T_{t_a} \cap T_{t_b}}}{\abs{T_{t_a} \cup T_{t_b}}}$.
