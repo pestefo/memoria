@@ -1,6 +1,10 @@
 # Generic
 *.DS_Store
 
+# Ignore compilated pdf file
+informe.pdf
+main.pdf
+
 # Latex 
 *.acn
 *.acr
