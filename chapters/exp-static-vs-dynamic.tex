@@ -1,0 +1,12 @@
+\chapter{Experimento \#1: ¿Dos test con código parecido testean lo mismo? }
+
+\par Uno de los primeras actividades al enfrentar el problema de modularidad de los test es mirar el código fuente. Luego de una breve y ligera inspección podemos encontrar varios tests similares que difieren en pocas líneas de código lo cual motiva distintas estrategias de refactorización. Sin embargo, junto con esto, surge la siguiente pregunta: posterior a la refactorización, ¿cambiará la cobertura de dichos test?. 
+
+\par Esta pregunta deja al descubierto la diferencia que existe entre el análisis estático y dinámico del software, es decir, qué tan similares son dos tests desde el punto de vista de el código y de su ejecución. Es decir, si tengo dos tests que varían en una línea: ¿Cuan grande es el cambio desde el punto de vista de su ejecución?
+
+\par Para esto, se realizó un experimento que compara la similitud estática y dinámica de los test. Para ello se escogió una métrica de similitud para cada contexto, ambas normalizadas con valores entre $\left[ 0 , 1 \right]$ donde un valor muy cercano a $0$ significa que los elementos son poco similares o muy diferentes, y por su parte, un valor muy cerano a 1 indica que los elementos son muy parecidos. 
+
+% 0<delta(tr,tb)<1 --> $0\leq \delta(t_r,t_b) \leq 1$
+\par La métrica estática, $f(t_a,t_b)$, compara el código de los test según el número de líneas que tienen en común contra el total de líneas entre ambos (sin contar líneas iguales). Más formalmente, sea $L_{t_a}$ el conjunto de líneas que componen el código del test $t_a$ y  $L_{t_b}$ de $t_b$ respectivamente. $f$ se define como: $f(t_a,t_b)= \dfrac{\vert L_{t_a} \cap L_{t_b} \vert}{\vert L_{t_a} \cup L_{t_b} \vert}$.
+
+
