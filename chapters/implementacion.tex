@@ -1,0 +1,90 @@
+\chapter{Implementación}
+
+\par El proyecto TestSurgeon fue completamente implementado en el lenguaje Pharo Smalltalk\emph{Pharo}\footnote{Pharo Project - \url{http://www.pharoproject.org} - última visita 12-07-2013 } ya que es en lenguaje en el que está escrito el framework de profiling utilizado. 
+%Pharo es un lenguaje de programación que sigue el paradigma de orientación a objetos cuyas principales ventajas son, primero: entorno de desarrollo robusto totalmente integrado al lenguaje, y segundo: el sistema sigue una orientación a objetos pura, es decir, todo en Pharo es un objeto, Strings, Números, Clases, Métodos, Paquetes, etc. La segunda característica favorece el desarrollo de TestSurgeon en cuanto todo el modelo de lo que es un bo
+
+\section{Profiling}
+% http://www.bergel.eu/download/papers/Berg10f-Spy.pdf
+\par La componente principal de TestSurgeon es la que realiza el profiling. Por eso se escogió una herramienta que fuera fácil de utilizar y que permitiera obtener la mayor cantidad de datos sobre la ejecución de un test.
+\par El framework de profiling escogido fue \emph{Spy} y está escrito en el lenguaje Pharo. Entre sus características está que es un profiler orientado a los métodos. Considerando que en Pharo todas las interacciones corresponden a objetos que se comunican a través de mensajes, este punto es muy importante. Si se quiere conocer el comportamiento de un test con gran detalle, el hacer profiling de los métodos que son llamados durante su ejecución es fundamental. 
+\par Además, Spy posee una arquitectura muy simple y fácil de extender. Consta de cuatro clases principales: {\tt Profiler}, {\tt PackageSpy}, {\tt ClassSpy} y {\tt MethodSpy}. {\tt Profiler} es la clase principal con las características necesarias para la instrumentación, ejecución y obtención de datos. Las demás clases contienen información sobre el profiling de los paquetes instrumentados y de sus clases y métodos respectivamente. 
+\par La clase {\tt MethodSpy} técnicamente es un \emph{wrapper} de un método en Pharo (una instancia de la clase {\tt CompiledMethod}) que acumula datos sobre el contexto de su ejecución. Para esto, la clase provee los métodos {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: } que son ejecutados justo antes e inmediatamente después de ejecutado el método instrumentado. Así se obtienen los datos del impacto de la ejecución de dicho método en el objeto y en los objetos con los cuales colabora. Estos métodos son abtractos y deben concretarse en las aplicaciones que decidan usar Spy extendiendo sus clases. 
+
+%== Figura: Clases y extensión
+
+\par Para hacer uso de Spy se deben entonces extender las clases antes mencionadas y acondicionarlas al dominio específico del problema. Estas clases son: {\tt TSProfiler}, {\tt TSPackage}, {\tt TSClass}, {\tt TSMethod}. Para las aplicaciones que usan esta información, se necesitan obtener datos de ejecución tanto de los tests como del código testeado, es por eso, que para representar un método de test se tiene también la clase {\tt TSTestMethod} que es un wrapper de la clase {\tt TSMethod} donde se guardan métricas y datos procesados de ésta que corresponden a un test method y no a un método testeado, como por ejemplo: {\tt testedMethods}, {\tt testedClasses} o {\tt visualizeDifferencesWith:}, entre otros.
+
+\par A continuación se describen las clases que componen al paquete {\tt TestSurgeon-Core-Spy}:
+
+%  ---* TSProfiler *---
+\subsection{La clase {\tt TSProfiler}}
+
+\par Es la clase principal, su interfaz componen los siguientes constructores {\tt buildForClassCategory:} y {\tt buildForPackagesMatching:}. En ambos, el argumento es un objeto String, en el primero especifica una categoría y en el segundo una expresión regular que representa un grupo de categorías o paquetes de software de Pharo. Luego de obtenidos la categoría o las categorías, las instrumenta creando las clases {\tt TSPackage}, {\tt TSClass} y {\tt TSMethod}, posteriormente corre los tests y finalmente retorna la instancia del profiler.
+
+\par La instancia de {\tt TSProfiler} tiene los siguientes métodos:
+
+\begin{description}
+\item[{\tt allTestMethods}] retorna una colleción colección con instancias de la clase {\tt TSMethod} que corresponde a test methods.
+\item[{\tt allTestedMethods}] retorna una colleción colección con instancias de la clase {\tt TSMethod} que corresponde a los métodos testeados.
+\item[{\tt compiledToSpyMethod:}] se le pasa como argumento una instancia de la clase {\tt CompiledMethod} y retorna la instancia {\tt TSMethod} que lo encapsula.
+\item[{\tt plainClasses}] retorna una colección con todas las clases instrumentadas (instancias de {\tt TSClass}) que no corresponden a unit tests.
+\item[{\tt testClasses}] retorna una colección con todas las clases instrumentadas (instancias de {\tt TSClass}) que corresponden a un unit test.
+\end{description}
+
+%  ---* TSPackage & TSClass *---
+\subsection{Las clases {\tt TSPackage} y {\tt TSClass}}
+
+\par Estas dos clases como ya se dijo, representan a los paquetes y clases instrumentadas respectivamente. En general no se necesitó información particular de los paquetes por lo que no hay nada que comentar sobre su implementación.
+
+\par Sobre {\tt TSClass} esta representa tanto a las clases testeadas como a lo unit tests, y posee mayoritariamente métodos de ayuda o \emph{helpers} para las distintas aplicaciones (visualización, clustering, etc) como por ejemplo: {\tt allMethodsTestedBy:} donde se le entrega un {\tt TSTestMethod} y se retorna todos los métodos definidos en su clase que son llamados durante la ejecución de ese test.  
+
+%  ---* TSMethod  *---
+\subsection{Las clase {\tt TSMethod} }
+\par El profiling de Spy es orientado a los métodos, por tanto en esta clase es donde se registran todos los datos de la ejecución para caracterizar a los tests y poder diferenciarlos.
+\par Su comportamiento está dividido en dos partes principalmente: los métodos de profiling donde se registran los datos de ejecución, y sus accesores, métodos que entregan la información obtenida. Los métodos de profiling son dos: {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: } (ver código en \ref{code:before-run} y en \ref{code:after-run})
+
+%== Codigo: \ref{code:before-run} y en \ref{code:after-run}
+\begin{codeWithLineNumbers}
+beforeRun: methodName with: listOfArguments in: receiver
+	| testMethod |
+	testMethod := self profiler class currentTestMethod.
+	currentTestMethodSpy := 
+			spyMethodMapping at: testMethod ifAbsentPut: 
+				[ self profiler >> testMethod class name >> testMethod selector ].
+		
+	"Local copy of instrumented test method"	
+	self addTestMethod: currentTestMethodSpy.
+
+	"ADD RECEIVER"
+	self updateReceiversWith: receiver for: currentTestMethodSpy.
+
+	"SIDE EFFECTS"
+	receiverSnapshot := receiver snapshotAsInteger.
+
+\end{codeWithLineNumbers}\label{code:before-run} 
+
+
+\begin{codeWithLineNumbers}
+afterRun: methodName with: listOfArguments in: receiver
+
+	"Count if it was a change in the receiver state"
+	(receiver snapshotAsInteger ~= receiverSnapshot) ifTrue: [self plusOneIn: stateChanges at: currentTestMethodSpy ]. 
+
+	currentTestMethodSpy := nil.
+	receiverSnapshot := nil.
+
+\end{codeWithLineNumbers}\label{code:after-run}
+%\lstlistingname
+
+
+%  ---* TSTestMethod  *---
+\subsection{Las clase {\tt TSTestMethod} }
+
+\section{Visualización}\seclabel{impl-viz}
+
+\section{Clustering}\seclabel{impl-clustering}
+
+\section{Browser}\seclabel{impl-browser}
+
+
+\par Todo el código detallado en las secciones anteriores está almacenado en el sitio \emph{SmalltalkHub}\footnote{Smalltalk Hub - \url{http://www.smalltalkhub.com} - última visita 12-07-2013 } el repositorio ubicado en la siguiente dirección: \url{smalltalkhub.com/#!/~PabloEstefo/TestSurgeon/}. 
