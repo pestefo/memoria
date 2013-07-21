@@ -1,6 +1,8 @@
 \chapter{Especificación del Problema}
 % Conceptos para que el lector entienda y pueda leer depsués
 
+\par El Testing es una actividad importante en el desarrollo de los proyectos de software en nuestro días. Los tests automatizados ayudan al desarrollador a garantizar la calidad el código y detectar posibles \emph{bugs} (falencias, equivocaciones, errores) en el código de la aplicación. También son utilizados como documentación viva y usado para entender código foráneo.
+
 
 
 \section{Merco Teórico}
@@ -18,24 +20,16 @@
 \section{Contexto: Test como ``conductores'' del diseño}
 \par Durante el desarrollo de un software uno de las actividades principales es el testeo de los requerimientos. Existen variadas técnicas, metodologías y artefactos relacionados a esta actividad. En particular, la creación de pruebas automatizadas es una práctica cotidiana en cualquier proyecto de software y comprende parte importante de los artefactos generados. \\
 
-\par En particular las metodologías ágiles dan una importancia fundamental a estos artefactos ya que cada historia de usuario debe tener pruebas de aceptación (tests de alto nivel) que se escriben y detallan con el cliente para crear un modelo mental en común, evitando documentación extremadamente detallada de requerimientos que muy probablente cambiarán y evitar ambiguedades que pudieran provocar historias de usuario poco precisas. 
+\par En particular los proyectos de software ágiles dan gran importancia a estos artefactos ya que cada historia de usuario debe tener pruebas de aceptación (tests de alto nivel) que se escriben y detallan con el cliente para asegurar que el código que se creará cumple lo que pide el cliente y ni menos ni más.
 
-\par Prueba de aceptación --> TDD
+\par Estas historias de usuario están escritas en lenguaje natural por lo que se deben \emph{transcribirse} a lenguaje de desarrollo: código fuente. Entonces, antes de escribir una funcionalidad, los desarrolladores crean los tests: código fuente que garantiza que una característica se comporta como es requerida. Este proceso se denomina \emph{Test-Driven Development}(TDD)[\ref{tdd-beck}]  o Desarrollo Dirigido por Pruebas: se escribe el test, se ejecuta y falla, luego se escribe el código que hace el test funcionar, se vuelve a ejecutar el test y pasa, finalmente se refactoriza el código recien escrito para facilitar su mantenibilidad.
 
-
- y que eventualmente   sobre el software a crear con  a los tests de tal manera que está prohibido agregar una nueva funcionalidad sin, previamente, haber escrito un test que lo valide[\ref{tdd-beck}]. Esta queda documentado en el libro de Robert Cecil Martin (más conocido como``Uncle Bob'')[\ref{unclebob}] uno de los escritores del manifiesto ágil[\ref{agilemanifiesto}] quien declara:
+\par Ésta práctica está dentro del núcleo de la filosofía que enmarca la agilidad a tal nivel que está prohibido agregar una nueva funcionalidad sin, previamente, haber escrito un test que lo valide[\ref{tdd-beck}]. Esta queda documentado en el libro de Robert Cecil Martin (más conocido como``Uncle Bob'')[\ref{unclebob}] uno de los escritores del manifiesto ágil[\ref{agilemanifiesto}] quien declara:
 
 \begin{quote}
 \emph{``The iteration between writing test cases and code is very rapid [...]. As a result, a very complete body of test cases grows along with the code.''}
 \end{quote}
 
-\par Uno de los ejemplos más conocidos de implementación de estos principios es la metodología de Desarrollo Dirigido por Pruebas o \emph{Test-Driven Development}[\ref{tdd-beck}] el cual propone que la implementación de una funcionalidad del software debiera seguir los siguientes pasos:\\
-
-\begin{enumerate}
-\item Escribir un test que valide el funcionamiento esperado de la nueva característica
-\item Escribir código base mínimo que haga pasar dicho test
-\item Refactorizar el código
-\end{enumerate}
 
 \par En la práctica, aplicando TDD se obtiene una gran cantidad de pruebas unitarias (unit tests) que representan los casos de prueba de la aplicación (Test Cases). Cada Unit Test contiene varios métodos de tests (test methods) que cubren los distintos aspectos a verificar en la funcionalidad que se está testeando.
 

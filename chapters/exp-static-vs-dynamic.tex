@@ -6,7 +6,15 @@
 
 \section{Metodología}
 
-\par El experimento consta entonces de verificar si existe o no correlación alguna entre la similitud de código (o \emph{estática}) y la similitud de ejecución (p \emph{dinámica}). Para ellos se escogio dos métricas de similitud, una por cada contexto, y se realizó comparaciones de todos los tests de todos los unit tests de un software. Este experimento se corrió en 6 softwares: \emph{Roassal}\footnote{pag}, \emph{Roassal}\footnote{pag}, \emph{Roassal}\footnote{pag}, \emph{Roassal}\footnote{pag}, \emph{Roassal}\footnote{pag},
+\par El experimento consta entonces de verificar si existe o no correlación alguna entre la similitud de código (o \emph{estática}) y la similitud de ejecución (p \emph{dinámica}). Para ellos se escogió dos métricas de similitud, una por cada contexto, y se realizó comparaciones de todos los tests de todos los unit tests de un software. Este experimento se corrió en 6 softwares: 
+
+\begin{enumerate} 
+\item \emph{Roassal}\footnote{pag web}: Motor de visualización ágil.
+\item \emph{Fuel}\footnote{http://rmod.lille.inria.fr/web/pier/software/Fuel}: Framework de serialización de objetos desarrollado en Pharo.
+\item \emph{Network}\footnote{pag web}: Código de la plataforma Pharo relacionado a redes de datos(sockets, protocolos de red, etc).
+\item \emph{Spec}\footnote{pag web}
+\item \emph{Roassal}\footnote{pag web},
+\end{enumerate}
 
 \subsection{Métricas de similitud}\seclabel{exp1-metricas-sim}
 \par Para esto, se realizó un experimento que compara la similitud estática y dinámica de los test. Para ello se escogió una métrica de similitud para cada contexto, ambas normalizadas con valores entre $\left[ 0 , 1 \right]$ donde un valor muy cercano a $0$ significa que los elementos son poco similares o muy diferentes, y por su parte, un valor muy cerano a 1 indica que los elementos son muy parecidos. 
@@ -16,7 +24,11 @@
 
 \par La métrica dinámica, $g(t_a,t_b)$, compara la cobertura de cada test según los métodos ejectuados. Es decir, el número de métodos ejecutados en común contra el total de métodos (de las clases del código base) llamados durante la ejecución de ambos métodos. Su definición formal es: sea $T_{t_a}$ el conjunto de métodos llamados durante la ejecución del test $t_a$ y  $T_{t_b}$ de $t_b$ respectivamente. $g$ se define como: $g(t_a,t_b)= \dfrac{\abs{T_{t_a} \cap T_{t_b}}}{\abs{T_{t_a} \cup T_{t_b}}}$.
 
+\section{Resultados}
 
+
+
+- Grafico Roassal
 
 %=== Ejemplo
 \begin{codeWithLineNumbers}
@@ -42,3 +54,8 @@
 
 The test simply checks that the creation of this simple visualization does not raise any error when being opened.
 This visualization represents some classes and paints a class with a color that indicates a particular condition. Each sub- classes of the Collection Pharo class is associated to a box. If a class has more than ten methods, the box is paint in red, green otherwise. The two tests testAddingColoredElement and testVisualizingBigClasses have 95\% of common tested methods. The 5\% difference is due to some caches that are activated when the number of boxes exceed a particular threshold (behavior not shown on the source code given above)
+
+
+- Grafico Fuel y otros en apéndice
+
+- 
