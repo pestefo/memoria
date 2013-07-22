@@ -1,8 +1,7 @@
 \chapter{Descripción de la Solución}
 % Describir el alcance Alcance
 
-% 1 Parrafo introductorio al problema (da lo mismo que sea reiterativo)
-\par Como se detalló anteriormente se desea restructurar y refactorizar los tests porque X, Y y Z.
+% TODO: Parrafo introductorio al problema (da lo mismo que sea reiterativo)
 
 \par A la luz de los resultados del estudio comparativo entre el acercamiento al problema desde la perspectiva del análisis estático y análisis dinámico de  tests presentado en el \chapref{exp-static-vs-dynamic} se concluye que los tests se comparan en función de su ejecución. 
 
@@ -16,22 +15,31 @@
 \par El objetivo de TestSurgeon es apoyar a los ingenieros de software a reestructurar y refactorizar sus tests unitarios a través de un análisis sobre las diferencias de ejecución de los tests.
 
 \subsection{Caso de uso}
+\par A modo de resumen, para usar TestSurgeon se siguen las siguientes estapas: Abrir TestSurgeon sobre conjunto de paquetes, Profiling sobre los paquetes seleccionados, escoger tests dos unitarios (no necesariamente distintos), seleccionar dos métodos de test pertenecientes a los unit tests escodigos y finalmente compararlos usando la visualización y el código fuente de estos. En TestSurgeon se realizan comparaciones de métodos de test uno-a-uno por lo cual, para diferenciarlos, se nombran como \emph{test rojo} y \emph{test azul} en concordancia a los colores en la visualización.
 
-% Explicar paso a paso cómo se usa con screenshots
-\par Para ejemplificar el uso de TestSurgeon se muestra a continuación un ejemplo analizando el software: BLE.
-\par Un análisis con \emph{TestSurgeon} comienza lanzando el software desde una terminal de Pharo o \emph{Workspace} con el siguiente comando: {\tt TSBrowser openOn: 'Manifest-*'}\footnote{Para más detalles sobre este comando y la implementación del browser ver la \secref{impl-browser} }.
+\par Para ejemplificar el uso de TestSurgeon se muestra a continuación un ejemplo analizando el software: \emph{Manifest}. Manifest corresponde a una componente de la plataforma Pharo encargada de recolectar metadatos de cada paquete de software con fin de investigar sobre la calidad del software de dichos paquetes.
+\par Un análisis con \emph{TestSurgeon} comienza lanzando el software desde una terminal de Pharo o \emph{Workspace} con el siguiente comando: {\tt TSBrowser openOn: 'Manifest-*'}\footnote{Para más detalles sobre este comando y la implementación del browser ver la \secref{impl-browser} }. Este comando es para abrir el browser de TestSurgeon y para analizar todos los paquetes del software Manifest que son nombrados con el prefijo {\tt Manifest-}.
 
 \fig{h}{0.7}{caso-uso/1.png}{Lanzando TestSurgeon para analizar el software \emph{Manifest}}
 
+\par Luego, TestSurgeon realiza un profiling sobre los tests encontrados en todos los paquetes de Manifest. Los ejecuta, recolecta los datos y genera los objetos según el modelo de objetos de Spy(ver \secref{impl-spy}). Este proceso puede tardar unos segundos o algunos minutos según la cantidad de tests encontrados y las operaciones propias dentro de cada test.
 
+\par Una vez concluída la etapa de profiling, se desplega una ventana con cuatro zonas principales(ver \figref{caso-uso/2.png}): 
+\begin{itemize}
+\item {\bf Test Unitarios}: En la zona superior-izquierda aparecen dos listas. Se puede seleccionar solo un unit test por cada lista.
+\item {\bf Métodos de Test}: Justo abajo de los test unitarios aparecen dos listas con los métodos de test de los unit tests seleccionados. En cada lista se pueden seleccionar un metodo. El método seleccionado de la izquieda se denomina \emph{test rojo} y el de la derecha \emph{test azul}.
+\item {\bf Visualización}: Luego de seleccionados los tests rojo y azul se despliega una visualización que muestra la diferencia en la ejecución de ambos tests.
+\item {\bf Código Fuente}: Junto con la visualización se muestra el código fuente de cada test.
+\end{itemize}
 
+\fig{h}{0.85}{caso-uso/2.png}{Zonas del browser de TestSurgeon.}
 
+\par Primero se seleccionan los unit test, uno por lista. De los unit test escogidos, hay que seleccionar el test rojo (izquieda). Una vez seleccionado, la lista de métodos de test de la derecha se ordenan verticalmente según similitud de cobertura con el método del test rojo (más similar arriba, más distinto abajo). La métrica de cobertura señalada es la misma que se utilizó en el experimento de similitud estática contra similitud dinámica definida en la \secref{exp1-metricas-sim}. De esta manera se facilitan la búsqueda de casos interesantes a ser comparados. Una vez seleccionado el test azul se puede apreciar la comparación observando la visualización desplegada.
 
+\subsection{Visualización}
 
-Profiling pq asi se ve lo que realmente se ejecuta
-Métrica
-
-
-Visualizacion --> inspección
-
-
+% Describir la visualización
+% Colores
+% Lineas
+% Formas
+% Blueprint summary

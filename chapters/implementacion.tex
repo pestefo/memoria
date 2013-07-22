@@ -3,7 +3,7 @@
 \par El proyecto TestSurgeon fue completamente implementado en el lenguaje Pharo Smalltalk\emph{Pharo}\footnote{Pharo Project - \url{http://www.pharoproject.org} - última visita 12-07-2013 } ya que es en lenguaje en el que está escrito el framework de profiling utilizado. 
 %Pharo es un lenguaje de programación que sigue el paradigma de orientación a objetos cuyas principales ventajas son, primero: entorno de desarrollo robusto totalmente integrado al lenguaje, y segundo: el sistema sigue una orientación a objetos pura, es decir, todo en Pharo es un objeto, Strings, Números, Clases, Métodos, Paquetes, etc. La segunda característica favorece el desarrollo de TestSurgeon en cuanto todo el modelo de lo que es un bo
 
-\section{Profiling}
+\section{Profiling}\seclabel{impl-spy}
 % http://www.bergel.eu/download/papers/Berg10f-Spy.pdf
 \par La componente principal de TestSurgeon es la que realiza el profiling. Por eso se escogió una herramienta que fuera fácil de utilizar y que permitiera obtener la mayor cantidad de datos sobre la ejecución de un test.
 \par El framework de profiling escogido fue \emph{Spy} y está escrito en el lenguaje Pharo. Entre sus características está que es un profiler orientado a los métodos. Considerando que en Pharo todas las interacciones corresponden a objetos que se comunican a través de mensajes, este punto es muy importante. Si se quiere conocer el comportamiento de un test con gran detalle, el hacer profiling de los métodos que son llamados durante su ejecución es fundamental. 
