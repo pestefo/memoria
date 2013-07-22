@@ -56,7 +56,8 @@
 \renewenvironment{itemize}{\olditem\setlength{\parskip}{\smallskipamount}}{\oldenditem}
 
 %% Entornos nuevos
-\newenvironment{abstract}{\cleardoublepage}{\vfill\null}
+\newenvironment{abstract}{%\cleardoublepage
+}{\vfill\null}
 \newenvironment{dedicatoria}{\cleardoublepage\null\vspace{\stretch{1}}\begin{flushright}\itshape}{\end{flushright}\vspace{\stretch{2}}\null}
 \let\thanks\undefined
 \newenvironment{thanks}{\chapter*{Agradecimientos}}{\vfill\null}
