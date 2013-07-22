@@ -5,6 +5,9 @@
 %   de la visualizacion mostrando codigo e imagenes
 % - Parrafo introductorio al problema (da lo mismo que sea reiterativo)
 % - Describir el alcance Alcance
+% - Delta de una métrica --> referenciar a Juampi
+% - Figura: Visualizacion Clases
+% - Figura: Visualizacion Metodos
 
 
 
@@ -41,15 +44,19 @@
 
 \fig{h}{0.85}{caso-uso/2.png}{Zonas del browser de TestSurgeon.}
 
-\par Primero se seleccionan los unit test, uno por lista. De los unit test escogidos, hay que seleccionar el test rojo (izquieda). Una vez seleccionado, la lista de métodos de test de la derecha se ordenan verticalmente según similitud de cobertura con el método del test rojo (más similar arriba, más distinto abajo). La métrica de cobertura señalada es la misma que se utilizó en el experimento de similitud estática contra similitud dinámica definida en la \secref{exp1-metricas-sim}. De esta manera se facilitan la búsqueda de casos interesantes a ser comparados. Una vez seleccionado el test azul se puede apreciar la comparación observando la visualización desplegada.
+\par Primero se seleccionan los unit test, uno por lista. De los unit test escogidos, hay que seleccionar el test rojo (izquieda). Una vez seleccionado, la lista de métodos de test de la derecha se ordenan verticalmente según similitud de cobertura con el método del test rojo (más similar arriba, más distinto abajo). La métrica de cobertura señalada es la misma que se utilizó en el experimento de similitud estática contra similitud dinámica definida en la \secref{exp1-metricas-sim}. De esta manera se facilitan la búsqueda de casos interesantes a ser comparados. 
 
-\subsection{Visualización}
+\par La cobertura, como métrica, no expresa el cómo los actores (objetos) se comportan (a través de métodos) mientras el test está siendo ejecutado. Por tanto se necesita más datos. Entonces, una vez seleccionado el test azul se puede realizar una mejor comparación observando una visualización que justamente resalta las diferencias en la ejecución de ambos tests.
+
+\subsection{Visualización: \emph{Test Difference Blueprint}}
 
 \par El objetivo de la visualización es comparar y encontrar las diferencias de ejecución que existen entre dos métodos de test. Para esto primero se debe hacer una comparación de cobertura, es decir cuáles son los métodos y las clases testeadas por los métodos en comparación. Entonces uno de los elementos a visualizar son las clases y sus métodos. 
 
 \subsubsection{Clases y su jerarquía}
 
 \par En la visualización se muestran todas las clases dentro de la cobertura de al menos uno de los dos test y que pertenezcan a los paquetes instrumentados. Las clases se presentan como grandes rectángulos con fondo blanco y borde negro. Pharo es un lenguaje Orientado a Objetos con Herencia Simple (cada clase puede heredar de una sola clase padre). TestSurgeon, entonces, presenta las clases haciendo gráfica esta estructura agrupándolas con las demás clases de su jerarquía de clases y con una distribución visual en forma de árbol. En esta distribución, la raíz está la en el tope superior de la imagen y en el siguiente nivel del árbol están las clases que heredan directamente de ésta, y así sucesivamente, formando un árbol.
+
+% - Figura: Visualizacion jerarquia de clases
 
 \subsubsection{Métodos}
 
@@ -68,6 +75,23 @@
 
 \par En una distribución de grilla y posicionados a la derecha dentro del rectángulo de la clase, están los que no tienen invocaciones a otros métodos definidos en dicha clase ni son invocados por métodos definidos en esa clase.
 
+\par Hasta ahora, la visualización sólo grafica lo que ha sido ejecutado por uno, otro u ambos tests, es decir, la cobertura. Sin embargo este acercamiento no parece ser tan preciso ni suficiente para tener una idea real de cómo se ejecutaron dichos métodos. Allí es donde emerge la característica más distintiva e innovadora de la visualización de TestSurgeon: incorporar métricas que dan un contexto en el cual un método fue llamado durante la ejecución de los tests en comparación. Así no tan solo se visualiza cuáles fueron los métodos ejecutados por el test rojo o azul (o ambos) y cuales no, sino que además muestra cómo tal método fue ejecutado con el test rojo y cuán diferente fue cuando se ejecutó el método azul.
 
-% Formas
-% Blueprint summary
+\par El \emph{Número de Llamadas} a un método ({\tt NOC} - Number of Calls, en inglés) es una de las dos métricas escogidas para esto. Tal como su nombre lo indica, representa la cantidad de veces que un método fue llamado para su ejecución. De esta manera, entre más veces fue llamado, más relevante es para ese test.
+
+\par Por su parte, el \emph{Número de distintos receptores} de un método ({\tt NODR} - Number of Different Receivers, en inglés) indica cuántos objetos distintos ejecutaron dicho método. En un paradigma de programación orientado a objetos, los objetos se comunican a través de mensajes (o métodos). Esta métrica es particularmente útil cuando su {\tt NOC} es parecido ya que su {\tt NODR} puede ser distinto y asi diferencia las ejecuciones del test rojo y azul ofreciendo una perspectiva ortogonal en el análisis.
+
+\par Por ejemplo, supongamos que un cierto método $m_a$ fue ejecutado la misma cantidad de veces durante la ejecución del test rojo y el azul, entonces: {\tt NOC}$(m_a,t_r) = \,${\tt NOC}$(m_a,t_b) = 30$. Y consideremos que {\tt NODR}$(m_a,t_r) = 1$ y {\tt NODR}$(m_a,t_b) = 30$. Durante la ejecución del test rojo, hubo solo una instancia de la clase que define $m_a$ y recibió 30 veces dicho mensaje, un escenario muy distinto al del test azul, donde hubo 30 instancias por lo cual, cada una ejecutó $m_a$ solo una vez.
+
+\par Dado que para un método tenemos 2 métricas por cada test, necesitamos 4 dimensiones para graficarlo: {\tt NOC}$(m_a,t_r)$, {\tt NOC}$(m_a,t_b)$ , {\tt NODR}$(m_a,t_r)$ y {\tt NODR}$(m_a,t_b)$ . Ya que los métodos están gráficamente representados por rectángulos, se decidió que la medida de cada par de lados opuestos será la diferencia entre la métrica para cada test. Entonces, la altura de un rectángulo es la diferencia entre el número de llamados de dicho método durante la ejecución del test rojo y azul. Por su parte, su ancho es la diferencia entre el número de distintos objetos destinatarios del método durante la ejecución del test rojo y azul. 
+
+\par Formalmente:
+\[ {\rm altura}(m_a) = \abs{{\tt NOC}(m_a,t_r) - {\tt NOC}(m_a,t_b)} \]
+\[ {\rm ancho}(m_a) = \abs{{\tt NODR}(m_a,t_r) - {\tt NODR}(m_a,t_b)} \]
+
+% - Figura: Visualizacion Metodos
+
+\section{Resumen: interpretando la visualización}
+% Colores y cuadrados grandes --> son distintos.
+
+\fig{h}{0.85}{blueprint-summary.pdf}{Test Difference Blueprint}
