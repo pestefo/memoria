@@ -1,7 +1,12 @@
 \chapter{Descripción de la Solución}
-% Describir el alcance Alcance
+% +-- TODO --*
+% - Referenciar Sugiyama Layout
+% - Mostrar un ejemplo dummy en la explicacion 
+%   de la visualizacion mostrando codigo e imagenes
+% - Parrafo introductorio al problema (da lo mismo que sea reiterativo)
+% - Describir el alcance Alcance
 
-% TODO: Parrafo introductorio al problema (da lo mismo que sea reiterativo)
+
 
 \par A la luz de los resultados del estudio comparativo entre el acercamiento al problema desde la perspectiva del análisis estático y análisis dinámico de  tests presentado en el \chapref{exp-static-vs-dynamic} se concluye que los tests se comparan en función de su ejecución. 
 
@@ -18,6 +23,8 @@
 \par A modo de resumen, para usar TestSurgeon se siguen las siguientes estapas: Abrir TestSurgeon sobre conjunto de paquetes, Profiling sobre los paquetes seleccionados, escoger tests dos unitarios (no necesariamente distintos), seleccionar dos métodos de test pertenecientes a los unit tests escodigos y finalmente compararlos usando la visualización y el código fuente de estos. En TestSurgeon se realizan comparaciones de métodos de test uno-a-uno por lo cual, para diferenciarlos, se nombran como \emph{test rojo} y \emph{test azul} en concordancia a los colores en la visualización.
 
 \par Para ejemplificar el uso de TestSurgeon se muestra a continuación un ejemplo analizando el software: \emph{Manifest}. Manifest corresponde a una componente de la plataforma Pharo encargada de recolectar metadatos de cada paquete de software con fin de investigar sobre la calidad del software de dichos paquetes.
+
+% Ejemplo Dummy
 \par Un análisis con \emph{TestSurgeon} comienza lanzando el software desde una terminal de Pharo o \emph{Workspace} con el siguiente comando: {\tt TSBrowser openOn: 'Manifest-*'}\footnote{Para más detalles sobre este comando y la implementación del browser ver la \secref{impl-browser} }. Este comando es para abrir el browser de TestSurgeon y para analizar todos los paquetes del software Manifest que son nombrados con el prefijo {\tt Manifest-}.
 
 \fig{h}{0.7}{caso-uso/1.png}{Lanzando TestSurgeon para analizar el software \emph{Manifest}}
@@ -38,8 +45,29 @@
 
 \subsection{Visualización}
 
-% Describir la visualización
-% Colores
-% Lineas
+\par El objetivo de la visualización es comparar y encontrar las diferencias de ejecución que existen entre dos métodos de test. Para esto primero se debe hacer una comparación de cobertura, es decir cuáles son los métodos y las clases testeadas por los métodos en comparación. Entonces uno de los elementos a visualizar son las clases y sus métodos. 
+
+\subsubsection{Clases y su jerarquía}
+
+\par En la visualización se muestran todas las clases dentro de la cobertura de al menos uno de los dos test y que pertenezcan a los paquetes instrumentados. Las clases se presentan como grandes rectángulos con fondo blanco y borde negro. Pharo es un lenguaje Orientado a Objetos con Herencia Simple (cada clase puede heredar de una sola clase padre). TestSurgeon, entonces, presenta las clases haciendo gráfica esta estructura agrupándolas con las demás clases de su jerarquía de clases y con una distribución visual en forma de árbol. En esta distribución, la raíz está la en el tope superior de la imagen y en el siguiente nivel del árbol están las clases que heredan directamente de ésta, y así sucesivamente, formando un árbol.
+
+\subsubsection{Métodos}
+
+\par El elemento de análisis principal en el enfoque de TestSurgeon son los métodos de las clases. Los métodos están representados como rectángulos (o cuadrados) de menor tamaño posicionados dentro de la clase que lo define.  Los métodos heredados por la clase no están considerados en la visualización de dicha clase, sino que aparecen en la clase que lo define dentro de la jerarquía
+.  
+
+\par Cada método tiene un color asignado:
+\begin{itemize}
+\item {\bf Rojo}: el método fue llamado únicamente durante la ejecución del test rojo.
+\item {\bf Azul}: el método fue llamado únicamente durante la ejecución del test azul.
+\item {\bf Gris}: el método fue ejecutado durante la ejecución de ambos tests.
+\item {\bf Blanco}: el método fue ejecutado en ninguno de los dos tests.
+\end{itemize}
+
+\par Un aspecto importante dentro del análisis de cobertura es conocer los caminos de ejecución según las llamadas a métodos de una clase desde otro método definido en la misma clase. Estas llamadas son invocaciones a {\tt self} (o {\tt this} en Java) que permiten diferenciar si un método fue llamado directamente o a través de una invocación {\tt self} desde otro método que lo invoca. Para graficar esto se utilizó una distribución gráfica de Sugiyama. Más arriba están los métodos que realizan mayores invocaciones a otro métodos definidos en la clase y que no son invocados por otros métodos de la clase. En el tope inferior los métodos que no tienen invocaciones a otros métodos definidos en dicha clase pero sí son invocados por uno o más métodos definidos en la clase.
+
+\par En una distribución de grilla y posicionados a la derecha dentro del rectángulo de la clase, están los que no tienen invocaciones a otros métodos definidos en dicha clase ni son invocados por métodos definidos en esa clase.
+
+
 % Formas
 % Blueprint summary
