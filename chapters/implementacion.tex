@@ -1,4 +1,9 @@
 \chapter{Implementación}
+% +-- TODO --*
+% - Figura:
+%	- Arquitectura: VM | Pharo | Spec, Roassal, Spy | TestSurgeon
+%	- UML de Clases (Spy y herencia TS)
+
 
 \par El proyecto TestSurgeon fue completamente implementado en el lenguaje Pharo Smalltalk\emph{Pharo}\footnote{Pharo Project - \url{http://www.pharoproject.org} - última visita 12-07-2013 } ya que es en lenguaje en el que está escrito el framework de profiling utilizado. 
 %Pharo es un lenguaje de programación que sigue el paradigma de orientación a objetos cuyas principales ventajas son, primero: entorno de desarrollo robusto totalmente integrado al lenguaje, y segundo: el sistema sigue una orientación a objetos pura, es decir, todo en Pharo es un objeto, Strings, Números, Clases, Métodos, Paquetes, etc. La segunda característica favorece el desarrollo de TestSurgeon en cuanto todo el modelo de lo que es un bo
@@ -10,7 +15,7 @@
 \par Además, Spy posee una arquitectura muy simple y fácil de extender. Consta de cuatro clases principales: {\tt Profiler}, {\tt PackageSpy}, {\tt ClassSpy} y {\tt MethodSpy}. {\tt Profiler} es la clase principal con las características necesarias para la instrumentación, ejecución y obtención de datos. Las demás clases contienen información sobre el profiling de los paquetes instrumentados y de sus clases y métodos respectivamente. 
 \par La clase {\tt MethodSpy} técnicamente es un \emph{wrapper} de un método en Pharo (una instancia de la clase {\tt CompiledMethod}) que acumula datos sobre el contexto de su ejecución. Para esto, la clase provee los métodos {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: } que son ejecutados justo antes e inmediatamente después de ejecutado el método instrumentado. Así se obtienen los datos del impacto de la ejecución de dicho método en el objeto y en los objetos con los cuales colabora. Estos métodos son abtractos y deben concretarse en las aplicaciones que decidan usar Spy extendiendo sus clases. 
 
-%== Figura: Clases y extensión
+%== Figura: (UML) Clases y extensión
 
 \par Para hacer uso de Spy se deben entonces extender las clases antes mencionadas y acondicionarlas al dominio específico del problema. Estas clases son: {\tt TSProfiler}, {\tt TSPackage}, {\tt TSClass}, {\tt TSMethod}. Para las aplicaciones que usan esta información, se necesitan obtener datos de ejecución tanto de los tests como del código testeado, es por eso, que para representar un método de test se tiene también la clase {\tt TSTestMethod} que es un wrapper de la clase {\tt TSMethod} donde se guardan métricas y datos procesados de ésta que corresponden a un test method y no a un método testeado, como por ejemplo: {\tt testedMethods}, {\tt testedClasses} o {\tt visualizeDifferencesWith:}, entre otros.
 
@@ -40,7 +45,16 @@
 
 %  ---* TSMethod  *---
 \subsection{Las clase {\tt TSMethod} }
-\par El profiling de Spy es orientado a los métodos, por tanto en esta clase es donde se registran todos los datos de la ejecución para caracterizar a los tests y poder diferenciarlos.
+\par El profiling de Spy es orientado a los métodos, por tanto en esta clase es donde se registran todos los datos de la ejecución para caracterizar a los tests y poder diferenciarlos. Cada instancia de {\tt TSMethod} representa un método ejecutado, es decir, tanto el test que comienza la ejecución como todos los métodos llamados durante esta. Los datos son almacenados en variables de instancia, y existe solo una instancia por método definido en el software a analizar, entonces, un método ejecutado tendrá la información sobre su ejecución en distintos tests donde haya sido llamado. Las variables de instancia se definen a continuación:
+
+\begin{itemize}
+\item {\tt testedBy}
+\item {\tt staticSelfCalledMethodsCache}
+\item {\tt staticSelfCalledMethodsCache}
+\item {\tt staticSelfCalledMethodsCache}
+
+\end{itemize}
+
 \par Su comportamiento está dividido en dos partes principalmente: los métodos de profiling donde se registran los datos de ejecución, y sus accesores, métodos que entregan la información obtenida. Los métodos de profiling son dos: {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: } (ver código en \ref{code:before-run} y en \ref{code:after-run})
 
 %== Codigo: \ref{code:before-run} y en \ref{code:after-run}
@@ -55,11 +69,8 @@ beforeRun: methodName with: listOfArguments in: receiver
 	"Local copy of instrumented test method"	
 	self addTestMethod: currentTestMethodSpy.
 
-	"ADD RECEIVER"
+	"Add recever"
 	self updateReceiversWith: receiver for: currentTestMethodSpy.
-
-	"SIDE EFFECTS"
-	receiverSnapshot := receiver snapshotAsInteger.
 
 \end{codeWithLineNumbers}\label{code:before-run} 
 
@@ -67,11 +78,7 @@ beforeRun: methodName with: listOfArguments in: receiver
 \begin{codeWithLineNumbers}
 afterRun: methodName with: listOfArguments in: receiver
 
-	"Count if it was a change in the receiver state"
-	(receiver snapshotAsInteger ~= receiverSnapshot) ifTrue: [self plusOneIn: stateChanges at: currentTestMethodSpy ]. 
-
 	currentTestMethodSpy := nil.
-	receiverSnapshot := nil.
 
 \end{codeWithLineNumbers}\label{code:after-run}
 %\lstlistingname
