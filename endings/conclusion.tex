@@ -1,35 +1,40 @@
 \chapter{Conclusión y Trabajo Futuro}
+% +-- TODO --*
+% - Hablar sobre TestSurgeon (Resumen del Trabajo realizado)
+% - Hablar sobre Caso de Estudio (Analisis de resultados)
 
 \section{Conclusión}
 
 % Resumen del trabajo realizado
 \par En este trabajo se presentó todo el proceso de investigación, desarrollo e implementación de una solución para abordar problema de mantenibilidad del código que corresponde a las pruebas de software o tests: \emph{TestSurgeon}. Se mostró la importancia de un enfoque que combinara las características estáticas (código fuente) y dinámicas (ejecución) del artefacto correspondiente a los tests. Para diagnosticar el estado de los tests y detectar posibles \emph{smells} es necesario conocer la su ejecución. Además que dado que la refactorización se realiza sobre el código, esta tiene implicancias en su ejecución.
 
+% TODO: Hablar sobre TestSurgeon
 \par Hablar de TestSurgeon como herramienta y un poco del caso de estudio
 
 % Objetivos Realizados/No-Realizados
 
 % OB1 - Identificar métricas apropiadas
-\par Ahora bien, contrastando lo anterior sobre los objetivos planteados al inicio del proyecto se considera que todos estos fueron alcanzados en distintos grados. Se logró identificar las métricas clave para la caracterización de la ejecución de los tests: {\tt NOC} y {\tt NODR} permiten contextualizar la ejecución de un método otorgando una valiosa información que favorece su comparación. Se encontraron además otras métricas como: {\tt NOI} - Número de instancias creadas por clase o {\tt NOMR} - Número de mensajes recibidos por todas las instancias de una clase, entre otras. Si bien estas métricas son un aporte y enrriquecen la caracterización de la ejecución de un test en igual medida aumentan su complejidad, manejo y dificultan la elaboración de una visualización efectiva, intuitiva y simple. 
+\par Ahora bien, contrastando lo anterior sobre los objetivos planteados al inicio del proyecto se considera que todos estos fueron alcanzados en distintos grados. Se logró identificar las métricas clave para la caracterización de la ejecución de los tests: {\tt NOC} y {\tt NODR} (ver \secref{viz-metricas}) permiten contextualizar la ejecución de un método otorgando una valiosa información que favorece su comparación. Se encontraron además otras métricas como: {\tt NOI} - Número de instancias creadas por clase o {\tt NOMR} - Número de mensajes recibidos por todas las instancias de una clase, entre otras. Si bien estas métricas son un aporte y enrriquecen la caracterización de la ejecución de un test en igual medida aumentan su complejidad, manejo y dificultan la elaboración de una visualización efectiva, intuitiva y simple. 
 
 % OB2 - Visualización efectiva
 \par Con respecto a lo último, justamente el asunto de la simplicidad y efectividad de la visualización fue un objetivo completamente logrado. La visualización representa de buena forma la metáfora de jerarquía de clases propia de un lenguaje de programación que sigue el paradigma de orientación a objetos como lo es Smalltalk (y su dialecto, Pharo). Además, que los métodos, protagonistas de la gráfica, esten en su interior refuerza esa idea. Con lo cual se obtiene una visión contextual que permite una efectiva diferenciación entre dos ejecuciones de test y favorece la rápida detección de \emph{test smells} contando con información de tanto su performance como del su código.
 
 % OB3 - Refactorizaciones automáticas o semi-automáticas y su implicancia en el software y cobertura
-\par En el \capref{caso-de-estudio} se presenta un pequeño experimento de clustering de test utilizando algunas métricas de TestSurgeon en búsqueda de una solución semi-automática al problema de restructurar test unitarios basados en lo que realmente testean. Este experimento da un buen indicio para realizarlo a mayor escala con otros softwares. Sin embargo, aunque la cobertura del software no debería haber cambiaro por el mero hecho de haber trasladado código de un unit test a otro (más mínimas modificaciones), ésta idea no se comprobó por lo cual no se puede estar seguro de la inocuidad de esta técnica. Por lo tanto, el tercer objetivo se considera alcanzado pero no completamente.
+\par En el \chapref{caso-de-estudio} se presenta un pequeño experimento de clustering de test utilizando algunas métricas de TestSurgeon en búsqueda de una solución semi-automática al problema de restructurar test unitarios basados en lo que realmente testean. Este experimento da un buen indicio para realizarlo a mayor escala con otros softwares. Sin embargo, aunque la cobertura del software no debería haber cambiaro por el mero hecho de haber trasladado código de un unit test a otro (más mínimas modificaciones), ésta idea no se comprobó por lo cual no se puede estar seguro de la inocuidad de esta técnica. Por lo tanto, el tercer objetivo se considera alcanzado pero no completamente.
 
 % OB4 - UI sencilla y usable para el uso cotidiano
 \par Finalmente, el último objetivo que corresponde al diseño e implementación de una interfaz de usuario sencilla y usable para el uso cotidiano de restructuración de test por parte de un desarrollador se considera parcialmente alcanzado. Esto dado que, si bien no se realizó pruebas de usuario formales sobre esta herramienta, la experiencia presentando \emph{TestSurgeon} en las conferencias de ESUG (European Smalltalk User Group) y en forma personal con colegas desarrolladores muestra resultados muy favorables. La aplicación y su interfaz es muy sencilla y rápidamente fácil de usar.
 
-% Analisis de los resultados
-
+% TODO: Analisis de los resultados
 \par Hablar del caso de estudio
 
 % Reflexion de la relevancia del trabajo realizado
-\par Conferencias 
+\par El problema ha permanecido largamente sin estudiarse en profundidad y poca investigación se ha realizado al respecto. En este sentido, el trabajo realizado es de caracter innovador en su campo ya que provee una expresiva e intuitiva visualización para entender diferencias entre ejecución de tests, lo cual es clave para la detección de los \emph{smells} y su refactorización y/o restructuración. Lo anterior es avalado por la destacada participación en conferencias internacionales como por ejemplo la Conferencia Internacional en Ingeniería de Software (ICSE, principal conferencia en el área, L0) donde el trabajo obtuvo el primer lugar en la ACM Student Research Competition en la categoría de pregrado\footnote{SRC Winners, \url{http://src.acm.org/winners.html}}.  
+
 
 \section{Trabajo Futuro}
 
+\par 
 - Explorar otras visualizaciones
 - Probar con más softwares
 

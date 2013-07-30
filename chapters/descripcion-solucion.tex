@@ -60,7 +60,7 @@
 
 % - Figura: Visualizacion jerarquia de clases
 
-\subsubsection{Métodos}
+\subsubsection{Coloreando métodos para visualizar cobertura}\seclabel{viz-color}
 
 \par El elemento de análisis principal en el enfoque de TestSurgeon son los métodos de las clases. Los métodos están representados como rectángulos (o cuadrados) de menor tamaño posicionados dentro de la clase que lo define.  Los métodos heredados por la clase no están considerados en la visualización de dicha clase, sino que aparecen en la clase que lo define dentro de la jerarquía
 .  
@@ -76,6 +76,8 @@
 \par Un aspecto importante dentro del análisis de cobertura es conocer los caminos de ejecución según las llamadas a métodos de una clase desde otro método definido en la misma clase. Estas llamadas son invocaciones a {\tt self} (o {\tt this} en Java) que permiten diferenciar si un método fue llamado directamente o a través de una invocación {\tt self} desde otro método que lo invoca. Para graficar esto se utilizó una distribución gráfica de Sugiyama. Más arriba están los métodos que realizan mayores invocaciones a otro métodos definidos en la clase y que no son invocados por otros métodos de la clase. En el tope inferior los métodos que no tienen invocaciones a otros métodos definidos en dicha clase pero sí son invocados por uno o más métodos definidos en la clase.
 
 \par En una distribución de grilla y posicionados a la derecha dentro del rectángulo de la clase, están los que no tienen invocaciones a otros métodos definidos en dicha clase ni son invocados por métodos definidos en esa clase.
+
+\subsubsection{Métricas para caracterizar la ejecución de los métodos }\seclabel{viz-metricas}
 
 \par Hasta ahora, la visualización sólo grafica lo que ha sido ejecutado por uno, otro u ambos tests, es decir, la cobertura. Sin embargo este acercamiento no parece ser tan preciso ni suficiente para tener una idea real de cómo se ejecutaron dichos métodos. Allí es donde emerge la característica más distintiva e innovadora de la visualización de TestSurgeon: incorporar métricas que dan un contexto en el cual un método fue llamado durante la ejecución de los tests en comparación. Así no tan solo se visualiza cuáles fueron los métodos ejecutados por el test rojo o azul (o ambos) y cuales no, sino que además muestra cómo tal método fue ejecutado con el test rojo y cuán diferente fue cuando se ejecutó el método azul.
 
