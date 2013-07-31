@@ -4,13 +4,35 @@
 
 \section{Roassal: motor de visualización}
 
-\par Roassal es un motor de visualización desarrollado en la plataforma Pharo. Roassal está hecho para visualizar e interactuar con datos arbitrarios definidos en términos de objetos y sus relaciones. Roassal es comúnmente utilizado para producir visualizaciones interactivas. El rango de aplicaciones usando Roassal es diverso. Por ejemplo, es muy utilizado en el análisis de software (ver \figref{roassal-example.png}), de hecho es utilizado en la visualización de TestSurgeon.
+\par Roassal es un motor de visualización desarrollado en la plataforma Pharo. Roassal está hecho para visualizar e interactuar con datos arbitrarios definidos en términos de objetos y sus relaciones. Roassal es comúnmente utilizado para producir visualizaciones interactivas. El rango de aplicaciones usando Roassal es diverso. Por ejemplo, es muy utilizado en el análisis de software (ver \figref{caso-estudio/roassal-example.png}), de hecho es utilizado en la visualización de TestSurgeon.
 
-\par Roassal consta de 30 paquetes que contienen 301 clases que definen 4137 métodos que en total suman 29720 líneas de código. El correcto funcionamiento de este código es asegurado por X unit test que en total suman X test methods, cuya cobertura alcanza un 72.37 \%.
+\fig{h}{0.35}{caso-estudio/roassal-example.png}{Visualización hecha en Roassal: Jerarquía de la clase {\tt Collection} (arreglos, diccionarios y variantes) y sus clases hijas. El alto representa el número de métodos y el ancho el número de atributos}
 
-\fig{h}{0.35}{roassal-example.png}{Visualización hecha en Roassal: Jerarquía de la clase {\tt Collection} (arreglos, diccionarios y variantes) y sus clases hijas. El alto representa el número de métodos y el ancho el número de atributos}
+\section{Contexto}
 
+\par Como primera aplicación de \emph{TestSurgeon} se consideró refactorizar el código de test de Roassal. La versión es la número 441 que puede ser descargada desde el repositorio en SmalltalkHub\footnote{Repositorio de Roassal en SmalltalkHub versión 441 - \url{http://smalltalkhub.com/#!/~ObjectProfile/Roassal/versions/Roassal-VanessaPena.441} } consta de 30 paquetes que contienen 301 clases que definen 4137 métodos que en total suman 29720 líneas de código. El correcto funcionamiento de este código es asegurado por 93 unit test que en total suman 760 test methods, cuya cobertura alcanza un 72.37 \%. 
 
-% Hablar de Roassal
-Evaluar escenarios
-ROMondrianViewBuilderTest --> alto nivel
+\par Cada unit test está relacionado a una característica particular de Roassal como: manejo eventos, interacción, formas de las figuras(shapes), rendering, entre otros. Sin embargo uno de esos unit tests parece contener una cantidad significativamente mayor de tests en comparación a los demás unit tests. Esta situación se puede observar claramente en la \figref{caso-estudio/distribucion-tests.png} que muestra la distribución de los tests methods dentro de los unit test. A primera vista se aprecia que la mayoría de los unit tests en Roassal contiene una cantidad pequeña de tests, los datos observados corroboran esto ya que el 55\% de los unit test contiene a lo más 5 tests, un 83\% contiene a lo más de 10 test. 
+
+% Pq es complicado y pq analizar ROViewMondrianBuilder (alto nivel)
+\par 
+\fig{h}{0.8}{caso-estudio/distribucion-tests.png}{Distribución de los tests methods por unit test}
+
+\section{Clustering por cobertura}
+
+% Por cobertura porque asi hay más chances de refactorizacion --> por inspección >90% vale la pena mirar
+\par 
+
+\section{Escenarios de refactorización y restructuración de los tests}
+
+\par Una vez agrupados los tests según su similitud de cobertura, la probabilidad de encontrar casos de refactorización es mayor ya que la revisión se realiza sobre casos similares. Y en estos, las ejecuciones de los tests comprenden una importante porción de métodos y clases comunes lo cual apunta a las mismas características del software (ej: rendering, manejo de eventos, etc).
+
+\par Luego de una exhaustiva inspección a través de comparaciones 1-a-1 entre test del mismo grupo y de grupos distintos se detectaron escenarios de refactorizaciones posibles. Estos casos fueron analizados y discutidos en conjunto con los desarrolladores principales de Roassal, con lo cual se logró restructurar el unit test {\tt ROMondrianViewBuilderTest}. A continuación se presentan los distintos escenarios principales encontrados durante la experiencia.
+
+\subsection{Escenario \#1: Identificando diferencias semánticas}
+
+\par 
+
+\subsection{Escenario \#2: Definiendo inicialización del fixture}
+
+\subsection{Escenario \#3: Mezclando o Removiendo métodos de test}
