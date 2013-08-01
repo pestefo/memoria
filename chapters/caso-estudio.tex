@@ -25,14 +25,122 @@
 
 \section{Escenarios de refactorización y restructuración de los tests}
 
-\par Una vez agrupados los tests según su similitud de cobertura, la probabilidad de encontrar casos de refactorización es mayor ya que la revisión se realiza sobre casos similares. Y en estos, las ejecuciones de los tests comprenden una importante porción de métodos y clases comunes lo cual apunta a las mismas características del software (ej: rendering, manejo de eventos, etc).
+\par Una vez agrupados los tests según su similitud de cobertura, la probabilidad de encontrar casos de refactorización es mayor ya que la revisión se realiza sobre casos similares. Y en estos, las ejecuciones de los tests comprenden una importante porción de métodos y clases comunes lo cual apunta a las mismas características del software (ej: rendering, manejo de eventos, etc). 
 
-\par Luego de una exhaustiva inspección a través de comparaciones 1-a-1 entre test del mismo grupo y de grupos distintos se detectaron escenarios de refactorizaciones posibles. Estos casos fueron analizados y discutidos en conjunto con los desarrolladores principales de Roassal, con lo cual se logró restructurar el unit test {\tt ROMondrianViewBuilderTest}. A continuación se presentan los distintos escenarios principales encontrados durante la experiencia.
+\par Luego de una exhaustiva inspección a través de comparaciones 1-a-1 entre tests del mismo grupo y de grupos distintos se detectaron escenarios de refactorizaciones posibles. En esta labor la \emph{Test Difference Execution Blueprint} juega un rol principal para una descartar ver rápidamente si es un caso de interés o descartarlo, y comparar con el código fuente para ver si procede alguna refactorización.
+
+\par Estos casos fueron analizados y discutidos en conjunto con los desarrolladores principales de Roassal, con lo cual se logró restructurar el unit test {\tt ROMondrianViewBuilderTest}. A continuación se detallan los escenarios principales encontrados durante la experiencia.
 
 \subsection{Escenario \#1: Identificando diferencias semánticas}
 
-\par 
+\par La visualización actúa como un medio eficiente para, en forma rápida y fácil comaprar tests: los colores y formas de los métodos ayudan a identificar cuales tests son semánticamente parecidos o diferentes.
+La \figref{identifyingSemanticalDifference} presenta una representación que obtuvimos mientras navegamos a través de los métodos contenidos en {\tt ROMondrianViewBuilderTest}. 
+
+El uso de colores marcados y distintos como rojo, azul y gris dan retroalimentan al desarrollador rápidamente sobre la qué tan similar semánticamente son los tests en comparación. Los métodos grises, como ya se detalló, indican aquellos tests que son llamados por ambos tests. Por su parte, métodos de colores rojo o azul son testeados solo por un test. De esta manera se aprecia en forma expedita el grado de similitud entre tests. El tamaño de los métodos indica la diferencia entre los dos tests para ese método. La figura \figref{identifyingSemanticalDifference} ilustra una gran diferencia entre dos métodos de test.
+
+En la interfaz de \emph{TestSurgeon} el código fuente de el método está a un clic de distancia de la visualización. Menús contextuales dan varias opciones para navegar e inspeccionar cualquier elemento estructural de la visualización si fuera requerido para mayor detalle.
+
+\fig{h}{0.7}{identifyingSemanticalDifference}{La presencia de muchos métodos rojos y azules indica el grado de diferencia entre los test}
 
 \subsection{Escenario \#2: Definiendo inicialización del fixture}
 
+\par Es frecuente que aparezca que cada test define su propia inicialización antes de realizar alguna verificación (\emph{assertion} en inglés) de invariantes usando la palabra clave {\tt assert:}. La inicialización del test corresponde a la porción situada antes de la primera verificación (\ie antes de la primera llamada a {\tt assert:}).
+
+\par En nuestro caso de estudio, identificamos una cantidad significativa de tests que usan un escenario (o \emph{fixture}) de ejecución similar. Consere los siguientes dos métodos de test definidos en {\tt ROMondrianView BuilderTest}:
+
+\begin{codeWithLineNumbers}
+<i>testAbsolutePosition</i>
+	| inner2 outter inner |
+	outter := view node: 'outter' forIt: [
+		inner := view node: 'inner' forIt: [
+			inner2 := view node: 'inner2'
+		]
+	].
+	view applyLayout.
+	self assert: outter absolutePosition = outter position.
+	...
+
+
+<i>testPositionRelativeTo</i>
+	| outterNode1 innerNode1 innerNode2 |
+	outterNode1 := view node: 'outter1' forIt: 
+		[ innerNode1 := view node: 1 forIt: [ 
+		innerNode2 := view node: 2 ] ].
+	view applyLayout.
+	self assert: innerNode2 bounds = ((5@5) corner: (10@10)).
+	...
+\end{codeWithLineNumbers}
+
+\par Esos dos test inicializan un escenario muy similar que consiste en nodos (elementos gráficos) anidados nombrados por identificadores y guardados como variables locales del método. Después de aplicar el layout (ver método {\tt applyLayout}), se verifican distintas propiedades de los nodos como son: posición y tamaño.
+
+\fig{h}{1.0}{scenario1-common}{Dos tests con un escenario de ejecución común (métodos grises son los métodos comunes para ambos tests)}
+
+\par La \figref{scenario1-common} muestra la vista panorámica de ejecución de ambos tests. La figura indica que 13 clases está involucradas en la ejecución de éstos. Un cuadrado pequeño y gris indica que el método correspondiente fue testeado por los dos tests: {\tt testAbsolutePosition} and {\tt testPositionRelativeTo}. Esto significa que la cobertura de los tests es casi idéntica: exactamente la misma cantidad de métodos son ejecutados. La clase {\tt ROShape} contiene un metodo grande, lo que indica que ese método es ejecutado  ``muchas más veces'' en ``muchos más objetos distintos'' en uno de los dos tests. Una ventana de popup se activa cuando se posiciona el cursor sobre un método. Allí se presentan en detalle las métricas de ejecución, permitiendo saber para cuál de los dos test ese método es más relevante.
+
+%\fig{h}{0.5}{scenario1-diff}{Gray methods are common in both tests}
+%\figref{scenario1-diff} illustrates the situation by having the two portions of code in gray. The code contained in \ct{expr1} and \ct{expr2} are indicated with the red and blue color.
+
+\par Entonces, aunque el código fuente de dichos tests es distinto, ellos involucran un escenario de ejecución similar. Se refactorizó los dos test en un nuevo unit test llamado {\tt ROPositionTest}, donde el código de fixture que tenían en común se dejó en el método {\tt setUp}. Los dos tests se migraron a este unit test y se acortaron de la manera que se presenta a continuación:
+
+% the best example I got: testInnerNodesAndEvent - testAbsolutePositionAfterTranslation - testAbsolutePosition - testPositionRelativeTo (all from ROMondrianViewBuilderTest) 
+% see figure: figures/raw/s1-testAbsolutePosition_testPositionRelativeTo.svg
+
+\begin{codeWithLineNumbers}
+<i>ROPositionTest>>setUp</i>
+	outter := view node: 'outter' forIt: [
+		inner := view node: 'inner' forIt: [
+			inner2 := view node: 'inner2'
+		]
+	].
+	view applyLayout.	
+	
+<i>ROPositionTest>>testAbsolutePosition</i>
+	self assert: outter absolutePosition = outter position.
+	...
+		
+<i>ROPositionTest>>testPositionRelativeTo</i>
+	self assert: inner2 bounds = ((5@5) corner: (10@10)).
+	...
+\end{codeWithLineNumbers}
+
+\par El test case {\tt ROMondrianViewBuilderTest} fue recortado y refactorizado en tests dedicados.
+%The test case {\tt } has been shortened by refactoring out closely related tests in a dedicated tests.
+
+
 \subsection{Escenario \#3: Mezclando o Removiendo métodos de test}
+
+\par Se encontraron casos donde dos tests están muy relacionados semánticamente. En ese caso, los dos test pueden ser fusionados en un solo test. La otra alternativa es mover uno de ellos, aquel cuya cobertura fuera menor, dentro de un test suite que no se ejecute con tanta frecuencia para así evitar redundancia.
+
+\fig{h}{0.70}{scenario3}{Minor difference between two tests}
+
+\par Considere la siguiente situación donde dos tests tienen distinto código fuente pero cubren el mismo código base. La \figref{scenario3} muestra una jerarquía de clases compuesta por cuatro clases que son testeadas por dos tests similares. Todos los métodos cubiertos son ejecutados en forma similar por los dos tests, lo cual queda evidenciado en por la presencia de pequeños cuadrados grises. %Since both the red and blue tests actually test the same code portion, this situation indicates an opportunity for removing one test.
+
+%In \figref{scenario3}, \ct{testAddTwice} in red \ct{testAddition} (from ROAddNameTest) ($g=95\%$) 
+
+\begin{codeWithLineNumbers}
+<i>ROAddNameTest>>testAddTwice</i>
+	ROAddName toElement: element.
+	ROAddName toElement: element.
+	self assert: view numberOfElements = 2.
+		
+<i>ROAddNameTest>>testAddition</i>
+	self assert: element view numberOfElements = 1.
+	ROAddName toElement: element.
+	self assert: element view numberOfElements = 2.	 
+\end{codeWithLineNumbers}
+
+\par Estos dos tests pueden fusionarse en un solo tests: 
+
+\begin{codeWithLineNumbers}
+<i>ROAddNameTest>>testAdditionAndAddTwice</i>
+	self assert: element view numberOfElements = 1.
+	ROAddName toElement: element.
+	self assert: element view numberOfElements = 2.
+
+	ROAddName toElement: element.	
+	self assert: view numberOfElements = 2.
+
+\end{codeWithLineNumbers}
+
+\par Finalmente los dos tests fueron refactorizados en un test único.
+
