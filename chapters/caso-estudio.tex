@@ -1,4 +1,8 @@
 \chapter{Caso de estudio: Roassal}\chaplabel{caso-de-estudio}
+% +-- TODO --*
+% - Figura: 
+%	- 
+% 	- 
 
 \par En el siguiente capítulo se presentará una aplicación de \emph{TestSurgeon} analizando los tests de \emph{Roassal}. 
 
@@ -6,17 +10,52 @@
 
 \par Roassal es un motor de visualización desarrollado en la plataforma Pharo. Roassal está hecho para visualizar e interactuar con datos arbitrarios definidos en términos de objetos y sus relaciones. Roassal es comúnmente utilizado para producir visualizaciones interactivas. El rango de aplicaciones usando Roassal es diverso. Por ejemplo, es muy utilizado en el análisis de software (ver \figref{caso-estudio/roassal-example.png}), de hecho es utilizado en la visualización de TestSurgeon.
 
+\par A continuación se adjunta el código que permite visualizar una jerarquía de clases y algunas propiedades de cada una de sus componentes usando Roassal. La clase visualizada es {\tt Collection}, clase abstracta de la cual heredan distintos tipos de clases que representan colecciones de objetos, como por ejemplo: {\tt Set}, {\tt Array}, {\tt OrderedCollection}, {\tt String} y {\tt Dictionary}, entre otros. La visualización presentada en la \figref{caso-estudio/roassal-example.png} muestra a cada clase con una altura y ancho dados, sus medidas dependen de su cantidad de métodos definidos (alto) y número de atributos (ancho). El código que hace esto posible se adjunta a continuación.\\
+
+\begin{code}
+view := ROView new.
+classElements := ROElement forCollection:
+	Collection withAllSubclasses.
+" Crear elementos graficos a partir de la clase Collection y sus clases hijas "
+classElements
+	do: [:c |
+		c width: c model instVarNames size.
+		c height: c model methods size.
+		c + ROBorder.
+		c @ RODraggable ].
+view addAll: classElements.
+\end{code}
+
+\begin{code}
+" Enlazar clases para formar la jerarquia "
+associations := classElements collect: [:c |
+	(c model superclass = Object)
+		ifFalse: [ (view elementFromModel: c
+		model superclass) -> c]
+	] thenSelect: [:assoc | assoc isNil not ].
+edges := ROEdge linesFor: associations.
+view addAll: edges.
+
+" Aplicar una distribucion grafica en forma de arbol para visualizar mejor la jerarquia "
+ROTreeLayout new on: view elements.
+view open
+
+\end{code}
+
 \fig{h}{0.35}{caso-estudio/roassal-example.png}{Visualización hecha en Roassal: Jerarquía de la clase {\tt Collection} (arreglos, diccionarios y variantes) y sus clases hijas. El alto representa el número de métodos y el ancho el número de atributos}
 
 \section{Contexto}
 
-\par Como primera aplicación de \emph{TestSurgeon} se consideró refactorizar el código de test de Roassal. La versión es la número 441 que puede ser descargada desde el repositorio en SmalltalkHub\footnote{Repositorio de Roassal en SmalltalkHub versión 441 - \url{http://smalltalkhub.com/#!/~ObjectProfile/Roassal/versions/Roassal-VanessaPena.441} } consta de 30 paquetes que contienen 301 clases que definen 4137 métodos que en total suman 29720 líneas de código. El correcto funcionamiento de este código es asegurado por 93 unit test que en total suman 760 test methods, cuya cobertura alcanza un 72.37 \%. 
+\par Como primera aplicación de \emph{TestSurgeon} se consideró refactorizar el código de test de Roassal. La versión analizada es la número 441 que puede ser descargada desde el repositorio en SmalltalkHub\footnote{Repositorio de Roassal en SmalltalkHub versión 441 - \url{http://smalltalkhub.com/#!/~ObjectProfile/Roassal/versions/Roassal-VanessaPena.441} }. Esta consta de 30 paquetes los cuales contienen 301 clases que, a su vez, definen 4137 métodos. Estos últimos en total suman 29.720 líneas de código.
 
-\par Cada unit test está relacionado a una característica particular de Roassal como: manejo eventos, interacción, formas de las figuras(shapes), rendering, entre otros. Sin embargo uno de esos unit tests parece contener una cantidad significativamente mayor de tests en comparación a los demás unit tests. Esta situación se puede observar claramente en la \figref{caso-estudio/distribucion-tests.png} que muestra la distribución de los tests methods dentro de los unit test. A primera vista se aprecia que la mayoría de los unit tests en Roassal contiene una cantidad pequeña de tests, los datos observados corroboran esto ya que el 55\% de los unit test contiene a lo más 5 tests, un 83\% contiene a lo más de 10 test. 
+\par Por su parte, el correcto funcionamiento de este código es asegurado por 80 unit test que contienen, todos juntos, 556 test methods. La cobertura de los tests alcanza un 72.37 \%.  En Roassal cada unit test está relacionado a una característica particular de Roassal como: manejo eventos, interacción, formas de las figuras(shapes), rendering, entre otros. Sin embargo uno de esos unit tests parece contener una cantidad significativamente mayor de tests en comparación a los demás unit tests.  El unit test en cuestión es {\tt ROMondrianViewBuilderTest} el cual contiene 96 métodos de test que corresponde a un 17\% del total de test methods definidos en Roassal. 
 
-% Pq es complicado y pq analizar ROViewMondrianBuilder (alto nivel)
-\par 
+\par Además se verificó que la gran mayoría de los unit test aporta una cantidad relativamente pequeña de tests. Esta situación se puede observar en la \figref{caso-estudio/distribucion-tests.png} donde se muestra la distribución de los test methods dentro de los unit test. Los unit tests se agruparon según la cantidad de tests que contienen. Se aprecia que la mayoría de los unit tests en Roassal contiene una cantidad pequeña de tests, de hecho el 55\% de los unit test contiene a lo más 5 tests (ver \tabref{distribucion-tests}) y contando como máximo 10 tests ya se alcanza un 83\% del total de los unit tests. 
+
 \fig{h}{0.8}{caso-estudio/distribucion-tests.png}{Distribución de los tests methods por unit test}
+
+\par En conclusión, Roassal tiene una distribución de test que complica su mantenibilidad. Es más, {\tt ROMondrianViewBuilderTest} contiene las pruebas sobre la clase {\tt ROMondrianViewBuilder}, una clase que proporciona una API de alto nivel para crear visualizaciones. Esta API proporciona la mayoría de las funcionalidades de Roassal, por lo cual {\tt ROMondrianViewBuilderTest} prácticamente realiza llamados sobre gran parte del código de Roassal, además del código de la API. Eso hace que haya solapamientos de ejecución entre este y otros unit tests. Además al ser tests de alto nivel, cubren un funcionamiento más complejo lo cual, a su vez, hace que sus tests sean más complejos. Entonces, a la hora de ejecutarlos, si uno falla es difícil detectar donde está el error.
+
 
 \section{Clustering por cobertura}
 
