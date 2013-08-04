@@ -169,7 +169,7 @@ Selector & Resultado \\ \hline \hline
 						& un comparador 1-a-1 de test que provee métricas \\
 						& de similitud estática.\\ \hline						
     \end{tabular}
-    \caption{API pública de las instancias de {\tt TSMethod}}
+    \caption{API pública de las instancias de {\tt TSTestMethod}}
     \tablabel{impl-tstestmethod}
 \end{table} 
 
@@ -178,12 +178,20 @@ Selector & Resultado \\ \hline \hline
 %=======
 \section{Visualización}\seclabel{impl-viz}
 %% Method Shape: hablar del ajuste logaritmico.
+\par La implementación de \emph{Test Difference Blueprint} es la clase {\tt TSTestDifferenceBlueprint}. Para crear la visualización necesita de los datos de los tests a comparar, por lo cual dentro de sus atributos están {\tt redTest} y {\tt blueTest}, instancias de {\tt TSTestMethod}. Además, posee un comparador de similitud dinámica el cual está almacenado en el atributo {\tt comparator}. Para la información general sobre toda la instrumentación y ejecución es que se necesita una instancia de {\tt TSProfiler} la cual está referenciada por el atributo {\tt profiler}. 
 
-%=======
-\section{Clustering}\seclabel{impl-clustering}
+\par La visualización como tal corresponde instancia de la {\tt ROView}, que es básicamente un contenedor de los elementos gráficos y es responsable de mostrarlos apropiadamente. Por otro lado, enviando el mensaje {\tt exportAs:}, el objeto crea un archivo de imagen vectorial (formato {\tt SVG}) con el {\tt String} entregado como parámetro como nombre. Técnicamente no hay más aspectos destacables que no se puedan apreciar en forma directa desde el código fuente. Más información sobre la visualización se puede encontrar en la \secref{test-diff-blueprint}. 
 
 %=======
 \section{Browser}\seclabel{impl-browser}
+%http://hal.inria.fr/docs/00/70/80/67/PDF/SpecTechReport.pdf
+\par El browser o navegador permite acceder rápidamente a los métodos a través de menúes que permiten seleccionar unit tests y los tests para realizar comparaciones rápidamente.  Esta interfaz está implementada completamente usando el framework Spec, y gráficamente consiste en cuatro espacios: Selector de Unit Tests, Selector de Test methods, Zona de Visualización y Zona de Código. La disposición de estas zonas es como se muestra en la \figref{caso-uso/2.png}. 
+
+\par Como las comparaciones entre ejecuciones de tests son 1-a-1, necesitamos primero escoger dos unit tests, uno para los candidatos a test rojo y otro para los candidatos azules. Cada uno de estos menúes de selección única son una instancia {\tt IconListModel} y muestran una lista de los unit tests ordenados por tamaño (cantidad de tests) de mayor a menor. Una vez seleccionados ambos unit tests, se despliegan los menúes inferiores, los selectores de Test Methods. Estos, también {\tt IconListModel} tienen algunas diferencias: el menú para escoger test rojo ordena los tests en orden alfabético; por su parte el menú para test azul inicialmente está en orden alfabético pero una vez se haya seleccionado un test azul se ordena según similitud dinámica descendente con respecto al test rojo. 
+
+\par Cuando hay un test rojo y azul seleccionados, se refresca la visualización para mostrar la comparación de los elementos seleccionados y la zona de comparación de código. Sobre la última, para ahorrar tiempo, se reutilizó esta componente ({\tt DiffMorph}) desde el browser de administración y descarga de paquetes(\emph{Monticello Browser}). El comparador de código, éste compara línea a línea el código y marca de color (rojo y verde, no sigue la convención de TestSurgeon) las diferencias entre estos. 
+%=======
+\section{Clustering}\seclabel{impl-clustering}
 
 
 \section{Acceso al código}\seclabel{impl-repo}
