@@ -1,8 +1,48 @@
-% ---* APENDICE *---
-
 \chapter{Distribución de Tests en Roassal}
+% +-- TODO --*
+% - Rotar tabla
+
 
 \par A continuación se muestra la información sobre la distribución de los tests en los unit test de la versión 441 de Roassal.
+
+\begin{table}[h] 
+    \footnotesize
+    \centering 
+    \begin{tabular}{|l|c|l|c|l|c|}
+        \hline
+\textbf{Unit Test} & \textbf{\# } & \textbf{Unit Test} & \textbf{\# } & \textbf{Unit Test} & \textbf{\# } \\ \hline\hline
+ROMondrianViewBuilderTest & 96 & ROAddNameTest & 5 & ROPlatformTest & 2 \\ \hline
+ROElementTest & 63 & RoassalSerializerExporterTest & 5 & ROTracingCanvasTest & 2 \\ \hline
+ROViewTest & 42 & ROBoxTest & 5 & ROAbsorbLayoutTranslatorTest & 1 \\ \hline
+ROBitmapGenerationTest & 25 & ROEventTest & 5 & ROAbstractCanvasTest & 1 \\ \hline
+ROAbstractLabelTest & 17 & ROMenuElementTest & 5 & ROCenteredLabelTest & 1 \\ \hline
+ROMorphTest & 14 & ROScrollbableTest & 5 & ROCircleTest & 1 \\ \hline
+ROViewStructureTest & 14 & ROShapeTest & 5 & ROCollectionTest & 1 \\ \hline
+ROEdgeTest & 13 & RoassalExporterSVGTest & 4 & ROCountingVisitorTest & 1 \\ \hline
+ROCameraTest & 12 & ROColorTest & 4 & RODirectLayoutTranslatorTest & 1 \\ \hline
+ROContainingElementTest & 12 & ROExpandChildrenOnClickTest & 4 & ROHorizontalTreeLayoutTest & 1 \\ \hline
+ROTreeMapLayoutTest & 12 & ROMondrianScatterLayoutTest & 4 & ROImageTest & 1 \\ \hline
+ROConstraintTest & 11 & RORemoveEdgeTest & 4 & ROLabelTest & 1 \\ \hline
+RONormalizerTest & 11 & RODecoratorTest & 3 & ROLayoutSteppingTest & 1 \\ \hline
+ROAttachPointTest & 9 & ROGraphTransformationTest & 3 & ROLayoutTest & 1 \\ \hline
+ROFocusViewTest & 9 & ROGridLayoutTest & 3 & ROLayoutTranslatorTest & 1 \\ \hline
+ROHighlightElementTest & 9 & RONormalizerSpecificTest & 3 & ROMotionMoveTest & 1 \\ \hline
+ROPopupTest & 9 & ROViewStackTest & 3 & ROOrderedCollection & 1 \\ \hline
+RODraggableTest & 8 & ROAbstractLayout & 2 & ROParentElementResizeStrategyTest & 1 \\ \hline
+ROAnimationTest & 7 & ROAnnouncerTest & 2 & ROPharoCanvasTest & 1 \\ \hline
+ROMondrianViewBuilderLayoutTest & 7 & ROArrowTest & 2 & RORemoveNodeTest & 1 \\ \hline
+ROPopupMondrianTest & 7 & ROBorderTest & 2 & ROSmoothLayoutTranslatorTest & 1 \\ \hline
+ROPopupViewTest & 7 & ROCircleLayoutTest & 2 & ROSugiyamaLayoutTest & 1 \\ \hline
+RoassalExporterHTMLTest & 6 & ROFlowLayoutTest & 2 & ROTranslationTest & 1 \\ \hline
+ROEaselTest & 6 & ROForceBasedLayoutTest & 2 & ROTreeLayoutTest & 1 \\ \hline
+ROViewMiniMapTest & 6 & ROLineTest & 2 & ROVisitorTest & 1 \\ \hline
+ROZOrderingTest & 6 & ROMondrianCacheTest & 2 & ROZoomOnClickTest & 1 \\ \hline
+ &  & RONativeExampleUtilityTest & 2 & ROTest & 0 \\ \hline
+ &  &  &  & Total test methods & 556 \\ \hline
+    \end{tabular}
+    \caption{Número de tests definidos en cada Unit Test de Roassal}
+    \tablabel{distribucion-tests-total}
+\end{table} 
 
 \begin{table}[h] 
     \centering 
@@ -21,5 +61,3 @@
     \caption{Distribución de los tests methods por unit test en Roassal}
     \tablabel{distribucion-tests}
 \end{table} 
-
-\large FALTA datos brutos
