@@ -34,7 +34,6 @@
 % Ejemplo Dummy
 \par Un análisis con \emph{TestSurgeon} comienza lanzando el software desde una terminal de Pharo o \emph{Workspace} con el siguiente comando: {\tt TSBrowser openOn: 'Manifest-*'}\footnote{Para más detalles sobre este comando y la implementación del browser ver la \secref{impl-browser} }. Este comando es para abrir el browser de TestSurgeon y para analizar todos los paquetes del software Manifest que son nombrados con el prefijo {\tt Manifest-}.
 
-\fig{h}{0.7}{caso-uso/1.png}{Lanzando TestSurgeon para analizar el software \emph{Manifest}}
 
 \par Luego, TestSurgeon realiza un profiling sobre los tests encontrados en todos los paquetes de Manifest. Los ejecuta, recolecta los datos y genera los objetos según el modelo de objetos de Spy(ver \secref{impl-spy}). Este proceso puede tardar unos segundos o algunos minutos según la cantidad de tests encontrados y las operaciones propias dentro de cada test.
 
@@ -55,7 +54,7 @@
 \par ---------- Falta mostrar los pasos (clic 1 clic 2 y mostrar lo que pasa)
 \par ---------- Ventana de popup
 
-\subsection{Visualización: \emph{Test Difference Blueprint}}
+\subsection{Visualización: \emph{Test Difference Blueprint}}\seclabel{test-diff-blueprint}
 
 \par El objetivo de la visualización es comparar y encontrar las diferencias de ejecución que existen entre dos métodos de test. Para esto primero se debe hacer una comparación de cobertura, es decir cuáles son los métodos y las clases testeadas por los métodos en comparación. Entonces uno de los elementos a visualizar son las clases y sus métodos. 
 

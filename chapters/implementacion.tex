@@ -1,18 +1,32 @@
 \chapter{Implementación}
 % +-- TODO --*
 % - Figura:
-%	- Arquitectura: VM | Pharo | Spec, Roassal, Spy | TestSurgeon
-%	- UML de Clases (Spy y herencia TS)
+%	- Diagrama de clases por cada paquete
+% - Hablar de spec
+% - Referencias:
+% 	- http://www.bergel.eu/download/papers/Berg10f-Spy.pdf (presentacion Spy)
 
 
-\par El proyecto TestSurgeon fue completamente implementado en el lenguaje Pharo Smalltalk\emph{Pharo}\footnote{Pharo Project - \url{http://www.pharoproject.org} - última visita 12-07-2013 } ya que es en lenguaje en el que está escrito el framework de profiling utilizado. 
-%Pharo es un lenguaje de programación que sigue el paradigma de orientación a objetos cuyas principales ventajas son, primero: entorno de desarrollo robusto totalmente integrado al lenguaje, y segundo: el sistema sigue una orientación a objetos pura, es decir, todo en Pharo es un objeto, Strings, Números, Clases, Métodos, Paquetes, etc. La segunda característica favorece el desarrollo de TestSurgeon en cuanto todo el modelo de lo que es un bo
+%=======
+\section{Arquitectura}\seclabel{impl-arq}
 
+\par El proyecto TestSurgeon fue completamente implementado en el lenguaje Pharo Smalltalk\footnote{Pharo Project - \url{http://www.pharoproject.org} - última visita 12-07-2013 } ya que es en lenguaje en el que está escrito el framework de profiling utilizado (componente principal del proyecto). Pharo es un lenguaje de programación que implementa fielmente el paradigma de orientación a objetos. Sus características principales son, primero: entorno de desarrollo robusto totalmente integrado al lenguaje, y segundo: el sistema sigue una orientación a objetos pura, es decir, todo en Pharo es un objeto, Strings, Números, Clases, Métodos, Collecciones, Paquetes, etc. 
+
+\par Para ejecutar Pharo, es necesario una máquina virtual la cual es específica de cáda sistema operativo y actúa como interfaz de este último. La imagen de Pharo, una {\tt snapshot} del sistema Pharo congelado en el tiempo, específicamente de la última vez que se ejecutó. Contiene todas las instancias creadas y en el estado en que estaban justo antes de que la máquina virtual se cerrara.
+
+\par Sobre Pharo están: \emph{Spy}, \emph{Roassal} y \emph{Spec}, las principales dependencias de TestSurgeon. \emph{Spy} es un framework de profiling usado en TestSurgeon, se comentará en detalle sobre éste en la \secref{impl-spy}. \emph{Roassal} es un software que permite desarrollar visualizaciones interactivas en forma fácil y rápida. Es usado por TestSurgeon para implementar la \emph{Test Difference blueprint} (ver \secref{test-diff-blueprint}), en la \secref{impl-viz} se hablará de esta. Finalmente \emph{Spec} .% - Hablar de spec
+
+\fig{H}{0.7}{impl/arq.pdf}{Arquitectura de \emph{TestSurgeon}}
+
+
+%=======
 \section{Profiling}\seclabel{impl-spy}
-% http://www.bergel.eu/download/papers/Berg10f-Spy.pdf
+ 
 \par La componente principal de TestSurgeon es la que realiza el profiling. Por eso se escogió una herramienta que fuera fácil de utilizar y que permitiera obtener la mayor cantidad de datos sobre la ejecución de un test.
 \par El framework de profiling escogido fue \emph{Spy} y está escrito en el lenguaje Pharo. Entre sus características está que es un profiler orientado a los métodos. Considerando que en Pharo todas las interacciones corresponden a objetos que se comunican a través de mensajes, este punto es muy importante. Si se quiere conocer el comportamiento de un test con gran detalle, el hacer profiling de los métodos que son llamados durante su ejecución es fundamental. 
+
 \par Además, Spy posee una arquitectura muy simple y fácil de extender. Consta de cuatro clases principales: {\tt Profiler}, {\tt PackageSpy}, {\tt ClassSpy} y {\tt MethodSpy}. {\tt Profiler} es la clase principal con las características necesarias para la instrumentación, ejecución y obtención de datos. Las demás clases contienen información sobre el profiling de los paquetes instrumentados y de sus clases y métodos respectivamente. 
+
 \par La clase {\tt MethodSpy} técnicamente es un \emph{wrapper} de un método en Pharo (una instancia de la clase {\tt CompiledMethod}) que acumula datos sobre el contexto de su ejecución. Para esto, la clase provee los métodos {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: } que son ejecutados justo antes e inmediatamente después de ejecutado el método instrumentado. Así se obtienen los datos del impacto de la ejecución de dicho método en el objeto y en los objetos con los cuales colabora. Estos métodos son abtractos y deben concretarse en las aplicaciones que decidan usar Spy extendiendo sus clases. 
 
 %== Figura: (UML) Clases y extensión
@@ -28,18 +42,31 @@
 
 \par La instancia de {\tt TSProfiler} tiene los siguientes métodos:
 
-\begin{description}
-\item[{\tt allTestMethods}] retorna una colleción colección con instancias de la clase {\tt TSMethod} que corresponde a test methods.
-\item[{\tt allTestedMethods}] retorna una colleción colección con instancias de la clase {\tt TSMethod} que corresponde a los métodos testeados.
-\item[{\tt compiledToSpyMethod:}] se le pasa como argumento una instancia de la clase {\tt CompiledMethod} y retorna la instancia {\tt TSMethod} que lo encapsula.
-\item[{\tt plainClasses}] retorna una colección con todas las clases instrumentadas (instancias de {\tt TSClass}) que no corresponden a unit tests.
-\item[{\tt testClasses}] retorna una colección con todas las clases instrumentadas (instancias de {\tt TSClass}) que corresponden a un unit test.
-\end{description}
+\begin{table}[h] 
+    \centering 
+    \begin{tabular}{|l|l|}
+    	\hline
+Selector & Resultado \\ \hline \hline
+{\tt allTestMethods}	& retorna una colleción de todos los tests ejecutados (instancias\\
+						&  de {\tt TSMethod}  \\ \hline
+{\tt allTestedMethods} & retorna una colleción de todos los métodos testeados (instancias  \\
+						& de {\tt TSMethod} \\ \hline
+{\tt compiledToSpyMethod:} & encapsula un método compilado (instancia de {\tt CompiledMethod}) \\
+						& retornándolo como instancia de {\tt TSMethod} . \\ \hline
+{\tt plainClasses} & retorna una colección con todas las clases instrumentadas (instancias de  \\ 
+						&{\tt TSClass}) que no corresponden a unit tests. \\ \hline
+{\tt testClasses} & retorna una colección con todas las clases instrumentadas (instancias de \\ 
+						&{\tt TSClass}) que corresponden a un unit test. \\ \hline
+    \end{tabular}
+    \caption{Principales métodos de {\tt TSProfiler}}
+    \tablabel{impl-tsprofiler}
+\end{table} 
+
 
 %  ---* TSPackage & TSClass *---
 \subsection{Las clases {\tt TSPackage} y {\tt TSClass}}
 
-\par Estas dos clases como ya se dijo, representan a los paquetes y clases instrumentadas respectivamente. En general no se necesitó información particular de los paquetes por lo que no hay nada que comentar sobre su implementación.
+\par Estas dos clases, representan a los paquetes y clases instrumentadas respectivamente. En general no se necesitó información particular de los paquetes por lo que no hay nada que comentar sobre la implementación de {\tt TSPackage}.
 
 \par Sobre {\tt TSClass} esta representa tanto a las clases testeadas como a lo unit tests, y posee mayoritariamente métodos de ayuda o \emph{helpers} para las distintas aplicaciones (visualización, clustering, etc) como por ejemplo: {\tt allMethodsTestedBy:} donde se le entrega un {\tt TSTestMethod} y se retorna todos los métodos definidos en su clase que son llamados durante la ejecución de ese test.  
 
@@ -47,52 +74,120 @@
 \subsection{Las clase {\tt TSMethod} }
 \par El profiling de Spy es orientado a los métodos, por tanto en esta clase es donde se registran todos los datos de la ejecución para caracterizar a los tests y poder diferenciarlos. Cada instancia de {\tt TSMethod} representa un método ejecutado, es decir, tanto el test que comienza la ejecución como todos los métodos llamados durante esta. Los datos son almacenados en variables de instancia, y existe solo una instancia por método definido en el software a analizar, entonces, un método ejecutado tendrá la información sobre su ejecución en distintos tests donde haya sido llamado. Las variables de instancia se definen a continuación:
 
-\begin{itemize}
-\item {\tt testedBy}
-\item {\tt staticSelfCalledMethodsCache}
-\item {\tt staticSelfCalledMethodsCache}
-\item {\tt staticSelfCalledMethodsCache}
+\begin{table}[h] 
+    \centering 
+    \begin{tabular}{|l|l|}
+    	\hline
+Atributo & Descripción \\ \hline \hline
+{\tt testedBy}	& Diccionario que asocia cada test con las veces que el \\
+				& método fue llamado por éste durante la ejecución del primero\\ \hline
+{\tt originalMethod} & instancia de {\tt CompiledMethod} correspondiente al  \\
+						& método encapsulado. \\ \hline
+{\tt receiverFootprintsMapping} & Diccionario que asocia un test con todos los objetos \\
+						& \emph{receivers} del método actual durante su ejecución. \\ \hline
+    \end{tabular}
+    \caption{Atributos principales de {\tt TSMethod}}
+    \tablabel{impl-tsmethod}
+\end{table} 
 
-\end{itemize}
-
-\par Su comportamiento está dividido en dos partes principalmente: los métodos de profiling donde se registran los datos de ejecución, y sus accesores, métodos que entregan la información obtenida. Los métodos de profiling son dos: {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: } (ver código en \ref{code:before-run} y en \ref{code:after-run})
+\par Su comportamiento está dividido en dos partes principalmente: los métodos de profiling donde se registran los datos de ejecución, y sus accesores, métodos que entregan la información obtenida. Los métodos de profiling son dos: {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: }, a continuación se muestra el código del primero. 
 
 %== Codigo: \ref{code:before-run} y en \ref{code:after-run}
 \begin{codeWithLineNumbers}
-beforeRun: methodName with: listOfArguments in: receiver
+<i>beforeRun:</i> methodName <i>with:</i> listOfArguments <i>in:</i> receiver
 	| testMethod |
+	" Test en ejecucion "
 	testMethod := self profiler class currentTestMethod.
 	currentTestMethodSpy := 
 			spyMethodMapping at: testMethod ifAbsentPut: 
 				[ self profiler >> testMethod class name >> testMethod selector ].
 		
-	"Local copy of instrumented test method"	
+	" Guardar en el diccionario de tests"	
 	self addTestMethod: currentTestMethodSpy.
 
-	"Add recever"
+	" Guardar receiver "
 	self updateReceiversWith: receiver for: currentTestMethodSpy.
 
 \end{codeWithLineNumbers}\label{code:before-run} 
 
+\par Los dos métodos señalados son ejecutados por todos los métodos dentro de la ejecución del test, incluso este último. Sin embargo, la estrategia de obtención de los datos de ejecución es que los métodos instrumentados del código base sean los que almacenen los datos de esta. 
 
-\begin{codeWithLineNumbers}
-afterRun: methodName with: listOfArguments in: receiver
+\par En el código de {\tt beforeRun:with:in:}, una instancia de {\tt TSMethod} lo recibe. Lo primero que realiza es obtener el test que originó la ejecución. Para esto, realiza un llamado al profiler para solicitar el test que se está ejecutando en ese moomento. El test se agrega al diccionario {\tt spyMethodMapping} que representa una biyección entre los tests como {\tt CompiledMethod} y su método Spy que lo encapsula. 
 
-	currentTestMethodSpy := nil.
+\par Posteriormente, el test encapsulado se agrega como llave a {\tt testedBy} (diccionario de tests que cada método del código base posee) y se incrementa en 1 el contador. También se agrega el objeto está ejecutando el método a la lista de \emph{receivers} para el test en ejecución. En el diccionario {\tt receiverFootprintsMapping}, se asocia el test y se agrega el valor de hash del objeto receptor a la colleción de receivers para ese test.
 
-\end{codeWithLineNumbers}\label{code:after-run}
-%\lstlistingname
+\par Las instancias de {\tt TSMethod} son entonces las principales fuentes de datos para la creación de métricas y visualizaciones. Para esto cuenta una API pública que se detalla a continuación:  
+
+\begin{table}[h] 
+    \centering 
+    \begin{tabular}{|l|l|}
+    	\hline
+Selector & Resultado \\ \hline \hline
+
+{\tt numberOfCallsFrom: } & Retorna el valor de la métrica \emph{Number of Calls}\\
+						& (o {\tt NOC}, ver \secref{viz-metricas}). \\ \hline
+{\tt numberOfReceiversDuringExecutionOf:} & Retorna el valor de la métrica \emph{Number of Different}  \\ 
+						&\emph{Receivers} (o {\tt NODR}, ver \secref{viz-metricas}). \\ \hline
+{\tt differencesBetweenNoCFrom:and:}	& Retorna la diferencia entre la métrica {\tt NOC} entre\\
+						&  dos tests. \\ \hline
+{\tt differencesBetweenNoDRFrom:and:} & Retorna la diferencia entre la métrica {\tt NODR}  entre\\
+						&  dos tests. \\ \hline
+{\tt numberOfTestMethodsThatCallIt} & Retorna el número de tests en los cuales es  \\ 
+						& ejecutado.\\ \hline
+{\tt unitTestThatTestsIt} & Retorna el número total de unit tests donde algún  \\ 
+						& test haya lo ejecutado. \\ \hline						
+    \end{tabular}
+    \caption{API pública de las instancias de {\tt TSMethod}}
+    \tablabel{impl-tsmethod2}
+\end{table} 
 
 
 %  ---* TSTestMethod  *---
 \subsection{Las clase {\tt TSTestMethod} }
+\par Como se explicó anteriormente, las instancias de {\tt TSMethod} pueden encapsular un método compilado del código base o bien de los tests que inician la ejecución de éstos. La API pública presentada anteriormente está enfocada a consultas para métodos del código base. Para el análisis de los tests es necesario incluírlos también como entidades del modelo de clases. Para eso está {\tt TSTestMethod} que básicamente es un \emph{wrapper} de una instancia {\tt TSMethod} que encapsula un test method.
 
+\par A continuación se presenta su API pública: 
+
+\begin{table}[h] 
+    \centering 
+    \begin{tabular}{|l|l|}
+    	\hline
+Selector & Resultado \\ \hline \hline
+
+{\tt numberOfTestedMethods } & Retorna el número de métodos testeados.\\ \hline
+{\tt testedClasses} & Retorna una colección con las clases ({\tt TSClass}) que \\ 
+						& contengan métodos testeados.\\ \hline
+{\tt testedMethods}	& Retorna una colección con los métodos ({\tt TSMethod}) \\
+						& testeados. \\ \hline
+{\tt visualizeDifferencesWith:} & Retorna una instancia {\tt TSTestDifferenceBlueprint},\\
+						&  la visualización comparativa con el test entregado\\
+						&  como argumento. \\ \hline
+{\tt compareWith:} & Retorna una instancia {\tt TSDynCoverageOtoOComp}, \\  
+						&  un comparador 1-a-1  de test que provee métricas \\
+						&  de similitud dinámica.\\ \hline		
+{\tt staticCompareWith:} & Retorna una instancia {\tt TSStaticOtoOComp},  \\ 
+						& un comparador 1-a-1 de test que provee métricas \\
+						& de similitud estática.\\ \hline						
+    \end{tabular}
+    \caption{API pública de las instancias de {\tt TSMethod}}
+    \tablabel{impl-tstestmethod}
+\end{table} 
+
+
+
+%=======
 \section{Visualización}\seclabel{impl-viz}
 %% Method Shape: hablar del ajuste logaritmico.
 
+%=======
 \section{Clustering}\seclabel{impl-clustering}
 
+%=======
 \section{Browser}\seclabel{impl-browser}
 
 
-\par Todo el código detallado en las secciones anteriores está almacenado en el sitio \emph{SmalltalkHub}\footnote{Smalltalk Hub - \url{http://www.smalltalkhub.com} - última visita 12-07-2013 } el repositorio ubicado en la siguiente dirección: \url{smalltalkhub.com/#!/~PabloEstefo/TestSurgeon/}. 
+\section{Acceso al código}\seclabel{impl-repo}
+\par Todo el código detallado en las secciones anteriores está almacenado en el sitio \emph{SmalltalkHub}\footnote{Smalltalk Hub - \url{http://www.smalltalkhub.com} - última visita 12-07-2013 }, en el repositorio ubicado en la siguiente url: 
+\begin{center}
+\url{http://smalltalkhub.com/#!/~PabloEstefo/TestSurgeon/}
+\end{center}
