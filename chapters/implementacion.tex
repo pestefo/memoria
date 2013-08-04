@@ -58,7 +58,7 @@ Selector & Resultado \\ \hline \hline
 {\tt testClasses} & retorna una colección con todas las clases instrumentadas (instancias de \\ 
 						&{\tt TSClass}) que corresponden a un unit test. \\ \hline
     \end{tabular}
-    \caption{Principales métodos de {\tt TSProfiler}}
+    \caption{API pública de las instancias de {\tt TSProfiler}}
     \tablabel{impl-tsprofiler}
 \end{table} 
 
@@ -185,7 +185,7 @@ Selector & Resultado \\ \hline \hline
 %=======
 \section{Browser}\seclabel{impl-browser}
 %http://hal.inria.fr/docs/00/70/80/67/PDF/SpecTechReport.pdf
-\par El browser o navegador permite acceder rápidamente a los métodos a través de menúes que permiten seleccionar unit tests y los tests para realizar comparaciones rápidamente.  Esta interfaz está implementada completamente usando el framework Spec, y gráficamente consiste en cuatro espacios: Selector de Unit Tests, Selector de Test methods, Zona de Visualización y Zona de Código. La disposición de estas zonas es como se muestra en la \figref{caso-uso/2.png}. 
+\par El browser o navegador permite acceder rápidamente a los métodos a través de menúes que permiten seleccionar unit tests y los tests para realizar comparaciones rápidamente.  Esta interfaz está implementada completamente usando el framework Spec, y gráficamente consiste en cuatro espacios: Selector de Unit Tests, Selector de Test methods, Zona de Visualización y Zona de Código. La disposición de estas zonas es como se muestra en la \figref{caso-uso/2.png}. Para lanzar el browser se envía el mensaje {\tt openOn:} a {\tt TSBrowser} con una expresión regular que calza con el nombre de los paquetes a analizar, como argumento. Ej, para analizar los tests de Spec, se debe ejecutar el comando {\tt TSBrowser openOn: 'Spec-*'} porque los paquetes de Spec siguen la regla de nombrarse con {\tt Spec-} como prefijo, algunos paquetes de Spec son: {\tt Spec-Core}, {\tt Spec-Examples}, {\tt Spec-Layout}, {\tt Spec-Tools}, {\tt Spec-Tools-Editor}, {\tt Spec-Widgets}, entre otros.  
 
 \par Como las comparaciones entre ejecuciones de tests son 1-a-1, necesitamos primero escoger dos unit tests, uno para los candidatos a test rojo y otro para los candidatos azules. Cada uno de estos menúes de selección única son una instancia {\tt IconListModel} y muestran una lista de los unit tests ordenados por tamaño (cantidad de tests) de mayor a menor. Una vez seleccionados ambos unit tests, se despliegan los menúes inferiores, los selectores de Test Methods. Estos, también {\tt IconListModel} tienen algunas diferencias: el menú para escoger test rojo ordena los tests en orden alfabético; por su parte el menú para test azul inicialmente está en orden alfabético pero una vez se haya seleccionado un test azul se ordena según similitud dinámica descendente con respecto al test rojo. 
 
