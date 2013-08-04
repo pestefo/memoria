@@ -1,16 +1,15 @@
 \chapter{Caso de estudio: Roassal}\chaplabel{caso-de-estudio}
 % +-- TODO --*
 % - Figura: 
-%	- 
-% 	- 
+
 
 \par En el siguiente capítulo se presentará una aplicación de \emph{TestSurgeon} analizando los tests de \emph{Roassal}. 
 
 \section{Roassal: motor de visualización}
 
-\par Roassal es un motor de visualización desarrollado en la plataforma Pharo. Roassal está hecho para visualizar e interactuar con datos arbitrarios definidos en términos de objetos y sus relaciones. Roassal es comúnmente utilizado para producir visualizaciones interactivas. El rango de aplicaciones usando Roassal es diverso. Por ejemplo, es muy utilizado en el análisis de software (ver \figref{caso-estudio/roassal-example.png}), de hecho es utilizado en la visualización de TestSurgeon.
+\par Roassal es un motor de visualización desarrollado en la plataforma Pharo. Roassal está hecho para visualizar e interactuar con datos arbitrarios definidos en términos de objetos y sus relaciones. Roassal es comúnmente utilizado para producir visualizaciones interactivas y su rango de aplicaciones es diverso. Sin embargo es particularmente utilizado en el análisis de software (ver \figref{caso-estudio/roassal-example.png}), de hecho es una de las componentes principales de TestSurgeon.
 
-\par A continuación se adjunta el código que permite visualizar una jerarquía de clases y algunas propiedades de cada una de sus componentes usando Roassal. La clase visualizada es {\tt Collection}, clase abstracta de la cual heredan distintos tipos de clases que representan colecciones de objetos, como por ejemplo: {\tt Set}, {\tt Array}, {\tt OrderedCollection}, {\tt String} y {\tt Dictionary}, entre otros. La visualización presentada en la \figref{caso-estudio/roassal-example.png} muestra a cada clase con una altura y ancho dados, sus medidas dependen de su cantidad de métodos definidos (alto) y número de atributos (ancho). El código que hace esto posible se adjunta a continuación.\\
+\par A modo de ejemplo se adjunta el código que permite visualizar una jerarquía de clases y algunas propiedades de cada una de sus componentes usando Roassal. La clase visualizada es {\tt Collection}: clase abstracta de la cual heredan distintos tipos de clases que representan colecciones de objetos, como por ejemplo: {\tt Set}, {\tt Array}, {\tt OrderedCollection}, {\tt String} y {\tt Dictionary}, entre otros. La visualización presentada en la \figref{caso-estudio/roassal-example.png} muestra a cada clase con una altura y ancho los cuales dependen de de la cantidad de métodos definidos y número de atributos respectivamente. El código y la imagen resultante se adjuntan a continuación.\\
 
 \begin{code}
 view := ROView new.
@@ -44,43 +43,63 @@ view open
 
 \fig{h}{0.35}{caso-estudio/roassal-example.png}{Visualización hecha en Roassal: Jerarquía de la clase {\tt Collection} (arreglos, diccionarios y variantes) y sus clases hijas. El alto representa el número de métodos y el ancho el número de atributos}
 
-\section{Contexto}
+\section{Análisis del estado de los tests}
 
-\par Como primera aplicación de \emph{TestSurgeon} se consideró refactorizar el código de test de Roassal. La versión analizada es la número 441 que puede ser descargada desde el repositorio en SmalltalkHub\footnote{Repositorio de Roassal en SmalltalkHub versión 441 - \url{http://smalltalkhub.com/#!/~ObjectProfile/Roassal/versions/Roassal-VanessaPena.441} }. Esta consta de 30 paquetes los cuales contienen 301 clases que, a su vez, definen 4137 métodos. Estos últimos en total suman 29.720 líneas de código.
+\par Como primera aplicación de \emph{TestSurgeon} se consideró refactorizar el código de test de Roassal. La versión analizada es la número 441 que puede ser descargada desde su repositorio en SmalltalkHub\footnote{Repositorio de Roassal en SmalltalkHub versión 441 -- \url{http://smalltalkhub.com/\#!/~ObjectProfile/Roassal/versions/Roassal-VanessaPena.441} }. Esta consta de 30 paquetes los cuales contienen 301 clases que, a su vez, definen 4137 métodos. Estos últimos en total suman 29.720 líneas de código.
 
-\par Por su parte, el correcto funcionamiento de este código es asegurado por 80 unit test que contienen, todos juntos, 556 test methods. La cobertura de los tests alcanza un 72.37 \%.  En Roassal cada unit test está relacionado a una característica particular de Roassal como: manejo eventos, interacción, formas de las figuras(shapes), rendering, entre otros. Sin embargo uno de esos unit tests parece contener una cantidad significativamente mayor de tests en comparación a los demás unit tests.  El unit test en cuestión es {\tt ROMondrianViewBuilderTest} el cual contiene 96 métodos de test que corresponde a un 17\% del total de test methods definidos en Roassal. 
+\par Por su parte, para su correcto funcionamiento se definieron 80 unit test que contienen, todos juntos, 556 test methods. La cobertura de los tests alcanza un 72.37 \%.  En Roassal cada unit test está relacionado a una característica particular de Roassal como: manejo eventos, interacción, formas de las figuras(shapes), rendering, entre otros. Sin embargo uno de esos unit tests parece contener una cantidad significativamente mayor de tests en comparación a los demás unit tests.  El unit test en cuestión es {\tt ROMondrianViewBuilderTest} el cual contiene 96 métodos de test que corresponde a un 17\% del total de test methods definidos en Roassal. 
 
-\par Además se verificó que la gran mayoría de los unit test aporta una cantidad relativamente pequeña de tests. Esta situación se puede observar en la \figref{caso-estudio/distribucion-tests.png} donde se muestra la distribución de los test methods dentro de los unit test. Los unit tests se agruparon según la cantidad de tests que contienen. Se aprecia que la mayoría de los unit tests en Roassal contiene una cantidad pequeña de tests, de hecho el 55\% de los unit test contiene a lo más 5 tests (ver \tabref{distribucion-tests}) y contando como máximo 10 tests ya se alcanza un 83\% del total de los unit tests. 
+\par Además se verificó que la gran mayoría de los unit test aporta una cantidad relativamente pequeña de tests. Esta situación se puede observar en la \figref{caso-estudio/distribucion-tests.png} donde se muestra la distribución de los test methods. Los unit tests se agruparon según la cantidad de tests que contienen. Observando la figura, se aprecia que la mayoría de los unit tests en Roassal contiene una cantidad pequeña de tests, de hecho el 55\% de los unit test contiene a lo más 5 tests (ver \tabref{distribucion-tests}) y contando como máximo 10 tests ya se alcanza un 83\% del total de los unit tests. 
 
 \fig{h}{0.8}{caso-estudio/distribucion-tests.png}{Distribución de los tests methods por unit test}
 
 \par En conclusión, Roassal tiene una distribución de test que complica su mantenibilidad. Es más, {\tt ROMondrianViewBuilderTest} contiene las pruebas sobre la clase {\tt ROMondrianViewBuilder}, una clase que proporciona una API de alto nivel para crear visualizaciones. Esta API proporciona la mayoría de las funcionalidades de Roassal, por lo cual {\tt ROMondrianViewBuilderTest} prácticamente realiza llamados sobre gran parte del código de Roassal, además del código de la API. Eso hace que haya solapamientos de ejecución entre este y otros unit tests. Además al ser tests de alto nivel, cubren un funcionamiento más complejo lo cual, a su vez, hace que sus tests sean más complejos. Entonces, a la hora de ejecutarlos, si uno falla es difícil detectar donde está el error.
 
 
+%=======
 \section{Clustering por cobertura}
 
 % Por cobertura porque asi hay más chances de refactorizacion --> por inspección >90% vale la pena mirar
-\par 
+\par Para analizar los tests de Roassal con TestSurgeon, es necesario realizar comparaciones 1-a-1 entre tests methods. Los datos anteriormente expuestos muestran que las pruebas unitarias de Roassal contienen en total 556 test methods. Esto significa que potencialmente se realizarán $\frac{556 \cdot \left(556 -1 \right)}{2} = 154.290$ comparaciones. Las comparaciones 1-a-1 constan en interpretar la visualización de diferencias de ejecución y contrastarla con el código fuente para ver si es posible realizar una refactorización. Este trabajo requiere del criterio del desarrollador, por lo cual esa cantidad de comparaciones es inmanejable para un desarrollador común. Ahora, considerando que se analizará en particular el unit test {\tt ROMondrianViewBuilderTest}, la cantidad de comparaciones son $\frac{96 \cdot \left(96 -1 \right)}{2} = 4.560$, una cantidad considerable.
 
+\par Durante la realización de este trabajo se experimentó con tests de distintos softwares lo cuales fueron analizados con el browser de TestSurgeon. Una de las lecciones aprendidas es que la métrica de similitud por cobertura es un buen indicador para encontrar casos de refactorización. Si bien no es una métrica precisa para detectar casos de refactorización, es un buen indicador para poner el foco en un par de tests o descartarlo. Más aun, la experiencia indica que pares de tests con menos de 80\% de similitud en cobertura son difícilmente comparables. Esta cota inferior es más estricta cuando la cantidad de métodos cubiertos en común es menor, y recíprocamente, se puede relajar la cota cuando la cantidad de métodos testeados en común es mayor. 
+
+\par Entonces, para reducir la cantidad de comparaciones y facilitar la detección de \emph{test smells} una buena alternativa es agrupar los tests usando la similitud de cobertura. De esta manera estamos agrupando los casos interesantes para después inspeccionarlos con el browser. Para agruparlos se decidió utilizar el algoritmo de agrupamiento aglomerativo jerárquico (o Hierarchical Agglomerative Clustering). Este algoritmo usa una métrica de similitud entre elementos que en este caso de la métrica de similitud por cobertura, y una métrica de distancia entre un elemento y un cluster (o grupo de elementos) que, luego de un experimento, se concluyó que la distancia de promedios (Average Link) es la más representativa\footnote{El experimento de evaluación del algoritmo se pesenta en detalle en el \apref{exp-clustering}, y sus detalles técnicos en la \secref{impl-clustering} }.
+
+\par Luego de aplicar el algoritmo, se obtuvo 20 clusters. Esta partición de los tests es particularmente buena ya que se obtuvo una muy buena similitud interna de los clusters. La similitud interna de un cluster es el promedio de similitudes entre todos los elementos del cluster. La menor fue de 89\% (ver \figref{caso-estudio/clustering.png}), y el promedio de los casos no-triviales (\ie excluyendo clusters de tamaño 1 que por ende tendran 100\% de similitud interna) es de un 93,3\%. Es más, se encontró un cluster de dos test que poseen exactamente la misma cobertura. 
+
+\fig{h}{0.9}{caso-estudio/clustering.png}{Clusters formados con su tamaño y similitud interna}
+
+
+\par Finalmente, el número de comparaciones se redujo a 
+	\[ \sum_{i=1}^{13} \frac{1}{2} \,\, \texttt{size(}\textrm{cluster}_i\texttt{)} \times \left( \texttt{size(}\textrm{cluster}_i\texttt{)} -1 \right) = 648 \textrm{comparaciones} \]
+
+\par Esto significa que ahora la cantidad de comparaciones se redujo aproximadamente un 86\%, y el desarrollador se enfoca solamente en los mejores casos de comparación que son candidatos a refactorizaciones.
+
+%=======
 \section{Escenarios de refactorización y restructuración de los tests}
 
 \par Una vez agrupados los tests según su similitud de cobertura, la probabilidad de encontrar casos de refactorización es mayor ya que la revisión se realiza sobre casos similares. Y en estos, las ejecuciones de los tests comprenden una importante porción de métodos y clases comunes lo cual apunta a las mismas características del software (ej: rendering, manejo de eventos, etc). 
 
-\par Luego de una exhaustiva inspección a través de comparaciones 1-a-1 entre tests del mismo grupo y de grupos distintos se detectaron escenarios de refactorizaciones posibles. En esta labor la \emph{Test Difference Execution Blueprint} juega un rol principal para una descartar ver rápidamente si es un caso de interés o descartarlo, y comparar con el código fuente para ver si procede alguna refactorización.
+\par Luego de una exhaustiva inspección a través de comparaciones 1-a-1 entre tests del mismo grupo y de grupos distintos se detectaron tres escenarios de refactorizaciones posibles. En esta labor la \emph{Test Difference Execution Blueprint} juega un rol fundamental para rápidamente ver si es un caso interesante o pasar a otro. Luego de detectado un caso de interés se procede  a observar la zona de comparación de código fuente para ver si procede alguna refactorización.
 
-\par Estos casos fueron analizados y discutidos en conjunto con los desarrolladores principales de Roassal, con lo cual se logró restructurar el unit test {\tt ROMondrianViewBuilderTest}. A continuación se detallan los escenarios principales encontrados durante la experiencia.
+%Este trabajo en conjunto logró restructurar el unit test {\tt ROMondrianViewBuilderTest}. 
+\par Estos casos fueron analizados y discutidos en conjunto con los principales desarrolladores de Roassal. A continuación se detallan los escenarios principales encontrados durante la experiencia.
 
+
+%==========
 \subsection{Escenario \#1: Identificando diferencias semánticas}
 
 \par La visualización actúa como un medio eficiente para, en forma rápida y fácil comaprar tests: los colores y formas de los métodos ayudan a identificar cuales tests son semánticamente parecidos o diferentes.
 La \figref{identifyingSemanticalDifference} presenta una representación que obtuvimos mientras navegamos a través de los métodos contenidos en {\tt ROMondrianViewBuilderTest}. 
 
-El uso de colores marcados y distintos como rojo, azul y gris dan retroalimentan al desarrollador rápidamente sobre la qué tan similar semánticamente son los tests en comparación. Los métodos grises, como ya se detalló, indican aquellos tests que son llamados por ambos tests. Por su parte, métodos de colores rojo o azul son testeados solo por un test. De esta manera se aprecia en forma expedita el grado de similitud entre tests. El tamaño de los métodos indica la diferencia entre los dos tests para ese método. La figura \figref{identifyingSemanticalDifference} ilustra una gran diferencia entre dos métodos de test.
+\par El uso de colores marcados y distintos como rojo, azul y gris dan retroalimentan al desarrollador rápidamente sobre la qué tan similar semánticamente son los tests en comparación. Los métodos grises, como ya se detalló, indican aquellos tests que son llamados por ambos tests. Por su parte, métodos de colores rojo o azul son testeados solo por un test. De esta manera se aprecia en forma expedita el grado de similitud entre tests. El tamaño de los métodos indica la diferencia entre los dos tests para ese método. La figura \figref{identifyingSemanticalDifference} ilustra una gran diferencia entre dos métodos de test.
 
-En la interfaz de \emph{TestSurgeon} el código fuente de el método está a un clic de distancia de la visualización. Menús contextuales dan varias opciones para navegar e inspeccionar cualquier elemento estructural de la visualización si fuera requerido para mayor detalle.
+\par En la interfaz de \emph{TestSurgeon} el código fuente de el método está a un clic de distancia de la visualización. Menús contextuales dan varias opciones para navegar e inspeccionar cualquier elemento estructural de la visualización si fuera requerido para mayor detalle.
 
 \fig{h}{0.7}{identifyingSemanticalDifference}{La presencia de muchos métodos rojos y azules indica el grado de diferencia entre los test}
 
+%==========
 \subsection{Escenario \#2: Definiendo inicialización del fixture}
 
 \par Es frecuente que aparezca que cada test define su propia inicialización antes de realizar alguna verificación (\emph{assertion} en inglés) de invariantes usando la palabra clave {\tt assert:}. La inicialización del test corresponde a la porción situada antes de la primera verificación (\ie antes de la primera llamada a {\tt assert:}).
@@ -110,7 +129,7 @@ En la interfaz de \emph{TestSurgeon} el código fuente de el método está a un 
 	...
 \end{codeWithLineNumbers}
 
-\par Esos dos test inicializan un escenario muy similar que consiste en nodos (elementos gráficos) anidados nombrados por identificadores y guardados como variables locales del método. Después de aplicar el layout (ver método {\tt applyLayout}), se verifican distintas propiedades de los nodos como son: posición y tamaño.
+\par Esos dos test inicializan un escenario muy similar que consiste en nodos (elementos gráficos) anidados nombrados por identificadores y guardados como variables locales del método. Después de aplicar el layout (ver método {\tt applyLayout} en líneas 8 y 18), se verifican distintas propiedades de los nodos como son: posición y tamaño.
 
 \fig{h}{1.0}{scenario1-common}{Dos tests con un escenario de ejecución común (métodos grises son los métodos comunes para ambos tests)}
 
@@ -145,12 +164,12 @@ En la interfaz de \emph{TestSurgeon} el código fuente de el método está a un 
 \par El test case {\tt ROMondrianViewBuilderTest} fue recortado y refactorizado en tests dedicados.
 %The test case {\tt } has been shortened by refactoring out closely related tests in a dedicated tests.
 
-
+%==========
 \subsection{Escenario \#3: Mezclando o Removiendo métodos de test}
 
 \par Se encontraron casos donde dos tests están muy relacionados semánticamente. En ese caso, los dos test pueden ser fusionados en un solo test. La otra alternativa es mover uno de ellos, aquel cuya cobertura fuera menor, dentro de un test suite que no se ejecute con tanta frecuencia para así evitar redundancia.
 
-\fig{h}{0.70}{scenario3}{Minor difference between two tests}
+\fig{H}{0.65}{scenario3}{No hay mucha diferencia entre los dos tests}
 
 \par Considere la siguiente situación donde dos tests tienen distinto código fuente pero cubren el mismo código base. La \figref{scenario3} muestra una jerarquía de clases compuesta por cuatro clases que son testeadas por dos tests similares. Todos los métodos cubiertos son ejecutados en forma similar por los dos tests, lo cual queda evidenciado en por la presencia de pequeños cuadrados grises. %Since both the red and blue tests actually test the same code portion, this situation indicates an opportunity for removing one test.
 
