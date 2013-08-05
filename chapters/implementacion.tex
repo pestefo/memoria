@@ -30,10 +30,12 @@
 \par La clase {\tt MethodSpy} técnicamente es un \emph{wrapper} de un método en Pharo (una instancia de la clase {\tt CompiledMethod}) que acumula datos sobre el contexto de su ejecución. Para esto, la clase provee los métodos {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: } que son ejecutados justo antes e inmediatamente después de ejecutado el método instrumentado. Así se obtienen los datos del impacto de la ejecución de dicho método en el objeto y en los objetos con los cuales colabora. Estos métodos son abtractos y deben concretarse en las aplicaciones que decidan usar Spy extendiendo sus clases. 
 
 %== Figura: (UML) Clases y extensión
+\fig{H}{0.95}{impl/spy-testsurgeon.pdf}{Diagrama de clases de {\tt Spy-Core} y {\tt TestSurgeon-Core-Spy}}
+
 
 \par Para hacer uso de Spy se deben entonces extender las clases antes mencionadas y acondicionarlas al dominio específico del problema. Estas clases son: {\tt TSProfiler}, {\tt TSPackage}, {\tt TSClass}, {\tt TSMethod}. Para las aplicaciones que usan esta información, se necesitan obtener datos de ejecución tanto de los tests como del código testeado, es por eso, que para representar un método de test se tiene también la clase {\tt TSTestMethod} que es un wrapper de la clase {\tt TSMethod} donde se guardan métricas y datos procesados de ésta que corresponden a un test method y no a un método testeado, como por ejemplo: {\tt testedMethods}, {\tt testedClasses} o {\tt visualizeDifferencesWith:}, entre otros.
 
-\par A continuación se describen las clases que componen al paquete {\tt TestSurgeon-Core-Spy}:
+\par En el resto de la sección se describe en detalle las clases que componen al paquete {\tt TestSurgeon-Core-Spy}.
 
 %  ---* TSProfiler *---
 \subsection{La clase {\tt TSProfiler}}
