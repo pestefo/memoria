@@ -22,7 +22,7 @@
 %=======
 \section{Profiling}\seclabel{impl-spy}
  
-\par La componente principal de TestSurgeon es la que realiza el profiling. Por eso se escogió una herramienta que fuera fácil de utilizar y que permitiera obtener la mayor cantidad de datos sobre la ejecución de un test.
+\par La componente principal de TestSurgeon es la que realiza el profiling  de la ejecución de los unit tests. Por eso se escogió una herramienta que fuera fácil de utilizar y que permitiera obtener la mayor cantidad de datos sobre la ejecución de un test.
 \par El framework de profiling escogido fue \emph{Spy} y está escrito en el lenguaje Pharo. Entre sus características está que es un profiler orientado a los métodos. Considerando que en Pharo todas las interacciones corresponden a objetos que se comunican a través de mensajes, este punto es muy importante. Si se quiere conocer el comportamiento de un test con gran detalle, el hacer profiling de los métodos que son llamados durante su ejecución es fundamental. 
 
 \par Además, Spy posee una arquitectura muy simple y fácil de extender. Consta de cuatro clases principales: {\tt Profiler}, {\tt PackageSpy}, {\tt ClassSpy} y {\tt MethodSpy}. {\tt Profiler} es la clase principal con las características necesarias para la instrumentación, ejecución y obtención de datos. Las demás clases contienen información sobre el profiling de los paquetes instrumentados y de sus clases y métodos respectivamente. 
@@ -73,7 +73,7 @@ Selector & Resultado \\ \hline \hline
 \par Sobre {\tt TSClass} esta representa tanto a las clases testeadas como a lo unit tests, y posee mayoritariamente métodos de ayuda o \emph{helpers} para las distintas aplicaciones (visualización, clustering, etc) como por ejemplo: {\tt allMethodsTestedBy:} donde se le entrega un {\tt TSTestMethod} y se retorna todos los métodos definidos en su clase que son llamados durante la ejecución de ese test.  
 
 %  ---* TSMethod  *---
-\subsection{Las clase {\tt TSMethod} }
+\subsection{La clase {\tt TSMethod} }
 \par El profiling de Spy es orientado a los métodos, por tanto en esta clase es donde se registran todos los datos de la ejecución para caracterizar a los tests y poder diferenciarlos. Cada instancia de {\tt TSMethod} representa un método ejecutado, es decir, tanto el test que comienza la ejecución como todos los métodos llamados durante esta. Los datos son almacenados en variables de instancia, y existe solo una instancia por método definido en el software a analizar, entonces, un método ejecutado tendrá la información sobre su ejecución en distintos tests donde haya sido llamado. Las variables de instancia se definen a continuación:
 
 \begin{table}[h] 
@@ -145,7 +145,7 @@ Selector & Resultado \\ \hline \hline
 
 
 %  ---* TSTestMethod  *---
-\subsection{Las clase {\tt TSTestMethod} }
+\subsection{La clase {\tt TSTestMethod} }
 \par Como se explicó anteriormente, las instancias de {\tt TSMethod} pueden encapsular un método compilado del código base o bien de los tests que inician la ejecución de éstos. La API pública presentada anteriormente está enfocada a consultas para métodos del código base. Para el análisis de los tests es necesario incluírlos también como entidades del modelo de clases. Para eso está {\tt TSTestMethod} que básicamente es un \emph{wrapper} de una instancia {\tt TSMethod} que encapsula un test method.
 
 \par A continuación se presenta su API pública: 
