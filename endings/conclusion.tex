@@ -1,15 +1,12 @@
 \chapter{Conclusión y Trabajo Futuro}
-% +-- TODO --*
-% - Hablar sobre TestSurgeon (Resumen del Trabajo realizado)
-% - Hablar sobre Caso de Estudio (Analisis de resultados)
 
 \section{Conclusión}
 
 % Resumen del trabajo realizado
-\par En este trabajo se presentó todo el proceso de investigación, desarrollo e implementación de una solución para abordar problema de mantenibilidad del código que corresponde a las pruebas de software o tests: \emph{TestSurgeon}. Se mostró la importancia de un enfoque que combinara las características estáticas (código fuente) y dinámicas (ejecución) del artefacto correspondiente a los tests. Para diagnosticar el estado de los tests y detectar posibles \emph{smells} es necesario conocer la su ejecución. Además que dado que la refactorización se realiza sobre el código, esta tiene implicancias en su ejecución.
+\par En este trabajo se presentó todo el proceso de investigación, desarrollo e implementación de una solución para abordar problema de mantenibilidad del código en las pruebas de software o tests: \emph{TestSurgeon}. Se mostró la importancia de un enfoque que combinara las características estáticas (código fuente) y dinámicas (ejecución) del artefacto correspondiente a los tests. Para diagnosticar el estado de los tests y detectar posibles \emph{smells} es necesario conocer su ejecución. Además que dado que la refactorización se realiza sobre el código, éste debe considerarse.
 
 % TODO: Hablar sobre TestSurgeon
-\par Hablar de TestSurgeon como herramienta y un poco del caso de estudio
+\par TestSurgeon es una herramienta que provee un navegador de tests en el cual se pueden realizar comparaciones 1-a-1 entre tests methods. Para la realización de esta se dispone de una visualización llamada \emph{Test Difference Blueprint} que resume varias métricas de la ejecución de los tests sobre el código base. Esta gráfica permite diferenciar rápidamente los tests considerando tanto la cobertura de los tests como otras métricas relevantes para contextualizar sus ejecuciones. Junto con esto, se provee de un comparador de código que además de mostrar el código fuente de cada test colorea las diferencias entre estos.  
 
 %% Objetivos Realizados/No-Realizados
 
@@ -20,34 +17,37 @@
 \par Con respecto a lo último, justamente el asunto de la simplicidad y efectividad de la visualización fue un objetivo completamente logrado. La visualización representa de buena forma la metáfora de jerarquía de clases propia de un lenguaje de programación que sigue el paradigma de orientación a objetos como lo es Smalltalk (y su dialecto, Pharo). Además, que los métodos, protagonistas de la gráfica, esten en su interior refuerza esa idea. Con lo cual se obtiene una visión contextual que permite una efectiva diferenciación entre dos ejecuciones de test y favorece la rápida detección de \emph{test smells} contando con información de tanto su performance como del su código.
 
 % OB3 - Refactorizaciones automáticas o semi-automáticas y su implicancia en el software y cobertura
-\par En el \chapref{caso-de-estudio} se presenta un pequeño experimento de clustering de test utilizando algunas métricas de TestSurgeon en búsqueda de una solución semi-automática al problema de restructurar test unitarios basados en lo que realmente testean. Este experimento da un buen indicio para realizarlo a mayor escala con otros softwares. Sin embargo, aunque la cobertura del software no debería haber cambiaro por el mero hecho de haber trasladado código de un unit test a otro (más mínimas modificaciones), ésta idea no se comprobó por lo cual no se puede estar seguro de la inocuidad de esta técnica. Por lo tanto, el tercer objetivo se considera alcanzado pero no completamente.
+\par En el \chapref{caso-de-estudio} se presenta experimento de clustering de test utilizando métricas de cobertura en búsqueda de una solución semi-automática al problema de restructurar test unitarios usando el navegador de TestSurgeon. Como resultado se logró crear 13 clusters con casos potencialmente interesantes para comprarar, reduciendo el 86\% del total de casos que son irrelevantes. De esta manera se facilita la labor del desarrollador, la cual es, al menos desde el \emph{approach} de TestSurgeon irremplazable por lo crítico que resulta evaluar la situación y generar una restructuración inocua de los tests.
+
+\par Las refactorizaciones encontradas fueron de caracter conservadoras y su realización dependía no tan solo de la información provista por visualización y métricas, sino que también de un análisis de factibilidad contrastando dicha situación con el código fuente. Sin embargo no se realizó un análisis de debilitamiento de test posterior a las refactorizaciones, por lo cual no se puede estar seguro de la inocuidad de esta técnica. En conclusión, el tercer objetivo se considera logrado pero no completamente.
 
 % OB4 - UI sencilla y usable para el uso cotidiano
 \par Finalmente, el último objetivo que corresponde al diseño e implementación de una interfaz de usuario sencilla y usable para el uso cotidiano de restructuración de test por parte de un desarrollador se considera parcialmente alcanzado. Esto dado que, si bien no se realizó pruebas de usuario formales sobre esta herramienta, la experiencia presentando \emph{TestSurgeon} en las conferencias de ESUG (European Smalltalk User Group) y en forma personal con colegas desarrolladores muestra resultados muy favorables. La aplicación y su interfaz es muy sencilla y rápidamente fácil de usar.
-
-% TODO: Analisis de los resultados
-\par Hablar del caso de estudio
 
 % Reflexion de la relevancia del trabajo realizado
 \par El problema ha permanecido largamente sin estudiarse en profundidad y poca investigación se ha realizado al respecto. En este sentido, el trabajo realizado es de caracter innovador en su campo ya que provee una expresiva e intuitiva visualización para entender diferencias entre ejecución de tests, lo cual es clave para la detección de los \emph{smells} y su refactorización y/o restructuración. Lo anterior es avalado por la destacada participación en conferencias internacionales como por ejemplo la Conferencia Internacional en Ingeniería de Software (ICSE, principal conferencia en el área, L0) donde el trabajo obtuvo el primer lugar en la ACM Student Research Competition en la categoría de pregrado\footnote{SRC Winners, \url{http://src.acm.org/winners.html}}.  
 
 % Refactoring de test es complejo, se puede semi-automatizar pero requiere procesamiento humano además. Se logró una buena primer paso
-\par 
+\par El refactoring o restructuración es un proceso complejo y multivariable que requiere de vasta información sobre las entidades de software a modificar. Además de impactar fuertemente en la calidad y funcionamiento del código. Por lo cual, realizarlo con artefactos de software tales como las pruebas de software lo hace particularmente más riesgoso y complejo. Sin embargo el problema de mantenibilidad de los tests y el poco cuidado que se tiene de su diseño es real y debe ser enfrentado por su importancia en el resguardo de la calidad del software base. Si bien la academia ha realizado cierta investigación en este problema, esta es insuficiente y actualmente no existe un software que permita analizar este problema. En ese escenario \emph{TestSurgeon}, como primer acercamiento es una solución bastante contundente ya que ofrece una panorámica muy rica en información que incluye factores clave para caracterizar las pruebas de software, detectar \emph{smells} y evaluar alternativas de restructuración.
 
+
+%=======
 \section{Trabajo Futuro}
 
-\par 
-- Explorar otras visualizaciones
-- Probar con más softwares --> ratificar casos de refactorizacion o descubrir otros
+\par El presente informe presenta un caso de estudio donde se aplica la herramienta para un software en particular: Roassal. Durante la experiencia se logran detectar 3 casos de restructuración los cuales fueron presentados en detalle. Si bien estos escenarios no dependen en ningún caso del dominio específico del software analizado sería muy bueno ratificar la presencia de esos casos a través de un análisis similar a otros softwares. Junto con esto se podrían eventualmente encontrar otros escenarios se \emph{test smells}.
 
-% Uso de otras métricas y cómo visualizarlas
-{\tt NOI} - Número de instancias creadas por clase,{\tt NOMR} - Número de mensajes recibidos por todas las instancias de una clase, {\tt NSCH} - Número de cambios de estado realizados por un objeto como consecuencia de la ejecución de dicho método o {\tt NODA} - Número de distintos argumentos recibidos por un método. 
-% - Más métricas a considerar (ver repo GrandFinals)
-% \paragraph{Number of different arguments (NODA)}
-% \pe{Not implemented yet.}
+\par En este trabajo se logró desarrollar una visualización intuitiva y concisa para el problema definido. Sin embargo, una mejora que se tuvo presente pero no alcanzó a implementarse fue la de diferenciar en la visualización la ejecución correspondiente al \emph{fixture} de un test y las \emph{assertions} (o verificaciones). En otras palabras, mostrar la visualización para comparar el escenario que ejecuta el test donde se crean los objetos y se los hace ``actuar'', y comparar por separado la parte de la ejecución donde se verifican las propiedades de los objetos creados. Esto facilitaría la detección de solapamientos y ejecución redundante, haciendo más rápida la detección de escenarios del tipo \# 2 (ver \secref{escenario2}).
 
-% \paragraph{Number of instances (NOI)}
-% A userful metric for detecting relevant classes to certain tests is the number of instances of a class created during a test execution. This indicates which are the classes more relevant when a test is performed.
+\par Durante la investigación de este trabajo se identificaron varias métricas que caracterizan la ejecución de un test desde distintos enfoques. Sin embargo el tiempo no alcanzó para implementar y estudiar todas ellas. Estas métricas son:
 
-% \paragraph{Number of messages received (NMR)} 
-% Is interesting to know how many times the instances of certain class performed a method. This way we can differentiate between active classes and those classes to ignore.
+\begin{description}
+\item[{\tt NSCH} - Número de cambios de estado]: Esta métrica permite conocer cuáles métodos realizaron cambios en alguno de los atributos del objeto donde fueron ejecutados. Esto agrega otra dimensión al análisis de un método en la ejecución.
+\item[{\tt NODA} - Número de distintos argumentos recibidos por un método]: Otra dimensión que caracteriza un método y su comportamiento durante la ejecución de un test es la cantidad de argumentos distintos que recibió un método las veces que fue llamado.
+\item[{\tt NOI} - Número de instancias creadas por clase]: Una métrica muy útil para detectar las clases relevantes para ciertos tests es el número de instancias de una clase creadas durante su ejecución. 
+\item[{\tt NOMR} - Número de mensajes recibidos por todas las instancias de una clase]: Es interesante saber cuantas veces las intancias de cierta clase ejecutó algún método. De esta manera se pueden diferenciar a las clases cuyas instancias fueron más activas durante la ejecución del test y por ende más relevantes.
+
+\end{description}
+
+\par Las métricas anteriores enrriquecen la comprensión y el análisis de las entidades estudiadas (clases y métodos), pero a la vez aumentan la complejidad del problema dado el aumento de dimensiones. Para incluír estos datos y complementar la infomación que ya se entrega habrá que explorar con nuevas visualizaciones que permita condensar y ponderar de manera correcta, veraz e intuitiva todos los datos extras que se obtendrían implementando las métricas anteriormente expuestas.
+
+
