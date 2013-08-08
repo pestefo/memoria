@@ -1,0 +1,57 @@
+\chapter{Antecedentes}
+
+
+\section{Marco Teórico}
+
+\subsection{Profiling}
+
+\par El \emph{Perfil de Ejecución} (o \emph{Execution Profiling}) es una forma de análisis dinámico que consiste en monitorear un software durante su ejecución para posteriormente analizar los datos obtenidos. Entonces los \emph{Profilers} son herramientas para ayudar a los ingenieros de software a recolectar datos durante la ejecución y analizarlos, y así pueden determinar de mejor manera en qué parte de un sistema de software se gasta el tiempo de ejecución.
+
+
+\par Para la obtención de datos, existen varias técnicas de profiling. Los principales son profiling por instrumentación (o \emph{Instrumentation-based profiling}) y a través de muestras (o \emph{Sampling-based profiling}). En la primera, se inserta código de instrumentación antes (instrumentación estática) o durante la ejecución (instrumentación dinámica). En la primera se agrega el código justo antes de ejecutar y por tanto la sobrecarga (o overhead) es menor, sin embargo cualquier código generado dinámicamente no será instrumentado. En tanto, la técnica basada en muestras aproxima el tiempo que se gasrtó en un método de la aplicación deteniendo el programa y guardando la colección de metodos que fueron ejecutados.
+
+\par Usualmente los \emph{profilers} son utilizados con motivo de optimizar un sistema de software en cierto aspecto. Los datos a obtener a través de la técnica de profiling dependen completamente del problema a optimizar. Es por esto que el profiler a utilizar debe permitir obtener los datos necesarios y con la mínima sobrecarga (o \emph{overhead}) para obtener datos fidedignos y a la vez representativos. 
+
+
+\par La herramienta de profiling escogida para en este trabajo es el framework \emph{Spy}, que utiliza la técnica de profiling basado en instrumentación del tipo dinámico. Spy está diseñado para analizar softwares en el contexto de orientación a objetos, ya que se pueden obtener métricas contextuales tales como: el número de ejecuciones de un método, cantidad de objetos instanciados de una clase, etc. Para mayor información sobre este y su implementación en \emph{TestSurgeon} ver la \secref{impl-spy}. 
+
+\par Algunas de las aplicaciones exitosas basadas en Spy son \emph{Hapao}\footnote{Hapao - \url{http://hapao.dcc.uchile.cl}}: una herramienta de cobertura de test desarrollada por Vanessa Peña y Alexandre Bergel, que permite gráficamente ver la cobertura de las clases y métodos contrastando la cobertura de los últimos con el grado de complejidad de éstos; y \emph{Kai}\footnote{Kai Profiler - \url{http://www.objectprofile.com/\#/pages/products/kai/overview.html}}: un profiler que permite optimizar la ejecución de un software indicando, por ejemplo, dónde combiene incrustar una estructura de \emph{caching} para evitar redundancia de cálculo. En la \figref{hapao.png} y \figref{kai.png} se muestran capturas de pantalla de Hapao y Kai respectivamente.
+
+\fig{h}{0.7}{hapao.png}{Ejemplo de la visualización de la cobertura de test en Hapao}
+\fig{h}{0.7}{kai.png}{Diagnóstico de ejecución entregado por Kai}
+
+
+%==========
+\subsection{SUnit framework}
+% Explicar test method, unit tests
+% Partes de un test: 3A: Arrange, Act, Assert --> Fixture + Assertion
+
+\clearpage
+%=======
+\section{Trabajo Relacionado}
+% +-- TODO --*
+% - Figura: mostrar visualizaciones en herramientas
+
+\par  
+
+\subsection{Revisión de la literatura}
+\par Luego de revisar la bibliografía existente, entre los problemas con mayor investigación está la cobertura de los test: cómo obtener y mejorar la cobertura del software testeado para aumentar la confiabilidad en este, y la testeo por mutación: como mejorar la calidad de los test realizando variaciones en el código testeado que representan bugs y ver si los test atrapan detectan esas anomalías. Con respecto al problema de mantenibilidad, las estrategias encontradas en la literatura corresponden a priorización de tests y comparación de tests, pero en volumen mucho menor a los tópicos mencionados anteriormente.
+
+\par La priorización de tests y el \emph{clustering} son acercamientos populares para manejar el gran costo de correr una cantidad considerable de tests. Shin Yoo \etal han presentado un mecanismo para reducir las comparaciones 1-a-1 para clustering y de esa manera facilitar la tarea humana de priorizar tests. Ellos crearon clusters de tests agrupándolos por similitud de ejecución. Cada ejecución fue representada por una cadena binaria donde cada dígito (1 o 0) representa si cierto método fue ejecutado durante esta. Entonces, la similitud de cobertura es medida a través de una distancia binaria.
+
+\par Vengala \etal~\cite{Vang09a} crearon un mecanismo para usar análisis estático y dinámico para optimizar las actividades de testing tales como \emph{selección de test}, \emph{eliminación de redundancia} y \emph{priorización de test}. Aunque sus métricas siguen el mismo espíritu que \emph{TestSurgeon}, están definidas para un ambiente de programación procedural lo cual es incompatible en un ambiente orientado a objetos.
+
+\par Greiler \etal~\cite{Grei12a} aborda el problema de entendimiento de tests suites proponiendo un framework sobre correlación entre similitud de test (Test Similarity Correlator). Este último produce una traza de ejecución que caracteriza la ejecución de los test a través de cuatro tipos de eventos: ejecución de un test method, evento de set-up y tear-down, ejecución de un método y lanzamiento de excepción. El entendimiento de test suites se realiza comparando las trazas de ejecución.
+
+\par El código de test, desde el punto de vista de un artefacto de software tiene múltiples usos. Uno de ellos es documentación~\cite{Kuhn08a}. Especialmente para desarrolladores nuevos que tienen que enfrentarse con sistemas legados, los tests son altamente relevantes como ejemplos de código. Siguiendo esta perspectiva, Lienhard \etal~\cite{Lien08a} proponen una herramienta que facilita la tarea de escribir nuevos tests para esos sistemas a través de una visualización que llaman \emph{Test Blueprint}, como una guía para el entendimiento de los tests y el mantenimiento del código base.  
+
+%=== Hablar de Gaelli
+
+\subsection{Revisión de herramientas de cobertura de test existentes}
+%
+
+\par La gran cantidad de herramientas disponibles ilustra la importania de la cobertura de tests para los profesionales y la industria. Se realizó una revisión de muchos de ellos incluyendo Emma, EclEmma, JCover, GroboCodeCoverage, JCoverage, Parasoft JTest, Purity Plus, Semantic Designs, TCAT, Quilt, NoUnit, InsectJ, Hansel, Gretel, Jester, JVMDI Code Coverage, JBlanket, Coverlipse, Koalog, Cobertura, Mojo y Thucydides. En el \apref{review-test-coverage-tools} se presenta la lista con las URL donde se puede obtener cada una de ellas. Esta recolección de las herramientas más populares se realizó a través de motores de búsqueda en la web, directorios de proyectos open source, descripciones de entornos de desarrollo y publicaciones científicas entre los que están: maven\footnote{Apache Maven Project - \url{http://maven.apache.org/}}, sourceforge\footnote{Sourceforge - \url{http://sourceforge.net/}}, github\footnote{GitHub - \url{http://github.com/}}, bitbucket\footnote{BitBucket - \url{http://bitbucket.org}} y el Eclipse marketplace\footnote{Eclipse Marketplace - \url{http://marketplace.eclipse.org/}}. 
+
+\par Dentro de las 22 herramientas de cobertura de test estudiadas, solo 3 soportan un análisis comparativo de cobertura de test. 
+\par JCover indica las variaciones de cobertura mostrando un gráfico tipo \emph{scatterplot} puntos representando los pares \emph{(version del software, \% cobertura)}. Al parecer TCAT compara tests, sin embargo no hay suficiente información publicada, de hecho, su sitio web no ha sido actualizado desde el año 2008. Jester realiza mutación a los tests para verificar cuán capaz es el unit test de capturar variaciones en el código base.
+
