@@ -5,59 +5,78 @@
 
 \par A continuación se muestra la información sobre la distribución de los tests en los unit test de la versión 441 de Roassal.
 
-\begin{table}[h] 
+\vspace*{3cm}
+\begin{table}[H] 
+    \centering 
+    \begin{tabular}{|l|c|c|c|}
+        \hline
+        \textbf{\# test} & \textbf{\# unit test} & \textbf{\%} & \textbf{\% acumulado} \\ \hline\hline
+        $\left[ 0,5 \right]$    & 54    &68 & 68 \\ \hline
+        $\left( 5,10 \right]$   & 13    &16 & 84 \\ \hline
+        $\left( 10,15 \right]$  & 8 &10 & 94 \\ \hline
+        $\left( 15,20 \right]$  & 1 &1  & 95 \\ \hline
+        $\left( 20,50 \right]$  & 2 &3  & 98 \\ \hline
+        $\left( 50,80 \right]$  & 1 &1  & 99  \\\hline
+        $\left( 80,100 \right]$ & 1 &1  & 100 \\ \hline \hline
+        TOTAL   & 80    &100  & 100  \\ \hline
+    \end{tabular}
+    \caption{Distribución de los tests methods por unit test en Roassal}
+    \tablabel{distribucion-tests}
+\end{table} 
+
+\clearpage
+
+\begin{table}[H] 
     \footnotesize
     \centering 
     \begin{tabular}{|l|c|l|c|l|c|}
         \hline
-\textbf{Unit Test} & \textbf{\# } & \textbf{Unit Test} & \textbf{\# } & \textbf{Unit Test} & \textbf{\# } \\ \hline\hline
-ROMondrianViewBuilderTest & 96 & ROAddNameTest & 5 & ROPlatformTest & 2 \\ \hline
-ROElementTest & 63 & RoassalSerializerExporterTest & 5 & ROTracingCanvasTest & 2 \\ \hline
-ROViewTest & 42 & ROBoxTest & 5 & ROAbsorbLayoutTranslatorTest & 1 \\ \hline
-ROBitmapGenerationTest & 25 & ROEventTest & 5 & ROAbstractCanvasTest & 1 \\ \hline
-ROAbstractLabelTest & 17 & ROMenuElementTest & 5 & ROCenteredLabelTest & 1 \\ \hline
-ROMorphTest & 14 & ROScrollbableTest & 5 & ROCircleTest & 1 \\ \hline
-ROViewStructureTest & 14 & ROShapeTest & 5 & ROCollectionTest & 1 \\ \hline
-ROEdgeTest & 13 & RoassalExporterSVGTest & 4 & ROCountingVisitorTest & 1 \\ \hline
-ROCameraTest & 12 & ROColorTest & 4 & RODirectLayoutTranslatorTest & 1 \\ \hline
-ROContainingElementTest & 12 & ROExpandChildrenOnClickTest & 4 & ROHorizontalTreeLayoutTest & 1 \\ \hline
-ROTreeMapLayoutTest & 12 & ROMondrianScatterLayoutTest & 4 & ROImageTest & 1 \\ \hline
-ROConstraintTest & 11 & RORemoveEdgeTest & 4 & ROLabelTest & 1 \\ \hline
-RONormalizerTest & 11 & RODecoratorTest & 3 & ROLayoutSteppingTest & 1 \\ \hline
-ROAttachPointTest & 9 & ROGraphTransformationTest & 3 & ROLayoutTest & 1 \\ \hline
-ROFocusViewTest & 9 & ROGridLayoutTest & 3 & ROLayoutTranslatorTest & 1 \\ \hline
-ROHighlightElementTest & 9 & RONormalizerSpecificTest & 3 & ROMotionMoveTest & 1 \\ \hline
-ROPopupTest & 9 & ROViewStackTest & 3 & ROOrderedCollection & 1 \\ \hline
-RODraggableTest & 8 & ROAbstractLayout & 2 & ROParentElementResizeStrategyTest & 1 \\ \hline
-ROAnimationTest & 7 & ROAnnouncerTest & 2 & ROPharoCanvasTest & 1 \\ \hline
-ROMondrianViewBuilderLayoutTest & 7 & ROArrowTest & 2 & RORemoveNodeTest & 1 \\ \hline
-ROPopupMondrianTest & 7 & ROBorderTest & 2 & ROSmoothLayoutTranslatorTest & 1 \\ \hline
-ROPopupViewTest & 7 & ROCircleLayoutTest & 2 & ROSugiyamaLayoutTest & 1 \\ \hline
-RoassalExporterHTMLTest & 6 & ROFlowLayoutTest & 2 & ROTranslationTest & 1 \\ \hline
-ROEaselTest & 6 & ROForceBasedLayoutTest & 2 & ROTreeLayoutTest & 1 \\ \hline
-ROViewMiniMapTest & 6 & ROLineTest & 2 & ROVisitorTest & 1 \\ \hline
-ROZOrderingTest & 6 & ROMondrianCacheTest & 2 & ROZoomOnClickTest & 1 \\ \hline
- &  & RONativeExampleUtilityTest & 2 & ROTest & 0 \\ \hline
- &  &  &  & Total test methods & 556 \\ \hline
+\textbf{Unit Test} &  \textbf{\# } & \textbf{Unit Test}  & \textbf{\#} \\ \hline \hline
+\texttt{ROMondrianViewBuilderTest} &  96 & \texttt{ROGridLayoutTest}  &  3\\ \hline
+\texttt{ROElementTest} &  63  & \texttt{RONormalizerSpecificTest}  &  3\\ \hline
+\texttt{ROViewTest} & 42  &\texttt{ROViewStackTest} &3\\ \hline
+\texttt{ROBitmapGenerationTest} & 25  &\texttt{ROAbstractLayout}  &  2\\ \hline
+\texttt{ROAbstractLabelTest} &17 & \texttt{ROAnnouncerTest} &2\\ \hline
+\texttt{ROMorphTest} &14 & \texttt{ROArrowTest} &2\\ \hline
+\texttt{ROViewStructureTest} &14  &\texttt{ROBorderTest}  &  2\\ \hline
+\texttt{ROEdgeTest}  &13 & \texttt{ROCircleLayoutTest} & 2\\ \hline
+\texttt{ROCameraTest}    &12 & \texttt{ROFlowLayoutTest}   & 2\\ \hline
+\texttt{ROContainingElementTest} & 12 & \texttt{ROForceBasedLayoutTest}  &2\\ \hline
+\texttt{ROTreeMapLayoutTest} &12 & \texttt{ROLineTest} & 2\\ \hline
+\texttt{ROConstraintTest}    &11  &\texttt{ROMondrianCacheTest}&2\\ \hline
+\texttt{RONormalizerTest}    &11 & \texttt{RONativeExampleUtilityTest} & 2\\ \hline
+\texttt{ROAttachPointTest}   &9  & \texttt{ROPlatformTest}  &2\\ \hline
+\texttt{ROFocusViewTest} &9   & \texttt{ROTracingCanvasTest} & 2\\ \hline
+\texttt{ROHighlightElementTest}  &9  & \texttt{ROAbsorbLayoutTranslatorTest} &   1\\ \hline
+\texttt{ROPopupTest} &9  & \texttt{ROAbstractCanvasTest}   & 1\\ \hline
+\texttt{RODraggableTest} &8  & \texttt{ROCenteredLabelTest} &1\\ \hline
+\texttt{ROAnimationTest} &7  & \texttt{ROCircleTest}   & 1\\ \hline
+\texttt{ROMondrianViewBuilderLayoutTest} & 7  & \texttt{ROCollectionTest}   & 1\\ \hline
+\texttt{ROPopupMondrianTest} &7  & \texttt{ROCountingVisitorTest} &  1\\ \hline
+\texttt{ROPopupViewTest} &7  & \texttt{RODirectLayoutTranslatorTest}  &  1\\ \hline
+\texttt{RoassalExporterHTMLTest} &6  & \texttt{ROHorizontalTreeLayoutTest} & 1\\ \hline
+\texttt{ROEaselTest} &6  & \texttt{ROImageTest} &1\\ \hline
+\texttt{ROViewMiniMapTest}   &6  & \texttt{ROLabelTest} &1\\ \hline
+\texttt{ROZOrderingTest} &6  & \texttt{ROLayoutSteppingTest}  &  1\\ \hline
+\texttt{ROAddNameTest}   &5  & \texttt{ROLayoutTest}   & 1\\ \hline
+\texttt{RoassalSerializerExporterTest}   &5  & \texttt{ROLayoutTranslatorTest} & 1\\ \hline
+\texttt{ROBoxTest}   &5  & \texttt{ROMotionMoveTest}    &1\\ \hline
+\texttt{ROEventTest} &5  & \texttt{ROOrderedCollection} &1\\ \hline
+\texttt{ROMenuElementTest}   &5  & \texttt{ROParentElementResizeStrategyTest} &  1\\ \hline
+\texttt{ROScrollbableTest}   &5  & \texttt{ROPharoCanvasTest} &  1\\ \hline
+\texttt{ROShapeTest} &5  & \texttt{RORemoveNodeTest}  &  1\\ \hline
+\texttt{RoassalExporterSVGTest}  &4  & \texttt{ROSmoothLayoutTranslatorTest}  &  1\\ \hline
+\texttt{ROColorTest} &4  & \texttt{ROSugiyamaLayoutTest}   & 1\\ \hline
+\texttt{ROExpandChildrenOnClickTest} &4  & \texttt{ROTranslationTest} &  1\\ \hline
+\texttt{ROMondrianScatterLayoutTest} &4  & \texttt{ROTreeLayoutTest}  &  1\\ \hline
+\texttt{RORemoveEdgeTest}    &4  & \texttt{ROVisitorTest} &  1\\ \hline
+\texttt{RODecoratorTest} &3  & \texttt{ROZoomOnClickTest} &  1\\ \hline
+\texttt{ROGraphTransformationTest}   &3 &  \texttt{ROTest} & 0\\ \hline 
+\multicolumn{4}{c}{} \\ \hline
+\multicolumn{2}{|c|}{\textbf{Total unit tests}: 96}  & \multicolumn{2}{|c|}{\textbf{Total test methods}: 556}  \\ \hline
     \end{tabular}
     \caption{Número de tests definidos en cada Unit Test de Roassal}
     \tablabel{distribucion-tests-total}
 \end{table} 
 
-\begin{table}[h] 
-    \centering 
-    \begin{tabular}{|l|c|c|}
-    	\hline
-        \textbf{\# de test} & \textbf{\# de unit test} & \textbf{\%} \\ \hline\hline
-        $\left[ 0,5 \right]$	& 54	&68 \\ \hline
-		$\left( 5,10 \right]$	& 13	&16	\\ \hline
-		$\left( 10,15 \right]$	& 8	&10	\\ \hline
-		$\left( 15,20 \right]$	& 1	&1	\\ \hline
-		$\left( 20,50 \right]$	& 2	&3	\\ \hline
-		$\left( 50,80 \right]$	& 1	&1	\\ \hline
-		$\left( 80,100 \right]$ & 1 &1	\\ 	\hline \hline
-		TOTAL	& 80	&100	\\ \hline
-    \end{tabular}
-    \caption{Distribución de los tests methods por unit test en Roassal}
-    \tablabel{distribucion-tests}
-\end{table} 
+
