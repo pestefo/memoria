@@ -20,19 +20,74 @@
 \fig{h}{0.7}{hapao.png}{Ejemplo de la visualización de la cobertura de test en Hapao}
 \fig{h}{0.7}{kai.png}{Diagnóstico de ejecución entregado por Kai}
 
-
+\clearpage
 %==========
 \subsection{SUnit framework}
 % Explicar test method, unit tests
 % Partes de un test: 3A: Arrange, Act, Assert --> Fixture + Assertion
+\par \emph{SUnit} es un framework de testing que apoya la creación de tests automatizados. SUnit es la implementación en Smalltalk del framework xUnit\footnote{la \textbf{x} se reemplaza por el lenguaje de programación, por ejemplo: jUnit para Java.} que de hecho historicamente es la primera. Las cualidades que caracterizan xUnit son:
 
-\clearpage
+\begin{itemize}
+\item Los tests son repetibles: Cada test se puede ejecutar cuantas veces se quiera.
+\item Los tests se ejecutan si necesidad intervención humana: Se puede dejar los tests ``corriendo'' durante la noche si necesidad de intervenir en su ejecución.
+\item Los tests cuentan una historia: un test cubre al menos una funcionalidad del sistema. Un test entonces es un escenario que cualquier desarrollador puede leer para entender dicha funcionalidad.
+\end{itemize}
+
+\par En SUnit los tests están contenidos en clases llamadas unit tests. Los unit tests son clases que extienden o heredan de la clase {\tt TestCase}, una de las clases arquitectónicas del framework. Además, los unit tests suelen nombrarse con el sufijo {\tt Test}, por ejemplo {\tt MarioBrosTest}. Los tests o test methods, por su parte se nombran con {\tt test} como prefijo, ejemplo {\tt testMarioFallDownAndLoseOneLife}.
+
+
+\subsubsection{Arquitectura de \emph{SUnit}}
+\par Estructuralmente, SUnit se compone de cuatro clases: {\tt TestSuite}, {\tt TestCase}, {\tt TestResource} y {\tt TestResult} como se muestra en \figref{sunit.pdf}. 
+\begin{description}
+\item[{\tt TestCase}] representa un unit test o una familia de test que comparten el mismo contexto. Esta clase está pensada para ser extendida por clases concretas. El contexto se especifica en el método {\tt setUp} donde las variables de instancia de cada subclase de {\tt TestCase} se inicializan y definen el contexto en el cual se ejecutará cada test. También se define el método {\tt tearDown} que es responsable de limpiar los objetos que hayan sido inicializados y modificados durante la ejecución del test para que pueden ser reinicializados por el método {\tt setUp}. Entonces cada test se ejecuta de la siguiente manera:
+
+\[ \texttt{setUp} \rightarrow \texttt{testMarioFallDownAndLoseOneLife} \rightarrow \texttt{tearDown} \]
+
+\item[{\tt TestSuite}] contiene una colección de unit tests. Una instancia de {\tt TestSuite} está compuesto por instancias de subclases de {\tt TestCase} y {\tt TestSuite}. Las clases {\tt TestSuite} y {\tt TestCase} forman el patrón composite. 
+
+\item[{\tt TestResult}] representa los resultados de una ejecución de {\tt TestSuite}. Contiene el número de tests que pasadon, el número de tests que fallaron y el número de errores.
+
+\item[{\tt TestResource}] representa un recurso que es usado por un test o un conjunto de tests. Un recurso se asocia con una clase hija de {\tt TestCase} y se ejecuta automáticamente antes de la ejecución de todos los tests y una sola vez.   
+\end{description}
+
+\fig{h}{0.7}{sunit.pdf}{Las clases que representan el núcleo de \emph{SUnit}}
+
+\subsubsection{Estructura de un test}
+\par La estructura de cada test puede dividirse en dos partes: \emph{fixture} (o escenario) y \emph{assertions} (o verificaciones). En el fixture del test se crean e inicializan los objetos del escenario, se les hace interactuar a través de mensajes. No se considera parte del fixture todos los objetos inicializados y las operaciones realizadas en la ejecución del método {\tt setup}, aunque sí afectan la interacción en el fixture. Posteriormente, en el test hay una serie de validaciones o verificaciones, donde se comprueba el estado de los objetos a través de métodos verificadores heredados de {\tt TestCase} tales como: {\tt assert:} para verificar una afirmación, {\tt deny:} para negarla, {\tt should:raise:} para verificar que una excepción en particular se lanzó, y {\tt shouldnt:raise:} para asegurar que no se lanzó cierta excepción.
+
+\par A modo de ejemplo se muestra un código que podría ser un test básico del popular juego \emph{Super Mario Bros.}, donde un plomero de traje rojo va pasando por escenarios llenos de trampas y dificultades para poder llegar el castillo donde supuestamente está su princesa y rescatarla. Una de las trampas más comunes y sencillas del juego son hoyos infinitos donde Mario puede caer y perder una vida. En el ejemplo, inicializamos la variable local {\tt mario} con una instancia de la clase {\tt MBMario} que por defecto tiene 3 vidas (en la plataforma NES). Luego lo insertamos al juego junto con un escenario en el cual, luego de dar tres pasos debiera caer a un hoyo y perder una vida. En el juego no se acaba sino hasta que a Mario se le acaban las vidas y vemos el mensaje de ``Game Over''. 
+
+\begin{codeWithLineNumbers}
+<i>MarioBrosTest>>testMarioFallDownAndLoseOneLife</i>
+	" *--* Fixture *--* "
+	| game mario scene |
+	game := MBGame new.
+	mario := MBMario new. " todos saben que Mario parte con 3 vidas"
+	scene := #(#floor #floor #hole #floor). " un escenario con un hoyo en la tercera posicion"
+
+	game setScene: scene.
+	game setPlayer: mario.
+
+	" hagamos a mario avanzar en el escenario"
+	mario moveOneStep. 
+	mario moveOneStep.
+	mario moveOneStep. 
+		
+	" *--* Assertions *--* "
+	
+	self assert: (game currentPosition = #hole) "mario cayo al hoyo" 
+	self assert: mario isDead. "deberia haber muerto puesto que cayo al hoyo"
+	self assert: (mario lives = 2). "mario ahora tiene 2 vidas"
+	self deny: game isGameOver. 
+	
+
+\end{codeWithLineNumbers}
+
+
 %=======
 \section{Trabajo Relacionado}
-% +-- TODO --*
-% - Figura: mostrar visualizaciones en herramientas
 
-\par  
+\par A continuación se presenta una revisión de la literatura sobre el problema de mantenibilidad de las pruebas de software, y una revisión también de las herramientas de cobertura de test que abordan tangencialmente el problema.
 
 \subsection{Revisión de la literatura}
 \par Luego de revisar la bibliografía existente, entre los problemas con mayor investigación está la cobertura de los test: cómo obtener y mejorar la cobertura del software testeado para aumentar la confiabilidad en este, y la testeo por mutación: como mejorar la calidad de los test realizando variaciones en el código testeado que representan bugs y ver si los test atrapan detectan esas anomalías. Con respecto al problema de mantenibilidad, las estrategias encontradas en la literatura corresponden a priorización de tests y comparación de tests, pero en volumen mucho menor a los tópicos mencionados anteriormente.
@@ -45,7 +100,8 @@
 
 \par El código de test, desde el punto de vista de un artefacto de software tiene múltiples usos. Uno de ellos es documentación~\cite{Kuhn08a}. Especialmente para desarrolladores nuevos que tienen que enfrentarse con sistemas legados, los tests son altamente relevantes como ejemplos de código. Siguiendo esta perspectiva, Lienhard \etal~\cite{Lien08a} proponen una herramienta que facilita la tarea de escribir nuevos tests para esos sistemas a través de una visualización que llaman \emph{Test Blueprint}, como una guía para el entendimiento de los tests y el mantenimiento del código base.  
 
-%=== Hablar de Gaelli
+%=== Faltan las citas! 
+\par De los autores encontrados, el que aborda con mayor claridad el problema de la mantenibilidad de los tests es Markus Gaelli. Dentro de su investigación presenta un estudio de clasificación de unit test representado por un arbol binario cuyas ramas indican cumplimiento de un criterio de clasificación. En este arbol, las hojas son los distintos tipos de test: Test donde se llama un solo método exactamente una sola vez(~50\% del total de tests estudiados), Test donde se llama un solo método en varios escenarios distintos (15\%), etc. Luego, utilizando esta taxonomía crea un metamodelo para escribir tests a través de ejemplos (o tests de alto nivel) a través de composiciones de tests de más pequeños y de bajo nivel. Este modelo facilita la detección de errores ya que al componer tests, un bug en el código base sólo rompería uno de los tests de los que conforman el test ejecutado.
 
 \subsection{Revisión de herramientas de cobertura de test existentes}
 %

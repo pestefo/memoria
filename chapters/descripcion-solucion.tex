@@ -1,4 +1,4 @@
-\chapter{Descripción de la Solución}
+\chapter{Descripción de la Solución}\chaplabel{descripcion-solucion}
 % +-- TODO --*
 % - Referencias:
 %	- Sugiyama Layout
@@ -7,7 +7,7 @@
 
 \section{Comparando la ejecución de tests con \emph{TestSurgeon}}
 
-\par A la luz de los resultados del estudio comparativo entre el acercamiento al problema desde la perspectiva del análisis estático y análisis dinámico de  tests presentado en el \apref{exp-static-vs-dynamic}, se desprende que los tests deben ser analizados en base a lo que realmente ejecutan. Es por esto que se hace necesario que cualquier solución que apunte a atacar este problema, considere fuertemente un enfoque dinámico para el diagnóstico de la situación. Y también contrastarlo con el código fuente y otros aprontes de análisis estático para tener una visión más completa tanto del problema como de las alternativas de solución. 
+\par A la luz de los resultados del estudio comparativo entre el acercamiento al problema desde la perspectiva del análisis estático y análisis dinámico de  tests presentado en el \apref{exp-static-vs-dynamic}, se desprende que los tests deben ser analizados en base a lo que realmente ejecutan. Es por esto que se hace necesario que cualquier solución que apunte a abordar este problema, considere fuertemente un enfoque dinámico para el diagnóstico de la situación. Y también contrastarlo con el código fuente y otros aprontes de análisis estático para tener una visión más completa tanto del problema como de las alternativas de solución. 
 
 \par En respuesta a este escenario, se presenta \emph{TestSurgeon}: un profiler para test unitarios. TestSurgeon realiza un monitoreo de la ejecución de test unitarios y recolecta datos sobre \emph{qué} está siendo testeado (cobertura) y \emph{cómo} (contexto de ejecución). TestSurgeon aproxima la similitud entre métodos de tests a través de una representación visual que relaciona el código testeado y métricas representativas que caracterizan (y diferencian) a los dos test en comparación. 
 
