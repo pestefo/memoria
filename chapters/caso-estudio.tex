@@ -61,7 +61,7 @@ view open
 
 
 %=======
-\section{Clustering por cobertura}
+\section{Clustering por cobertura}\seclabel{caso-estudio-clustering}
 
 % Por cobertura porque asi hay más chances de refactorizacion --> por inspección >90% vale la pena mirar
 \par Para analizar los tests de Roassal con TestSurgeon, es necesario realizar comparaciones 1-a-1 entre tests methods. Los datos anteriormente expuestos muestran que las pruebas unitarias de Roassal contienen en total 556 test methods. Esto significa que potencialmente se realizarán $\frac{556 \cdot \left(556 -1 \right)}{2} = 154.290$ comparaciones. Las comparaciones 1-a-1 constan en interpretar la visualización de diferencias de ejecución y contrastarla con el código fuente para ver si es posible realizar una refactorización. Este trabajo requiere del criterio del desarrollador, por lo cual esa cantidad de comparaciones es inmanejable. Ahora, considerando que se analizará en particular el unit test {\tt ROMondrianViewBuilderTest}, la cantidad de comparaciones son $\frac{96 \cdot \left(96 -1 \right)}{2} = 4.560$, que sigue siento una cantidad muy grande.
