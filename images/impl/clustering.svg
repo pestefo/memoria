@@ -1,0 +1,850 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   preserveAspectRatio="xMinYMin meet"
+   viewBox="143 160 832 709"
+   width="832"
+   height="709"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="clustering.svg">
+  <metadata
+     id="metadata594">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs592" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1440"
+     inkscape:window-height="790"
+     id="namedview590"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:zoom="0.4342933"
+     inkscape:cx="-515.73573"
+     inkscape:cy="234.50443"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <rect
+     x="144"
+     y="174"
+     width="830"
+     height="694"
+     rx="0"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect22" />
+  <rect
+     x="144"
+     y="161"
+     width="19"
+     height="13"
+     rx="0"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect24" />
+  <text
+     x="559"
+     y="198"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text26">TestSurgeon-Clustering</text>
+  <text
+     x="-298"
+     y="-415"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text94" />
+  <text
+     x="-864"
+     y="-554"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text100" />
+  <text
+     x="-880"
+     y="-545"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text102" />
+  <text
+     x="-898"
+     y="-554"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text104" />
+  <text
+     x="-604"
+     y="-553"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text110" />
+  <text
+     x="-648"
+     y="-545"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text112" />
+  <text
+     x="-696"
+     y="-553"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text114" />
+  <text
+     x="-322"
+     y="-554"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text120" />
+  <text
+     x="-372"
+     y="-545"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text122" />
+  <text
+     x="-423"
+     y="-554"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text124" />
+  <text
+     x="-821"
+     y="-182"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text148" />
+  <text
+     x="-595"
+     y="-166"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text158" />
+  <text
+     x="-359"
+     y="-25"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text186" />
+  <text
+     x="-844"
+     y="-206"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text192" />
+  <text
+     x="-865"
+     y="-192"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text194" />
+  <text
+     x="-889"
+     y="-208"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text196" />
+  <text
+     x="-618"
+     y="-219"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text202" />
+  <text
+     x="-666"
+     y="-210"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text204" />
+  <text
+     x="-716"
+     y="-219"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text206" />
+  <text
+     x="-382"
+     y="-216"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text212" />
+  <text
+     x="-392"
+     y="-207"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text214" />
+  <text
+     x="-404"
+     y="-216"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text216" />
+  <text
+     x="-987"
+     y="-426"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text222" />
+  <text
+     x="-973"
+     y="-348"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text224" />
+  <text
+     x="-987"
+     y="-255"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text226" />
+  <text
+     x="-793"
+     y="-468"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text232" />
+  <text
+     x="-779"
+     y="-369"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text234" />
+  <text
+     x="-794"
+     y="-256"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text236" />
+  <text
+     x="-527"
+     y="-435"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text242" />
+  <text
+     x="-512"
+     y="-353"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text244" />
+  <text
+     x="-526"
+     y="-256"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text246" />
+  <text
+     x="-250"
+     y="-383"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text252" />
+  <text
+     x="-235"
+     y="-333"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text254" />
+  <text
+     x="-250"
+     y="-269"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text256" />
+  <text
+     x="-953"
+     y="343"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text306" />
+  <text
+     x="-974"
+     y="378"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text308" />
+  <text
+     x="-1019"
+     y="407"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text310" />
+  <text
+     x="-886"
+     y="361"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text316" />
+  <text
+     x="-835"
+     y="447"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text318" />
+  <text
+     x="-810"
+     y="556"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text320" />
+  <rect
+     x="516"
+     y="235"
+     width="161"
+     height="89"
+     rx="2"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect322" />
+  <text
+     x="596"
+     y="259"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text324">«Abstract»</text>
+  <text
+     x="596"
+     y="276"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text326">TSHACDistance</text>
+  <line
+     x1="517"
+     y1="290"
+     x2="676"
+     y2="290"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line328" />
+  <text
+     x="521"
+     y="310"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text330">distanceBetween:and:</text>
+  <rect
+     x="317"
+     y="356"
+     width="161"
+     height="72"
+     rx="2"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect332" />
+  <text
+     x="397"
+     y="380"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text334">TSSingleLinkDistance,</text>
+  <line
+     x1="318"
+     y1="394"
+     x2="477"
+     y2="394"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line336" />
+  <text
+     x="322"
+     y="414"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text338">distanceBetween:and:</text>
+  <rect
+     x="508"
+     y="356"
+     width="176"
+     height="72"
+     rx="2"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect340" />
+  <text
+     x="596"
+     y="380"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text342">TSCompleteLinkDistance</text>
+  <line
+     x1="509"
+     y1="394"
+     x2="683"
+     y2="394"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line344" />
+  <text
+     x="513"
+     y="414"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text346">distanceBetween:and:</text>
+  <rect
+     x="699"
+     y="356"
+     width="167"
+     height="72"
+     rx="2"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect348" />
+  <text
+     x="782"
+     y="380"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text350">TSAverageLinkDistance</text>
+  <line
+     x1="700"
+     y1="394"
+     x2="865"
+     y2="394"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line352" />
+  <text
+     x="704"
+     y="414"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text354">distanceBetween:and:</text>
+  <polyline
+     points="1719,1168 1878,1140"
+     style="fill:#000000;fill-opacity:0;stroke:#333333;stroke-width:1"
+     id="polyline356"
+     transform="translate(-1322,-814)" />
+  <polyline
+     points="1878,1140 1866,1136 1868,1146 1878,1140"
+     style="fill:#ffffff;fill-opacity:1;stroke:#333333;stroke-width:1"
+     id="polyline358"
+     transform="translate(-1322,-814)" />
+  <text
+     x="538"
+     y="314"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text360" />
+  <text
+     x="476"
+     y="334"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text362" />
+  <text
+     x="407"
+     y="337"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text364" />
+  <polyline
+     points="1918,1168 1918,1140"
+     style="fill:#000000;fill-opacity:0;stroke:#333333;stroke-width:1"
+     id="polyline366"
+     transform="translate(-1322,-814)" />
+  <polyline
+     points="1918,1140 1912,1150 1924,1150 1918,1140"
+     style="fill:#ffffff;fill-opacity:1;stroke:#333333;stroke-width:1"
+     id="polyline368"
+     transform="translate(-1322,-814)" />
+  <text
+     x="581"
+     y="342"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text370" />
+  <text
+     x="596"
+     y="334"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text372" />
+  <text
+     x="581"
+     y="340"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text374" />
+  <polyline
+     points="2104,1168 1953,1140"
+     style="fill:#000000;fill-opacity:0;stroke:#333333;stroke-width:1"
+     id="polyline376"
+     transform="translate(-1322,-814)" />
+  <polyline
+     points="1953,1140 1962,1146 1964,1136 1953,1140"
+     style="fill:#ffffff;fill-opacity:1;stroke:#333333;stroke-width:1"
+     id="polyline378"
+     transform="translate(-1322,-814)" />
+  <text
+     x="644"
+     y="342"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text380" />
+  <text
+     x="706"
+     y="334"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text382" />
+  <text
+     x="766"
+     y="366"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text384" />
+  <rect
+     x="294"
+     y="463"
+     width="253"
+     height="225"
+     rx="2"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect386" />
+  <text
+     x="420"
+     y="487"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text388">«Abstract»</text>
+  <text
+     x="420"
+     y="504"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text390">TSHierarchicalAgglomerativeClustering</text>
+  <line
+     x1="295"
+     y1="518"
+     x2="546"
+     y2="518"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line392" />
+  <text
+     x="299"
+     y="538"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text394">clusters</text>
+  <text
+     x="299"
+     y="555"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text396">minInternalSimilarity</text>
+  <text
+     x="299"
+     y="572"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text398">lastMergedClusters</text>
+  <line
+     x1="295"
+     y1="586"
+     x2="546"
+     y2="586"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line400" />
+  <text
+     x="299"
+     y="606"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text402">run</text>
+  <text
+     x="299"
+     y="623"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text404">distanceMetric</text>
+  <text
+     x="299"
+     y="640"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text406">groupClosestClusters</text>
+  <text
+     x="299"
+     y="657"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text408">reverseLastMerge</text>
+  <text
+     x="299"
+     y="674"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text410">updateSimilaritiesBetweenClusters</text>
+  <rect
+     x="181"
+     y="729"
+     width="130"
+     height="72"
+     rx="2"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect412" />
+  <text
+     x="246"
+     y="753"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text414">TSHACSingleLink</text>
+  <line
+     x1="182"
+     y1="767"
+     x2="310"
+     y2="767"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line416" />
+  <text
+     x="186"
+     y="787"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text418">distanceMetric</text>
+  <rect
+     x="344"
+     y="728"
+     width="151"
+     height="72"
+     rx="2"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect420" />
+  <text
+     x="419"
+     y="752"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text422">TSHACCompleteLink</text>
+  <line
+     x1="345"
+     y1="766"
+     x2="494"
+     y2="766"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line424" />
+  <text
+     x="349"
+     y="786"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text426">distanceMetric</text>
+  <rect
+     x="523"
+     y="726"
+     width="142"
+     height="72"
+     rx="2"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect428" />
+  <text
+     x="594"
+     y="750"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text430">TSHACAverageLink</text>
+  <line
+     x1="524"
+     y1="764"
+     x2="664"
+     y2="764"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line432" />
+  <text
+     x="528"
+     y="784"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text434">distanceMetric</text>
+  <polyline
+     points="1567,1541 1678,1507"
+     style="fill:#000000;fill-opacity:0;stroke:#333333;stroke-width:1"
+     id="polyline436"
+     transform="translate(-1322,-814)" />
+  <polyline
+     points="1678,1507 1667,1505 1669,1515 1678,1507"
+     style="fill:#ffffff;fill-opacity:1;stroke:#333333;stroke-width:1"
+     id="polyline438"
+     transform="translate(-1322,-814)" />
+  <text
+     x="336"
+     y="683"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text440" />
+  <text
+     x="300"
+     y="704"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text442" />
+  <text
+     x="253"
+     y="708"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text444" />
+  <polyline
+     points="1741,1540 1741,1507"
+     style="fill:#000000;fill-opacity:0;stroke:#333333;stroke-width:1"
+     id="polyline446"
+     transform="translate(-1322,-814)" />
+  <polyline
+     points="1741,1507 1735,1517 1747,1517 1741,1507"
+     style="fill:#ffffff;fill-opacity:1;stroke:#333333;stroke-width:1"
+     id="polyline448"
+     transform="translate(-1322,-814)" />
+  <text
+     x="404"
+     y="709"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text450" />
+  <text
+     x="419"
+     y="703"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text452" />
+  <text
+     x="404"
+     y="712"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text454" />
+  <polyline
+     points="1915,1538 1796,1507"
+     style="fill:#000000;fill-opacity:0;stroke:#333333;stroke-width:1"
+     id="polyline456"
+     transform="translate(-1322,-814)" />
+  <polyline
+     points="1796,1507 1805,1514 1807,1504 1796,1507"
+     style="fill:#ffffff;fill-opacity:1;stroke:#333333;stroke-width:1"
+     id="polyline458"
+     transform="translate(-1322,-814)" />
+  <text
+     x="486"
+     y="711"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text460" />
+  <text
+     x="533"
+     y="702"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text462" />
+  <text
+     x="576"
+     y="735"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text464" />
+  <rect
+     x="738"
+     y="487"
+     width="147"
+     height="276"
+     rx="2"
+     style="fill:#ccccff;fill-opacity:0;stroke:#333333;stroke-width:2"
+     id="rect466" />
+  <text
+     x="811"
+     y="511"
+     style="font-size:12px;font-weight:bold;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text468">TSTestCluster</text>
+  <line
+     x1="739"
+     y1="525"
+     x2="884"
+     y2="525"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line470" />
+  <text
+     x="743"
+     y="545"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text472">elements</text>
+  <text
+     x="743"
+     y="562"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text474">similarityCache</text>
+  <line
+     x1="739"
+     y1="576"
+     x2="884"
+     y2="576"
+     style="stroke:#333333;stroke-width:1;stroke-dasharray:none"
+     id="line476" />
+  <text
+     x="743"
+     y="596"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text478">add:</text>
+  <text
+     x="743"
+     y="613"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text480">addAll:</text>
+  <text
+     x="743"
+     y="630"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text482">allTestMethods</text>
+  <text
+     x="743"
+     y="647"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text484">elements</text>
+  <text
+     x="743"
+     y="664"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text486">includes:</text>
+  <text
+     x="743"
+     y="681"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text488">internalSimilarity</text>
+  <text
+     x="743"
+     y="698"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text490">mergeWith:</text>
+  <text
+     x="743"
+     y="715"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text492">similarityWith:using:</text>
+  <text
+     x="743"
+     y="732"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text494">size</text>
+  <text
+     x="743"
+     y="749"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text496">updateSimilarity</text>
+  <text
+     x="-462"
+     y="375"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text544" />
+  <text
+     x="-481"
+     y="396"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text546" />
+  <text
+     x="-516"
+     y="406"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text548" />
+  <text
+     x="-389"
+     y="398"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text554" />
+  <text
+     x="-351"
+     y="461"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text556" />
+  <text
+     x="-340"
+     y="547"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text558" />
+  <text
+     x="-878"
+     y="486"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text564" />
+  <text
+     x="-755"
+     y="472"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text566" />
+  <text
+     x="-630"
+     y="486"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text568" />
+  <text
+     x="-694"
+     y="617"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text574" />
+  <text
+     x="-553"
+     y="596"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text576" />
+  <text
+     x="-410"
+     y="617"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text578" />
+  <polyline
+     points="1871,1389 2058,1389"
+     style="fill:#000000;fill-opacity:0;stroke:#333333;stroke-width:1;stroke-dasharray:4, 3"
+     id="polyline580"
+     transform="translate(-1322,-814)" />
+  <polyline
+     points="2047,1395 2058,1389 2047,1383"
+     style="fill:#ffffff;fill-opacity:0;stroke:#333333;stroke-width:1"
+     id="polyline582"
+     transform="translate(-1322,-814)" />
+  <text
+     x="720"
+     y="560"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text584" />
+  <text
+     x="642"
+     y="569"
+     style="font-size:12px;text-anchor:start;fill:#333333;font-family:'arial, helvetica'"
+     id="text586" />
+  <text
+     x="563"
+     y="560"
+     style="font-size:12px;text-anchor:middle;fill:#333333;font-family:'arial, helvetica'"
+     id="text588" />
+</svg>

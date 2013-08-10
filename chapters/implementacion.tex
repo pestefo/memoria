@@ -228,8 +228,12 @@
 
 \par La implementación del algoritmo y el experimento descritos anteriormente consiste en 3 paquetes principales: {\tt TestSurgeon-Clustering},  {\tt TestSurgeon-Comparator} y {\tt TestSurgeon-Experiments}. 
 
+\fig{H}{0.75}{impl/comparator.pdf}{Diagrama de clases del paquete {\tt TestSurgeon-Comparator}}
+\fig{H}{0.75}{impl/clustering.pdf}{Diagrama de clases del paquete {\tt TestSurgeon-Clustering}}
+
 \par El paquete {\tt TestSurgeon-Clustering} contiene las clases necesarias para agrupar tests. La clase {\tt TSHACDistance} define solamente el método abstracto {\tt distanceBetween:and:} que recibe como argumentos dos instancias de la clase {\tt TSTestCluster}, el cual debe ser sobrescrito por sus subclases. Estas son {\tt TSSingleLinkDistance}, {\tt TSCompleteLinkDistance} y {\tt TSAverageLinkDistance} los cuales implementan dicho método según la definición de distancia correspondiente. Por su parte la clase {\tt TSHierarchicalAgglomerativeClustering} contiene todo el comportamiento necesario para ejecutar el algoritmo salvo la métrica de distancia, que está representada por el método {\tt distanceMetric} y es sobrescrito por sus tres subclases: {\tt TSHACSingleLink}, {\tt TSHACCompleteLink} y {\tt TSHACAverageLink} los cuales retornan la clase que implementa dicha métrica. A continuación se muestra el código del método principal que ejecuta el algoritmo.
 
+\vspace*{2cm}
 
 \begin{codeWithLineNumbers}
 <i>TSHierarchicalAgglomerativeClustering>>run</i>
