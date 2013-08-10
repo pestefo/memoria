@@ -6,11 +6,37 @@
 
 % Escribir el algoritmo original y el modificado
 
-\par Para crear grupos de test a través del algoritmo de Agrupación Aglomerativo Jerárquico se necesita saber cuántos clusters se deben generar hacer que el algoritmo se detenga. Sin embargo a priori no se sabe cuántos se necesitan, pero sí se sabe que los clusters deben tener una similitud interna suficiente para que las comparaciones sean fructíferas y no una pérdida de tiempo. Para que esto pase, la similitud entre los par de tests debe ser de al menos un 80\%, por lo cual la similitud interna de cada cluster debe ser al menos de un 75\%. 
-\par Además no se sabe tampoco qué medida de distancia entre clusters es la más apropiada para este problema: \emph{Single Link} (distancia entre los elementos más cercanos entre los dos clusters), \emph{Complete Link} (distancia entre los elementos más lejanos entre los dos clusters) o \emph{Average Link} (promedio entre todas las distancias de los pares que se pueden formar entre elementos de uno y otro cluster).  
+\par Un problema del \emph{approach} de \emph{TestSurgeon} es la gran cantidad  comparaciones 1-a-1 entre tests, donde muchas de estas son innecesarias debido a que los tests se enfocan en distintas componentes del sistema. Una manera de reducir estas comparaciones es agrupar tests similares y así realizar comparaciones entre elementos de estos grupos solamente. La característica de los tests a comparar es su cobertura, ya que entre mayor sea ésta, más chances de encontrar un caso de refactorización/restructuración. 
 
-\par Para determinar los mejores parámetros se realizó un experimento en el cual se ejecutó el algoritmo y en cada ejecución se varió la distancia ocupada y la similitud interna mínima que todos los clusters debían tener. Las tolerancias de similitud interna varíaron de la siguiente forma: 95\%, 90\%, 85\%, 80\% y 75\%.
+\par Para esto se decidió utilizar el algoritmo de \textbf{Agrupación Aglomerativo Jerárquico} (o \textbf{Hierarchical Agglomerative Clustering }, \textbf{HAC}). Que consiste básicamente en cada paso fusionar los dos clusters más cercanos, partiendo con $N$ clusters que contienen 1 solo elemento y hacer esto hasta que quede 1 cluster con $N$ elementos formando una jerarquía. Entonces, al terminar su ejecución, el usuario puede solicitar la partición con $k$ clusters. 
 
+\par El asunto con el algoritmo es que, a priori, no se sabe cuántos clusters se necesitan que sean representativos. Pero sí se sabe que los clusters deben tener una similitud interna suficiente para que las comparaciones sean fructíferas y no una pérdida de tiempo. La experiencia indica que para que esto suceda la similitud entre un par de tests debe ser de al menos un 80\%, por lo cual la similitud interna de cada cluster (promedio entre las similitudes de todos los pares de tests en el cluster) debe ser al menos de un 75\%. 
+
+\par Por otro lado, el algoritmo  no se sabe tampoco qué medida de distancia entre clusters es la más apropiada para este problema: \emph{Single Link} (distancia entre los elementos más cercanos entre los dos clusters), \emph{Complete Link} (distancia entre los elementos más lejanos entre los dos clusters) o \emph{Average Link} (promedio entre todas las distancias de los pares que se pueden formar entre elementos de uno y otro cluster)\footnote{Para revisar la definición formal de cada una de la métricas, ver \secref{impl-hac}}.  
+
+\par Entonces, para determinar los mejores parámetros para correr el algoritmo HAC se realizó un experimento en el cual se ejecutó el algoritmo varianto tanto la distancia ocupada como la similitud interna mínima. Las tolerancias de similitud interna ($s_{min}$) varíaron de la siguiente forma: 95\%, 90\%, 85\%, 80\% y 75\%.
+
+% Interpretar los resultados, eleccion de la mejor. 
+\par Como resultado de este experimento se obtuvo 15 configuraciones representadas en pares (distancia,$s$). Cada una de estas están graficadas en forma de anillo en la \figref{ap-clustering}, clasificadas verticalmente según la distancia utilizada y horizontalmente según el valor de $s_{min}$. Como era de esperar, a mayor $s_{min}$ se obtuvieron mayor cantidad de clusters independientemente de la distancia escogida, y a medida que la $s_{min}$ disminuía una cantidad menor de clusters pero más heterogéneos. En la gráfica de anillo, cada punto (o vértice del polígono) representa un cluster, y su distancia del centro del anillo representa su valor de similitud interna. Así los puntos que están en el borde externo del anillo corresponden a clusters con $s=100\%$ y que generalmente corresponden a clusters que nunca se fusionaron y contienen un solo elemento, a los cuales informalmente les llamaremos \textit{unitarios}.
+
+\par En la búsqueda de la mejor condición, se consideraron dos condiciones para una ``buena agrupación'' estos fueron:
+\begin{itemize}
+\item Debe tener pocos clusters unitarios. Y los que existan deben ser suficientemente distintos a los demás clusters.
+\item Los clusters no-unitarios deben tener un tamaño razonable ( ej: 20 elementos = $\frac{1}{2} \cdot 30 \cdot (30 - 1)=435$ comparaciones ) para para evitar el problema inicial.
+\item Los clusters no-unitarios deben tener buena similitud interna (ojalá mayor a $s_{min}$).
+\end{itemize}
+
+\par Luego de una inspección entre los distintos resultados, la configuración escogida fue (\emph{Average Link}, 85\%). Esta configuración crea 20 clusters de los cuales 6 son unitarios los cuales son suficientemente distintos a los demás clusters. Los clusters no-unitarios tienen un tamaño y similitud bastante buena, de hecho el cluster más grande, $C_1$ que contiene 29 tests, posee una similitud interna $s_{C_{1}}=90\%$. Por su parte los clusters $C_9$ (3 tests) y $C_13$ (2 tests) son los con menor similitud interna de 89\%, cuatro puntos porcentuales por encima del mínimo. A modo de anécdota, se destaca que el cluster 10 tiene dos elementos con la misma cobertura ($s_{C_{10}}=100\%$). Los otros dos resultados comparables, (\emph{Sigle Link}, 85\%) y (Complete Link, 85\%), el primero genera dos clusters más que el caso escogido de los cuales 11 son unitarios. El segundo, .
+
+%% REVISAR CASO DE COMPLETE-LINK,85 Y AVERAGE-LINK,85 cual es mejor (CAMBIAR SECCION 6.3 y 5.5.1)
+
+
+
+
+
+
+%================ FIGURA DE CLUSTERING
+%\cleardoublepage % que este en una pagina nueva
 \begin{figure}
 \centering
 \setlength{\tabcolsep}{1pt} % reducir la separacion entre columnas
@@ -48,5 +74,5 @@
 \end{tabular}
 
 
-\caption{Resultados experimento de Clustering de Tests por Similitud en Cobertura}\label{foo}
+\caption{Resultados experimento de Clustering de Tests por Similitud en Cobertura}\figlabel{ap-clustering}
 \end{figure}
