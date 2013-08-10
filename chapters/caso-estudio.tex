@@ -54,7 +54,7 @@ view open
 
 \par Además se verificó que la gran mayoría de los unit test aporta una cantidad relativamente pequeña de tests. Esta situación se puede observar en la \figref{caso-estudio/distribucion-tests.png} donde se muestra la distribución de los test methods. Los unit tests se agruparon según la cantidad de tests que contienen. Observando la figura, se aprecia que la mayoría de los unit tests en Roassal contiene una cantidad pequeña de tests, de hecho el 55\% de los unit test contiene a lo más 5 tests (ver \tabref{distribucion-tests}) y contando como máximo 10 tests ya se alcanza un 83\% del total de los unit tests. 
 
-\fig{h}{0.8}{caso-estudio/distribucion-tests.png}{Distribución de los tests methods por unit test}
+\fig{h}{0.8}{caso-estudio/distribucion-tests.pdf}{Distribución de los tests methods por unit test}
 
 
 \par En conclusión, Roassal tiene una distribución de test que complica su mantenibilidad y su usabilidad para verificar que los cambios en el desarrollo respeten los requisitos. 
@@ -72,7 +72,7 @@ view open
 
 \par Luego de aplicar el algoritmo sobre los test definidos en {\tt ROMondrianViewBuilderTest}, se obtuvo 20 clusters. Esta partición de los tests es particularmente buena cada uno de los clusters formados tienen una muy buena similitud interna. La similitud interna de un cluster es el promedio de similitudes entre todos los elementos del cluster, es decir, indica qué tan parecidos son los tests en cada cluster. El cluster con menor similitud interna tuvo un 89\% (ver \figref{caso-estudio/clustering.png}), y el promedio de los clusters no-triviales (\ie excluyendo clusters de tamaño 1 que tienen 100\% de similitud interna) es de un 93,3\%. Es más, se encontró un cluster de dos test que poseen exactamente la misma cobertura. 
 
-\fig{h}{0.9}{caso-estudio/clustering.png}{Clusters formados con su tamaño y similitud interna}
+\fig{h}{0.9}{caso-estudio/clustering.pdf}{Clusters formados con su tamaño y similitud interna}
 
 
 \par Finalmente, el número de comparaciones se redujo a 
