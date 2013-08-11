@@ -70,15 +70,9 @@ view open
 
 \par Entonces, para reducir la cantidad de comparaciones y facilitar la detección de \emph{test smells}, una buena alternativa es agrupar los tests usando la similitud de cobertura. De esta manera estamos agrupando los casos interesantes para después inspeccionarlos con el browser. Para agruparlos se decidió utilizar el algoritmo de agrupamiento aglomerativo jerárquico (o Hierarchical Agglomerative Clustering). Este algoritmo usa una métrica de similitud entre elementos que en este caso es la métrica de similitud por cobertura, y una métrica de distancia entre un elemento y un cluster (o grupo de elementos) para definir si incluirlo o no en el segundo. Luego de un experimento, se concluyó que la distancia de promedios (Average Link) es la más representativa para esta situación\footnote{El experimento de evaluación del algoritmo se pesenta en detalle en el \apref{exp-clustering}, y sus detalles técnicos en la \secref{impl-clustering} }.
 
-\par Luego de aplicar el algoritmo sobre los test definidos en {\tt ROMondrianViewBuilderTest}, se obtuvo 20 clusters. Esta partición de los tests es particularmente buena cada uno de los clusters formados tienen una muy buena similitud interna. La similitud interna de un cluster es el promedio de similitudes entre todos los elementos del cluster, es decir, indica qué tan parecidos son los tests en cada cluster. El cluster con menor similitud interna tuvo un 89\% (ver \figref{caso-estudio/clustering.png}), y el promedio de los clusters no-triviales (\ie excluyendo clusters de tamaño 1 que tienen 100\% de similitud interna) es de un 93,3\%. Es más, se encontró un cluster de dos test que poseen exactamente la misma cobertura. 
+\par Luego de aplicar el algoritmo sobre los test definidos en {\tt ROMondrianViewBuilderTest}, se obtuvo 20 clusters. Esta partición de los tests es particularmente buena ya que cada uno de los clusters formados tienen una muy buena similitud interna. La similitud interna de un cluster es el promedio de similitudes entre todos los elementos del cluster, es decir, indica qué tan parecidos son los tests en cada cluster. El cluster con menor similitud interna tuvo un 89\% (ver \figref{caso-estudio/clustering.png}), y el promedio de los clusters no-triviales (\ie excluyendo clusters de tamaño 1 que tienen 100\% de similitud interna) es de un 93,3\%. Es más, se encontró un cluster de dos test que poseen exactamente la misma cobertura. 
 
-\fig{h}{0.9}{caso-estudio/clustering.pdf}{Clusters formados con su tamaño y similitud interna}
-
-
-\par Finalmente, el número de comparaciones se redujo a 
-	\[ \sum_{i=1}^{13} \frac{1}{2} \,\, \texttt{size(}\textrm{cluster}_i\texttt{)} \times \left( \texttt{size(}\textrm{cluster}_i\texttt{)} -1 \right) = 648 \textrm{ comparaciones} \]
-
-\par Esto significa que la cantidad de comparaciones se redujo aproximadamente a un 14\% de la situación inicial, lo que permite al desarrollador enfocarse solamente en los mejores casos de comparación que son candidatos a refactorizaciones.
+\par Finalmente, el número de comparaciones se redujo a 648 comparaciones. Esto significa que la cantidad de comparaciones se redujo aproximadamente a un 14\% de la situación inicial, lo que permite al desarrollador enfocarse solamente en los mejores casos de comparación que son candidatos a refactorizaciones.
 
 %=======
 \section{Escenarios de refactorización y restructuración de los tests}

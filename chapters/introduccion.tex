@@ -5,12 +5,15 @@ Dado la naturaleza de este tipo de código, su estudio e investigación ha inten
 
 
 %% Terminologia
+\section{Terminología}
 
-\begin{itemize}
-\item \emph{test method}:
-\item \emph{unit test}:
-\item \emph{smell} sinónimos:\emph{test smell}.
-\end{itemize}
+\par Para la lectura adecuada del documento, se presenta la siguiente terminología con los conceptos fundamentales que se utilizarán a lo largo del documento:
+
+\begin{description}
+\item[\emph{test}]: corresponde a un trozo de código que tiene como finalidad simular un comportamiento particular de alguna componente o compontentes del sistema para realizar verificaciones que validen el comportamiento esperado de estas. También se le nombra: \emph{método de test}, \emph{test method} o \emph{prueba de software}.
+\item[\emph{unit test}]: corresponde a un grupo de tests que, en conjunto, verifican una funcionalidad en común. También se le nombra: \emph{prueba unitaria} o \emph{grupo de tests}
+\item[\emph{smell}]: se refiere a una deficiencia en el diseño del código que da pie a problemas en su mantenibilidad y/o extensibilidad. Cuando existen smells sobre el código se pruebas se nombra como un \emph{test smell}.
+\end{description}
 
 %% Motivacion
 
@@ -35,3 +38,12 @@ Dado la naturaleza de este tipo de código, su estudio e investigación ha inten
 \end{itemize}
 
 %% Organizacion del documento
+\section{Estructura del documento}
+
+\par En el \chapref{espec-prob} se presenta el problema de la mantenibilidad de tests en detalle, su contexto y relevancia. Posteriormente se presenta el marco teórico que entrega los conceptos técnicos necesarios (\secref{marco-teorico}), y se entregan una seria de antecedentes que muestra el trabajo realizado tanto por la academia como por la industria en sobre el problema de diseño del código de tests se refiere (\secref{trabajo-relacionado}). 
+
+\par Luego, con la base conceptual y contextual del problema presente, se describe en detalle la solución propuesta: \emph{TestSurgeon}. Primero en forma conceptual en el \chapref{descripcion-solucion} y después en forma técnica en el \chapref{implementacion}. Y después, en el \chaplabel{caso-de-estudio} se muestra una aplicación de la herramienta con una serie de descubrimientos interesantes. 
+
+\par Finalmente en el \chapref{conclusion} se revisa el cumplimiento de los objetivos planteados, las conclusiones del trabajo así como también las posibilidades y algunas directrices para continuarlo.
+
+\par Se adjuntan también algunos anexos interesantes que complementan el documento y entregan datos que por su extensión no pudieron incluídos directamente en los capítulos.

@@ -1,12 +1,10 @@
 % ---* APENDICE *---
-% Mostrar detalladamente el experimento de clustering (no técnico, eso va en implementacion)
 % Tabla de las 5 mejores alternativas de clustering
-% Grafico de todos contra todos
-\chapter{Experimento de Clustering de Test}\aplabel{exp-clustering}
-
 % Escribir el algoritmo original y el modificado
 
-\par Un problema del \emph{approach} de \emph{TestSurgeon} es la gran cantidad  comparaciones 1-a-1 entre tests, donde muchas de estas son innecesarias debido a que los tests se enfocan en distintas componentes del sistema. Una manera de reducir estas comparaciones es agrupar tests similares y así realizar comparaciones entre elementos de estos grupos solamente. La característica de los tests a comparar es su cobertura, ya que entre mayor sea ésta, más chances de encontrar un caso de refactorización/restructuración. 
+\chapter{Experimento: Agrupando Métodos de Test}\aplabel{exp-clustering}
+
+\par Un problema del \emph{approach} de \emph{TestSurgeon} es la gran cantidad  comparaciones 1-a-1 entre tests\footnote{Entre los 96 unit tests de TestSurgeon, definen en total 556 tests (ver \tabref{distribucion-tests-total}), lo cual implican $\frac{1}{2} \cdot 556 \cdot (556 -1)=154.290$ comparaciones}, donde muchas de estas son innecesarias debido a que los tests se enfocan en distintas componentes del sistema. Una manera de reducir estas comparaciones es agrupar tests similares y así realizar comparaciones entre elementos de estos grupos solamente. La característica de los tests a comparar es su cobertura, ya que entre mayor sea ésta, más chances de encontrar un caso de refactorización/restructuración. 
 
 \par Para esto se decidió utilizar el algoritmo de \textbf{Agrupación Aglomerativo Jerárquico} (o \textbf{Hierarchical Agglomerative Clustering }, \textbf{HAC}). Que consiste básicamente en cada paso fusionar los dos clusters más cercanos, partiendo con $N$ clusters que contienen 1 solo elemento y hacer esto hasta que quede 1 cluster con $N$ elementos formando una jerarquía. Entonces, al terminar su ejecución, el usuario puede solicitar la partición con $k$ clusters. 
 
@@ -30,9 +28,13 @@
 
 %% REVISAR CASO DE COMPLETE-LINK,85 Y AVERAGE-LINK,85 cual es mejor (CAMBIAR SECCION 6.3 y 5.5.1)
 %% Poner imagen del clustering escogido acá y referenciar alla.
+%% Hablar numero total de comparaciones y % de comparaciones innecesarias menos.
 
 
+%== Figura debe ir despues de la mega-figura
+\fig{h}{0.9}{caso-estudio/clustering.pdf}{Clusters formados con su tamaño y similitud interna}
 
+   \[ \sum_{i=1}^{13} \frac{1}{2} \,\, \texttt{size(}\textrm{cluster}_i\texttt{)} \times \left( \texttt{size(}\textrm{cluster}_i\texttt{)} -1 \right) = 648 \textrm{ comparaciones} \]
 
 
 %================ FIGURA DE CLUSTERING
