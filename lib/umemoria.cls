@@ -41,6 +41,8 @@
 %% Lenguaje
 \addto\captionsspanish{\renewcommand\tablename{Tabla}}
 \addto\captionsspanish{\renewcommand\listtablename{Índice de tablas}}
+\addto{\captionsspanish}{\renewcommand*{\contentsname}{Tabla de contenido}}
+\addto\captionsspanish{\renewcommand\listfigurename{Índice de ilustraciones}}
 
 %% Interlineado
 \RequirePackage{parskip}
@@ -56,8 +58,7 @@
 \renewenvironment{itemize}{\olditem\setlength{\parskip}{\smallskipamount}}{\oldenditem}
 
 %% Entornos nuevos
-\newenvironment{abstract}{%\cleardoublepage
-}{\vfill\null}
+\newenvironment{abstract}{\cleardoublepage\chapter*{Resumen}}{\vfill\null}
 \newenvironment{dedicatoria}{\cleardoublepage\null\vspace{\stretch{1}}\begin{flushright}\itshape}{\end{flushright}\vspace{\stretch{2}}\null}
 \let\thanks\undefined
 \newenvironment{thanks}{\chapter*{Agradecimientos}}{\vfill\null}

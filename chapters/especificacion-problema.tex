@@ -1,8 +1,6 @@
 \chapter{Especificación del Problema}\chaplabel{espec-prob}
 % Conceptos para que el lector entienda y pueda leer depsués
 
-\par En nuestro días, el \emph{testing} es una actividad importante dentro del ciclo de desarrollo de cualquier proyecto de software serio. Los tests automatizados ayudan al desarrollador a garantizar la calidad el código y evitar y/o detectar posibles \emph{bugs} (falencias, equivocaciones, errores) en el código de la aplicación. Sin embargo, además de su utilidad principal y fundamental, posee también otros usos como es el de documentar el funcionamiento de las características del código. De hecho, los tests son considerados como ``documentación ejecutable'', ya que son trozos de código que muestran cómo se utilizan las distintas entidades del modelo representado en el software.
-
 
 
 \section{Contexto: Test como ``conductores'' del diseño}
@@ -10,9 +8,9 @@
 
 \par En particular los proyectos de software ágiles dan gran importancia a estos artefactos ya que cada historia de usuario debe tener pruebas de aceptación (tests de alto nivel) que se escriben y detallan con el cliente para asegurar que el código que se creará cumple lo que pide el cliente y ni menos ni más.
 
-\par Estas historias de usuario están escritas en lenguaje natural por lo que se deben \emph{transcribirse} a lenguaje de desarrollo: código fuente. Entonces, antes de escribir una funcionalidad, los desarrolladores crean los tests: código fuente que garantiza que una característica se comporta como es requerida. Este proceso se denomina \emph{Test-Driven Development} (o TDD)[\ref{tdd-beck}]  o Desarrollo Dirigido por Pruebas: se escribe el test, se ejecuta y este falla (ya que no se ha escrito que suple dicha característica), luego se escribe el código que hace el test funcionar. Se vuelve a ejecutar el test y pasa. Finalmente se refactoriza el código recien escrito para mantener un diseño sustentable y mantenible en el tiempo.
+\par Estas historias de usuario están escritas en lenguaje natural por lo que se deben \emph{transcribirse} a lenguaje de desarrollo: código fuente. Entonces, antes de escribir una funcionalidad, los desarrolladores crean los tests: código fuente que garantiza que una característica se comporta como es requerida. Este proceso se denomina \emph{Test-Driven Development} (o TDD)~\cite{Beck02a}  o Desarrollo Dirigido por Pruebas: se escribe el test, se ejecuta y este falla (ya que no se ha escrito que suple dicha característica), luego se escribe el código que hace el test funcionar. Se vuelve a ejecutar el test y pasa. Finalmente se refactoriza el código recien escrito para mantener un diseño sustentable y mantenible en el tiempo.
 
-\par Esta práctica está dentro del núcleo de la filosofía que enmarca la agilidad a tal nivel que está prohibido agregar una nueva funcionalidad sin, previamente, haber escrito un test que lo valide[\ref{tdd-beck}]. Esta queda documentado en el libro de Robert Cecil Martin (más conocido como``Uncle Bob'')[\ref{unclebob}] uno de los escritores del manifiesto ágil[\ref{agilemanifiesto}] quien declara:
+\par Esta práctica está dentro del núcleo de la filosofía que enmarca la agilidad a tal nivel que está prohibido agregar una nueva funcionalidad sin, previamente, haber escrito un test que lo valide~\cite{Beck02a}. Esta queda documentado en el libro de Robert Cecil Martin (más conocido como``Uncle Bob'')~\cite{Mart02b} uno de los escritores del manifiesto ágil~\cite{Fowl01a} quien declara:
 
 \begin{quote}
 \emph{``The iteration between writing test cases and code is very rapid [...]. As a result, a very complete body of test cases grows along with the code.''}
@@ -41,6 +39,6 @@
 
 \par Un caso muy claro del impacto del mal diseño y poco cuidado en los tests sucede en la práctica de \textbf{Integración Contínua} (Continuous Integration)[\ref{contint}]. En esta práctica cada \emph{feature} se implementa tan pronto como es posible, se testea y se pasa a producción de inmediato. De esta manera el equipo de desarrollo realiza varias integraciones por día y el cliente obtiene rápidamente las nuevas funcionalidades a medida que las solicita. \\
 
-\par A modo de ejemplo, la empresa MediaGeniX\footnote{MediaGeniX, \url{http://www.mediagenix.tv}} realiza la integración continua desde hace un tiempo. Ahí, 30 desarrolladores trabajan sobre el mismo producto y cada uno de ellos construye varias versiones al día. Cada versión que se va a pasar a producción debe pasar su suite de pruebas que comprende alrededor de 30.000 tests. Ellos realizan al menos 3 integraciones diarias en promedio por lo cual recurren a técnicas de paralelización de ejecución de tests para lograrlo. Esto introduce un alto costo económico asociado al los recursos de hardware(servidores, clusters) y además un alto costo en tiempo.\\
+\par A modo de ejemplo, la empresa MediaGeniX\footnote{MediaGeniX [en línea] \textless\url{http://www.mediagenix.tv}\textgreater [Consulta: 12/08/2013]} realiza la integración continua desde hace algunos años. Ahí, 30 desarrolladores trabajan sobre el mismo producto y cada uno de ellos construye varias versiones al día. Cada versión que se va a pasar a producción debe pasar su suite de pruebas que comprende alrededor de 30.000 tests. Ellos realizan al menos 3 integraciones diarias en promedio por lo cual recurren a técnicas de paralelización de ejecución de tests para lograrlo. Esto introduce un alto costo económico asociado al los recursos de hardware(servidores, clusters) y además un alto costo en tiempo.\\
 
 \par Esto evidencia la relevancia de mejorar la performance mediante la refactorización y restructuración de los unit tests.

@@ -1,13 +1,14 @@
 \chapter{Introducción} 
 %% Intro
-\par 
-Dado la naturaleza de este tipo de código, su estudio e investigación ha intentado principalmente mejorar su efectividad para hacer software cada vez más confiables. Sin embargo, el problema diseño y mantención del código de test lleva bastante tiempo sin ser enfrentado en forma correcta y con la profundidad necesaria. 
+\par El Testing es una actividad importante en el desarrollo de los proyectos de software en nuestro días. Los tests automatizados ayudan al desarrollador a asegurar la calidad del código y a detectar posibles bugs o defectos en el código de la aplicación. Más aún,los test pueden también ser considerados como  una ``documentación ejecutable'', y ser utilizados también para entender código ajeno.
+
+\par Dado la naturaleza las pruebas de software, su estudio e investigación se ha focalizado en mejorar su efectividad para hacer software cada vez más confiables y robustos. Y al igual que el software funcional, los tests son parte del código fuente de la aplicación. La comunidad de ingeniería de software ha desarrollado diveras técnicas y metodologías para mantener limpio el diseño del código base (o funcional). Sin embargo, poco trabajo se ha realizado para que  el código de los test mantenga una estructura y diseño limpio. Situación que pasa a ser cada vez más problemática a medida que el software crece en tamaño y en complejidad.
 
 
 %% Terminologia
 \section{Terminología}
 
-\par Para la lectura adecuada del documento, se presenta la siguiente terminología con los conceptos fundamentales que se utilizarán a lo largo del documento:
+\par Para la lectura adecuada del documento, se presenta la siguiente terminología con los conceptos principales que se utilizarán a lo largo del documento:
 
 \begin{description}
 \item[\emph{test}]: corresponde a un trozo de código que tiene como finalidad simular un comportamiento particular de alguna componente o compontentes del sistema para realizar verificaciones que validen el comportamiento esperado de estas. También se le nombra: \emph{método de test}, \emph{test method} o \emph{prueba de software}.
@@ -15,15 +16,18 @@ Dado la naturaleza de este tipo de código, su estudio e investigación ha inten
 \item[\emph{smell}]: se refiere a una deficiencia en el diseño del código que da pie a problemas en su mantenibilidad y/o extensibilidad. Cuando existen smells sobre el código se pruebas se nombra como un \emph{test smell}.
 \end{description}
 
-%% Motivacion
-
+%% Motivacion (pq toi haciendo esto?)
+\section{Motivación}
 % - Contexto: Práctica de Testing, Unit Testing
-% Los test juegan un papel clave en la confiabilidad de 
-% - Relevancia del Problema: Mantenibilidad
+\par Actualmente el \emph{testing} es una actividad clave dentro del desarrollo de cualquier proyecto de software serio. De hecho las metodologías ágiles de desarrollo consideran la creación de test como el punto de partida de la iteración o ciclo de desarrollo. Ejemplos de estas son el Test-Driven Development (TDD) o Behavior-Driven Development (BDD). El escribir tests que describen la funcionalidad esperada de una unidad de software (TDD) y/o el comportamiento esperado de un conjunto de unidades (BDD) son formas de producir código en el cual se puede confiar, puesto que no se agrega otra funcionalidad sino hasta que existe un test que lo simula y describe el funcionamiento esperado.
 
-% - Alternativas de la Solución
+\par A medida que el software crece en complejidad y tamaño, de igual manera el código se va volviendo más complejo lo cual atenta contra el crecimiento del proyecto. Para esto, la industria y la academia han desarrollado diversas formas de restructurar y/o refactorizar el código base para enfrentar el \emph{cambio} de la forma menos costosa. Sin embargo esto no ha sido igual para el código que corresponde a los tests. A medida que el sistema evoluciona los tests necesitan también evolucionar para mantenerse actualizado con el sistema~\cite{reichhart2007rule}.  Pero muchas veces esto no sucede, los tests carecen del mismo cuidado que el código base por lo cual muchas veces es necesario reescribir los tests o incluso, no es raro que se deje de escribir tests por el costo en tiempo que esto implica.
 
-% - Descripción de la solución (muy general)
+\par Por otro lado, la aplicación estricta de estas metodologías ágiles incrementa rápidamente la cantidad de tests. Dentro de los tests escritos existen de bajo y alto nivel. Los de bajo nivel testean las unidades fundamentales del sistema. Las de alto nivel, por su parte, testean la interacción entre estas. Esto refleja una brecha entre las unidades de código testeadas y las pruebas unitarias. La cual es bastante costosa puesto que muchas de los tests de alto nivel suelen repetir código y/o son redundantes en su ejecución. Lo último implica pérdida de tiempo al ejecutar los tests y verificar que el código añadido no rompió alguna parte del sistema.
+
+\par Bajo este escenario, se hace necesaria una forma de reducir esta becha entre el código base y el código de test, y facilitar la detección de \emph{test smells} que significan un gran costo tanto para los desarrolladores como el cliente.
+
+
 
 %% Objetivos
 \section{Objetivos}

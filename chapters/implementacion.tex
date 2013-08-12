@@ -12,7 +12,7 @@
 
 \par Para ejecutar Pharo, es necesario una máquina virtual la cual es específica de cáda sistema operativo y actúa como interfaz de este último. La imagen de Pharo, una {\tt snapshot} del sistema Pharo congelado en el tiempo, específicamente de la última vez que se ejecutó. Contiene todas las instancias creadas y en el estado en que estaban justo antes de que la máquina virtual se cerrara.
 
-\par Sobre Pharo están: \emph{Spy}, \emph{Roassal} y \emph{Spec}, las principales dependencias de TestSurgeon. \emph{Spy} es un framework de profiling usado en TestSurgeon, se comentará en detalle sobre éste en la \secref{impl-spy}. \emph{Roassal} es un software que permite desarrollar visualizaciones interactivas en forma fácil y rápida. Es usado por TestSurgeon para implementar la \emph{Test Difference blueprint} (ver \secref{test-diff-blueprint}), en la \secref{impl-viz} se hablará de esta. Finalmente \emph{Spec} es un framework para construir interfaces gráficas y fue usado para la implementación del navegador de tests, ver \secref{impl-browser}.
+\par Sobre Pharo están: \emph{Spy}, \emph{Roassal} y \emph{Spec}, las principales dependencias de TestSurgeon. \emph{Spy} es un framework de profiling~\cite{Berg11h} usado en TestSurgeon, se comentará en detalle sobre éste en la \secref{impl-spy}. \emph{Roassal} es un software que permite desarrollar visualizaciones interactivas en forma fácil y rápida. Es usado por TestSurgeon para implementar la \emph{Test Difference blueprint} (ver \secref{test-diff-blueprint}), en la \secref{impl-viz} se hablará de esta. Finalmente \emph{Spec} es un framework para construir interfaces gráficas y fue usado para la implementación del navegador de tests, ver \secref{impl-browser}.
 
 \fig{H}{0.7}{impl/arq.pdf}{Arquitectura de \emph{TestSurgeon}}
 
@@ -197,7 +197,7 @@
 
 \subsection{Adaptación del Algoritmo Agrupamiento Aglomerativo Jerárquico}\seclabel{impl-hac}
 
-\par Para esto, se decidió utilizar el \emph{Algoritmo de Agrupamiento Aglomerativo Jerárquico} (o \emph{Hierarchical Agglomerative Clustering}). Este algoritmo pretende crear una jerarquía de clusters a través de fusionar clusters más similares (o cercanos) en cada paso. Al comienzo, existen $N$ clusters de tamaño $1$, es decir. Luego de calcular todas las distancias entre estos se fusionan los clusters con menor distancia, y ahora existen $N-1$ clusters: $N-2$ de tamaño $1$ y el recien fusionado con $2$ elementos. El algoritmo sigue hasta que se tiene $1$ solo algoritmo de tamaño $N$. Las implementaciones comunes del algoritmo reciben de entrada un número $k$ que corresponde al número de clusters deseado, entonces, el algoritmo cuenta con una condición de término que corresponde a finalizar la ejecución cuando la última fusión realizada tenga un haya generado un total $k$ clusters.
+\par Para esto, se decidió utilizar el \emph{Algoritmo de Agrupamiento Aglomerativo Jerárquico}~\cite{defays1977efficient,sibson1973slink} (o \emph{Hierarchical Agglomerative Clustering}). Este algoritmo pretende crear una jerarquía de clusters a través de fusionar clusters más similares (o cercanos) en cada paso. Al comienzo, existen $N$ clusters de tamaño $1$, es decir. Luego de calcular todas las distancias entre estos se fusionan los clusters con menor distancia, y ahora existen $N-1$ clusters: $N-2$ de tamaño $1$ y el recien fusionado con $2$ elementos. El algoritmo sigue hasta que se tiene $1$ solo algoritmo de tamaño $N$. Las implementaciones comunes del algoritmo reciben de entrada un número $k$ que corresponde al número de clusters deseado, entonces, el algoritmo cuenta con una condición de término que corresponde a finalizar la ejecución cuando la última fusión realizada tenga un haya generado un total $k$ clusters.
 
 % Algoritmo original
 
@@ -225,7 +225,7 @@
 
 \fig{H}{0.7}{impl/single-complete-link.pdf}{Distancias mínima (Single Link) y máxima (Complete Link) entre dos clusters}
 
-\par Finalmente el experimento de agrupamiento consistió en ejecutar el algoritmo de agrupación aglomerativo jerárquico para cada distancia y cada similitud interna mínima, con lo cual se obtuvo 15 particiones de {\tt ROMondrianViewBuilderTest}. Luego de evaluados los resultados (ver \apref{exp-clustering}) se obtuvo que los mejores resultados se obtuvieron con: \textbf{similitud interna mínima} de \textbf{85\%} y como métrica de distancia \textbf{Average Link}.
+\par Finalmente el experimento de agrupamiento consistió en ejecutar el algoritmo de agrupación aglomerativo jerárquico para cada distancia y cada similitud interna mínima, con lo cual se obtuvo 15 particiones distintas de {\tt ROMondrianViewBuilderTest}. Luego de evaluados los resultados (ver \apref{exp-clustering}) se obtuvo que la mejor configuración corresponde a imponer una \textbf{similitud interna mínima} de \textbf{85\%} y usando la métrica de distancia \textbf{Complete Link}.
 
 \clearpage
 \subsection{Diagrama de Clases}
@@ -377,7 +377,7 @@ run
 
 
 \section{Acceso al código}\seclabel{impl-repo}
-\par Todo el código detallado en las secciones anteriores está almacenado en el sitio \emph{SmalltalkHub}\footnote{Smalltalk Hub - \url{http://www.smalltalkhub.com} - última visita 12-07-2013 }, en el repositorio ubicado en la siguiente url: 
+\par Todo el código detallado en las secciones anteriores está almacenado en el sitio \emph{SmalltalkHub}\footnote{Smalltalk Hub [en línea] \textless\url{http://www.smalltalkhub.com}\textgreater [Consulta: 12/08/2013] }, en el repositorio ubicado en la siguiente url: 
 \begin{center}
 \url{http://smalltalkhub.com/\#!/~PabloEstefo/TestSurgeon/}
 \end{center}

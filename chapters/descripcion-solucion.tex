@@ -2,7 +2,7 @@
 % +-- TODO --*
 % - Referencias:
 %	- Sugiyama Layout
-%	- Delta de métrica (referenciar a Juampi)
+
 
 
 \section{Comparando la ejecución de tests con \emph{TestSurgeon}}
@@ -44,7 +44,7 @@
 %==========
 \section{Visualización: \emph{Test Difference Blueprint}}\seclabel{test-diff-blueprint}
 
-\par El objetivo de la visualización es comparar y encontrar las diferencias de ejecución que existen entre dos métodos de test. Para esto primero se debe hacer una comparación de cobertura, es decir cuáles son los métodos y las clases testeadas por los métodos en comparación. Entonces uno de los elementos a visualizar son las clases y sus métodos. 
+\par El objetivo de la visualización es comparar y encontrar las diferencias de ejecución que existen entre dos métodos de test. Para esto se utilizó intensivamente la gráfica de \emph{vistas polimétricas}~\cite{Lanz03d}, una técnica de visualización que permite identificar visualmente patrones en una gran masa de datos multidimensionales. Para esto primero se debe hacer una comparación de cobertura, es decir cuáles son los métodos y las clases testeadas por los métodos en comparación. Entonces uno de los elementos a visualizar son las clases y sus métodos. 
 
 %=============
 \subsection{Clases y su jerarquía}
@@ -67,7 +67,7 @@
 \item {\bf Blanco}: el método fue ejecutado en ninguno de los dos tests.
 \end{itemize}
 
-\par Un aspecto importante dentro del análisis de cobertura es conocer los caminos de ejecución según las llamadas a métodos de una clase desde otro método definido en la misma clase. Estas llamadas son invocaciones a {\tt self} (o {\tt this} en Java) que permiten diferenciar si un método fue llamado directamente o a través de una invocación {\tt self} desde otro método. Para graficar esto se utilizó una distribución gráfica de Sugiyama (o Sugiyama Layout). En el tope superior están los métodos que realizan mayores invocaciones a otro métodos definidos en la clase y que además no son invocados por otros métodos de la clase. En el tope inferior los métodos que no tienen invocaciones a otros métodos definidos en dicha clase pero sí son invocados por uno o más métodos definidos en la clase. Las invocaciones entre métodos están graficados por líneas rectas entre el método invocador y el invocado.
+\par Un aspecto importante dentro del análisis de cobertura es conocer los caminos de ejecución según las llamadas a métodos de una clase desde otro método definido en la misma clase. Estas llamadas son invocaciones a {\tt self} (o {\tt this} en Java) que permiten diferenciar si un método fue llamado directamente o a través de una invocación {\tt self} desde otro método. Para graficar esto se utilizó una distribución gráfica de Sugiyama~\cite{sugiyama1981methods} (o Sugiyama Layout). En el tope superior están los métodos que realizan mayores invocaciones a otro métodos definidos en la clase y que además no son invocados por otros métodos de la clase. En el tope inferior los métodos que no tienen invocaciones a otros métodos definidos en dicha clase pero sí son invocados por uno o más métodos definidos en la clase. Las invocaciones entre métodos están graficados por líneas rectas entre el método invocador y el invocado.
 
 \par En una distribución de grilla y posicionados a la derecha dentro del rectángulo de la clase, están los que no tienen invocaciones a otros métodos definidos en dicha clase ni son invocados por métodos definidos en esa clase.
 
