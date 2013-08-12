@@ -16,13 +16,13 @@
 \subsection{Caso de uso}
 \par A modo de resumen, para usar TestSurgeon se siguen las siguientes estapas: primero se lanza TestSurgeon sobre conjunto de paquetes, inmediatamente después se realiza el profiling sobre los paquetes seleccionados. Una vez finalizada esta etapa, se abre una ventana con el browser (o navegador) donde se escogen dos unit tests (no necesariamente distintos), posteriormente se seleccionan dos métodos de test pertenecientes a los unit tests escodigos. Finalmente se realiza la comparación entre los test methods seleccionados através de la visualización y la zona de comparación de código. En TestSurgeon se realizan comparaciones de métodos de test uno-a-uno por lo cual, para diferenciarlos, se denominan \emph{test rojo} y \emph{test azul} en concordancia a los colores en la visualización.
 
-\par Para ejemplificar el uso de TestSurgeon se muestra a continuación un ejemplo ejecutando TestSurgeon sobre el software: \emph{Roassal}.
+\par Para ilustrar el uso de TestSurgeon se muestra a continuación un ejemplo sobre el software: \emph{Roassal}.
 
 \par Un análisis con \emph{TestSurgeon} comienza lanzando el software desde una terminal de Pharo o \emph{Workspace} con el siguiente comando\footnote{Para más detalles sobre este comando y la implementación del browser ver la \secref{impl-browser} }: {\tt TSBrowser openOn: 'Roassal*'}. Este comando abre el browser y hace que se instrumenten todos los paquetes cuyo nombre comience con {\tt Roassal} (ej: {\tt Roassal-Core}, {\tt Roassal-Layout} o {\tt Roassal-Normalizers}, entre otros ).
 
 \fig{h}{0.7}{caso-uso/1.png}{Lanzando el browser.}
 
-\par Luego, TestSurgeon realiza un profiling sobre los tests encontrados en todos los paquetes de Roassal. Esto es: ejecutarlos, recolectar datos y generar los objetos según el modelo de objetos de Spy(ver \secref{impl-spy}). Este proceso puede tardar desde unos segundos o algunos pocos minutos según la cantidad de tests encontrados y las operaciones propias dentro de cada test.
+\par Luego, TestSurgeon realiza un profiling sobre la ejecución de los tests encontrados en todos los paquetes de Roassal. Esto consiste en: ejecutarlos, recolectar datos y generar los objetos según el modelo de objetos de Spy(ver \secref{impl-spy}). Este proceso puede tardar desde unos segundos o algunos pocos minutos según la cantidad de tests encontrados y las operaciones propias dentro de cada test.
 
 \par Una vez concluida la etapa de profiling, se desplega una ventana con cuatro zonas principales(ver \figref{caso-uso/2.png}): 
 \begin{itemize}
@@ -34,9 +34,9 @@
 
 \fig{h}{0.85}{caso-uso/2.png}{Zonas del browser de TestSurgeon.}
 
-\par Primero se seleccionan los unit test, uno por lista (Paso 1 y 2). De los unit test escogidos, se debe seleccionar el test rojo en lista de la izquierda (Paso 3). Una vez seleccionado, la lista de métodos de test de la derecha se ordenan verticalmente según similitud de cobertura con respecto al test rojo (más similar arriba, más diferente abajo). La métrica similitud por cobertura es la misma que se utilizó en el experimento de similitud estática contra similitud dinámica definida en la \secref{exp1-metricas-sim}. De esta manera se facilitan la búsqueda de casos interesantes a ser comparados. 
+\par Primero se seleccionan los unit test, uno por lista (Paso 1 y 2). De los unit test escogidos, se debe seleccionar el test rojo en lista de la izquierda (Paso 3). Una vez seleccionado, la lista de métodos de test de la derecha se ordenan verticalmente según similitud de cobertura con respecto al test rojo (más similar arriba, más diferente abajo). La métrica de similitud por cobertura es la misma que se utilizó en el experimento de similitud estática contra similitud dinámica definida en la \secref{exp1-metricas-sim}. Esta facilita la búsqueda de casos interesantes a ser comparados. 
 
-\par La cobertura, como métrica, no expresa el cómo los actores (objetos) se comportan (a través de métodos) mientras el test está siendo ejecutado. Por tanto se necesitan más datos. Entonces, una vez seleccionado el test azul (Paso 4) se puede realizar una mejor comparación observando una visualización (Paso 5) que justamente resalta las diferencias en la ejecución de ambos tests. Y finalmente contrastar (Paso 6) lo observado con el código fuente de ambos.
+\par La cobertura, como métrica, no expresa el cómo los actores (objetos) se comportan (a través de métodos) mientras el test está siendo ejecutado. Por tanto se necesitan más datos~\cite{van2001refactoring,greiler2012test}. Entonces, una vez seleccionado el test azul (Paso 4) se puede realizar una mejor comparación observando una visualización (Paso 5) que justamente resalta las diferencias en la ejecución de ambos tests. Y finalmente contrastar (Paso 6) lo observado con el código fuente de ambos.
 
 
 \fig{h}{0.9}{caso-uso/3.png}{Modo de uso del browser.}
@@ -44,12 +44,12 @@
 %==========
 \section{Visualización: \emph{Test Difference Blueprint}}\seclabel{test-diff-blueprint}
 
-\par El objetivo de la visualización es comparar y encontrar las diferencias de ejecución que existen entre dos métodos de test. Para esto se utilizó intensivamente la gráfica de \emph{vistas polimétricas}~\cite{Lanz03d}, una técnica de visualización que permite identificar visualmente patrones en una gran masa de datos multidimensionales. Para esto primero se debe hacer una comparación de cobertura, es decir cuáles son los métodos y las clases testeadas por los métodos en comparación. Entonces uno de los elementos a visualizar son las clases y sus métodos. 
+\par El objetivo de la visualización es comparar y encontrar las diferencias de ejecución que existen entre dos métodos de test. Para esto se utilizó intensivamente la gráfica de \emph{vistas polimétricas}~\cite{Lanz03d}, una técnica de visualización que permite identificar visualmente patrones en una gran masa de datos multidimensionales. Primero que todo, se debe hacer una comparación de la cobertura, es decir cuáles son los métodos y las clases testeadas por los métodos en comparación. Los elementos a visualizar, entonces, son las clases y sus métodos. 
 
 %=============
 \subsection{Clases y su jerarquía}
 
-\par En la visualización se muestran todas las clases del código base que estén sean cubiertas por al menos uno de los dos test en comparación. Las clases se presentan visualmente como grandes rectángulos con fondo blanco y borde negro. Estos rectángulos están unidos por líneas que hacen gráfica la relación de herencia entre estas. Como Pharo es un lenguaje orientado a objetos con herencia simple (cada clase puede heredar de una sola clase padre) desde una clase hija llega solo una línea, pero una clase puede tener varias lineas a las clases que heredan directamente de ésta. TestSurgeon muestra entonces la jerarquía de clases a través de una distribución espacial de las clases, en forma de árbol (o \emph{tree layout}). De esta manera, la clase raíz (o la hereda de una clase que no está presente en los paquetes instrumentados) está en el tope superior de la imagen y en el siguiente nivel del árbol están las clases que heredan directamente de ésta, y así sucesivamente, formando un árbol.
+\par En la visualización se muestran todas las clases del código base que estén cubiertas por al menos uno de los dos test en comparación. Las clases se presentan visualmente como grandes rectángulos con fondo blanco y borde negro. Estos rectángulos están unidos por líneas que hacen gráfica la relación de herencia entre estas. Como Pharo es un lenguaje orientado a objetos con herencia simple (cada clase puede heredar de una sola clase padre) desde una clase hija llega solo una línea, pero desde una clase padre pueden salir varias líneas a las clases que heredan directamente de ésta. TestSurgeon muestra entonces la jerarquía de clases a través de una distribución espacial de las clases, en forma de árbol (o \emph{tree layout}). De esta manera, la clase raíz (o la hereda de una clase que no está presente en los paquetes instrumentados) está en el tope superior de la imagen y en el siguiente nivel del árbol están las clases que heredan directamente de ésta, y así sucesivamente, formando un árbol.
 
 % - Figura: Visualizacion jerarquia de clases
 \fig{h}{0.7}{jerarquia-clases.pdf}{Jerarquía de la clase {\tt ROContainer}}
@@ -64,7 +64,7 @@
 \item {\bf Rojo}: el método fue llamado únicamente durante la ejecución del test rojo.
 \item {\bf Azul}: el método fue llamado únicamente durante la ejecución del test azul.
 \item {\bf Gris}: el método fue ejecutado durante la ejecución de ambos tests.
-\item {\bf Blanco}: el método fue ejecutado en ninguno de los dos tests.
+\item {\bf Blanco}: el método no fue ejecutado.
 \end{itemize}
 
 \par Un aspecto importante dentro del análisis de cobertura es conocer los caminos de ejecución según las llamadas a métodos de una clase desde otro método definido en la misma clase. Estas llamadas son invocaciones a {\tt self} (o {\tt this} en Java) que permiten diferenciar si un método fue llamado directamente o a través de una invocación {\tt self} desde otro método. Para graficar esto se utilizó una distribución gráfica de Sugiyama~\cite{sugiyama1981methods} (o Sugiyama Layout). En el tope superior están los métodos que realizan mayores invocaciones a otro métodos definidos en la clase y que además no son invocados por otros métodos de la clase. En el tope inferior los métodos que no tienen invocaciones a otros métodos definidos en dicha clase pero sí son invocados por uno o más métodos definidos en la clase. Las invocaciones entre métodos están graficados por líneas rectas entre el método invocador y el invocado.
@@ -78,13 +78,13 @@
 %=============
 \subsection{Métricas para caracterizar la ejecución de los métodos }\seclabel{viz-metricas}
 
-\par Hasta ahora, la visualización sólo grafica lo que ha sido ejecutado por uno, otro u ambos tests, es decir, la cobertura. Sin embargo este acercamiento no parece ser tan preciso ni suficiente\footnote{En el \apref{pq-cobertura} se explica a través de un ejempo que es necesaria más información que la cobertura de los tests para realizar una comparación efectiva.} para tener una idea real de cómo se ejecutaron dichos métodos. Allí es donde emerge la característica más distintiva e innovadora de la visualización de TestSurgeon: incorporar métricas que dan un contexto en el cual un método fue llamado durante la ejecución de los tests en comparación. Así no tan solo se visualiza cuáles fueron los métodos ejecutados por el test rojo o azul (o ambos) y cuales no, sino que además muestra cómo tal método fue ejecutado con el test rojo y cuan diferente fue cuando se ejecutó el test azul.
+\par Hasta ahora, la visualización sólo grafica lo que ha sido ejecutado por uno, otro u ambos tests, es decir, la cobertura. Sin embargo este acercamiento no parece ser tan preciso ni suficiente\footnote{En el \apref{pq-cobertura} se explica a través de un ejempo que efectivamente es necesaria más información que la cobertura para realizar una comparación efectiva.} para tener una idea real de cómo se ejecutaron dichos métodos. Allí es donde emerge la característica más distintiva e innovadora de la visualización de TestSurgeon: incorporar métricas que dan un contexto en el cual un método fue llamado durante la ejecución de los tests en comparación. Así no tan solo se visualiza cuáles fueron los métodos ejecutados por el test rojo o azul (o ambos) y cuales no, sino que también muestra de qué manera tal método fue ejecutado y cuan distinta fue su ejecución entre ambos tests.
 
 \par El \emph{Número de Llamadas} a un método ({\tt NOC} - Number of Calls, en inglés) es una de las dos métricas escogidas para esto. Tal como su nombre lo indica, representa la cantidad de veces que un método fue llamado para su ejecución. De esta manera, entre más veces fue llamado, más relevante es para ese test.
 
 \par Por su parte, el \emph{Número de distintos objetos recibidores} de un método ({\tt NODR} - Number of Different Receivers, en inglés) indica cuántos objetos distintos ejecutaron dicho método. Esta métrica es particularmente útil cuando su {\tt NOC} es parecido ya que su {\tt NODR} puede ser distinto y asi diferencia las ejecuciones del test rojo y azul ofreciendo una perspectiva ortogonal en el análisis.
 
-\par A modo de ejemplo, supongamos que un cierto método $m_a$ fue ejecutado la misma cantidad de veces durante la ejecución del test rojo y el azul, entonces: {\tt NOC}$(m_a,t_r) = \,${\tt NOC}$(m_a,t_b) = k$. Y consideremos que {\tt NODR}$(m_a,t_r) = 1$ y {\tt NODR}$(m_a,t_b) = k$. Durante la ejecución del test rojo, hubo solo una instancia de la clase que define $m_a$ y recibió $k$ veces dicho mensaje, un escenario muy distinto al del test azul, donde hubo $k$ instancias por lo cual, cada una ejecutó $m_a$ solo una vez.
+\par A modo de ejemplo, supongamos que un cierto método $m_a$ fue llamado la misma cantidad de veces durante la ejecución del test rojo y el azul, entonces: {\tt NOC}$(m_a,t_r) = \,${\tt NOC}$(m_a,t_b) = k$. Y consideremos que {\tt NODR}$(m_a,t_r) = 1$ y {\tt NODR}$(m_a,t_b) = k$. Durante la ejecución del test rojo, hubo solo una instancia de la clase que define $m_a$ y recibió $k$ veces dicho mensaje, un escenario muy distinto al del test azul, donde hubo $k$ instancias por lo cual, cada una ejecutó $m_a$ solo una vez.
 
 \par Dado que para un método tenemos 2 métricas por cada test, necesitamos 4 dimensiones para graficarlo: {\tt NOC}$(m_a,t_r)$, {\tt NOC}$(m_a,t_b)$ , {\tt NODR}$(m_a,t_r)$ y {\tt NODR}$(m_a,t_b)$ . Ya que los métodos están gráficamente representados por rectángulos, se decidió que la medida de cada par de lados opuestos será la diferencia entre la métrica para cada test. Entonces, la altura de un rectángulo es la diferencia entre el número de llamados de dicho método durante la ejecución del test rojo y azul. Y su ancho es la diferencia entre el número de distintos objetos recibidores del método durante la ejecución de los tests en comparación. 
 
@@ -92,7 +92,6 @@
 \[ {\rm altura}(m_a) = \abs{{\tt NOC}(m_a,t_r) - {\tt NOC}(m_a,t_b)} \]
 \[ {\rm ancho}(m_a) = \abs{{\tt NODR}(m_a,t_r) - {\tt NODR}(m_a,t_b)} \]
 
-% - Figura: Visualizacion Metodos (alto y ancho)
 
 \par En caso que se necesite aun más detalle sobre las métricas de un método, es posible ver los valores exactos de estas al posicionar el cursor sobre un método. Al cabo de unos segundos aparece una ventana emergente (también conocidas como pop-up) con los valores respectivos de cada métrica, en rojo los correspondientes a ese método y el test rojo, y en azul las métricas correspondientes al test azul y el método seleccionado.
 
@@ -108,7 +107,7 @@
 
 \par En caso contrario, si un método gris es grande, quiere decir que ese método es particularmente relevante para uno de los dos tests ya que se ejecuta muchas más veces en uno de los dos casos o es ejecutado por una cantidad mucho mayor de instancias, o bien ambos casos. 
 
-\par Ahora, considerando los métodos de color rojo o azul, estos se intepretan en una forma ligeramente diferente. Primero es importante considerar su proporción con respecto al total de métodos ejecutados. Si existe gran presencia de métodos rojos y/o azules estamos en un caso de dos tests con cobertura bastante distinta. Por lo tanto, su ejecución se enfoca en características distintas del software. Ahora bien, para casos en que la cobertura es similar (pocos métodos rojos y/o azules), el siguiente aspecto a observar es su forma. Si estos métodos son grandes, quiere decir que son muy relevantes para el test correspondiente. Porque fue ejecutado muchas veces o bien porque varios objetos de los creados en la ejecución, recibieron ese mensaje.
+\par Ahora, considerando los métodos de color rojo o azul, estos se intepretan en una forma ligeramente diferente. Primero, es importante considerar su proporción con respecto al total de métodos ejecutados. Si existe gran presencia de métodos rojos y/o azules estamos en un caso de dos tests con cobertura bastante distinta. Por lo tanto, su ejecución se enfoca en características distintas del software. Ahora bien, para casos en que la cobertura es similar (pocos métodos rojos y/o azules), el siguiente aspecto a observar es su forma. Si estos métodos son grandes, quiere decir que son muy relevantes para el test correspondiente porque fue ejecutado muchas veces o bien porque varios objetos de los creados en la ejecución, recibieron ese mensaje.
 
 \par Recapitulando, y a grandes rasgos, se puede decir que la ejecución de dos test es similar si la visualización presenta una gran cantidad de métodos grises pequeños y en mucho menor grado algunos métodos rojos y/o azules. Por el contrario, dos tests habrán tenido una ejecución muy diferente si se aprecian métodos grandes y con gran presencia de azules y rojos. 
 

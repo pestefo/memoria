@@ -1,16 +1,11 @@
 \chapter{Implementación}\chaplabel{implementacion}
-% +-- TODO --*
-% - Hablar de spec
-% - Referencias:
-% 	- http://www.bergel.eu/download/papers/Berg10f-Spy.pdf (presentacion Spy)
-
 
 %=======
 \section{Arquitectura}\seclabel{impl-arq}
 
-\par El proyecto TestSurgeon fue completamente implementado en el lenguaje Pharo Smalltalk\footnote{Pharo Project - \url{http://www.pharoproject.org} - última visita 12-07-2013 } ya que es en lenguaje en el que está escrito el framework de profiling utilizado (componente principal del proyecto). Pharo es un lenguaje de programación que implementa fielmente el paradigma de orientación a objetos. Sus características principales son, primero: entorno de desarrollo robusto totalmente integrado al lenguaje, y segundo: el sistema sigue una orientación a objetos pura, es decir, todo en Pharo es un objeto, Strings, Números, Clases, Métodos, Collecciones, Paquetes, etc. 
+\par El proyecto TestSurgeon fue completamente implementado en el lenguaje Pharo Smalltalk\footnote{Pharo Project [en línea] \textless\url{http://www.pharoproject.org}\textgreater  [Consulta: 12/08/2013] } ya que es en lenguaje en el que está escrito el framework de profiling utilizado (componente principal del proyecto). Pharo es un lenguaje de programación que implementa fielmente el paradigma de orientación a objetos. Sus características principales son, primero: entorno de desarrollo robusto totalmente integrado al lenguaje, y segundo: el sistema sigue una orientación a objetos pura, es decir, todo en Pharo es un objeto: Strings, Números, Clases, Métodos, Collecciones, Paquetes, etc. 
 
-\par Para ejecutar Pharo, es necesario una máquina virtual la cual es específica de cáda sistema operativo y actúa como interfaz de este último. La imagen de Pharo, una {\tt snapshot} del sistema Pharo congelado en el tiempo, específicamente de la última vez que se ejecutó. Contiene todas las instancias creadas y en el estado en que estaban justo antes de que la máquina virtual se cerrara.
+\par Para ejecutar Pharo, es necesario utilizar una máquina virtual la cual es específica de cáda sistema operativo y actúa como interfaz de este último. La imagen de Pharo es una ``fotografía'' (o {\it snapshot}) del sistema Pharo congelado en el tiempo, específicamente de la última vez que se ejecutó. Contiene todas las instancias creadas y en el estado en que estaban justo antes de que la máquina virtual se cerrara.
 
 \par Sobre Pharo están: \emph{Spy}, \emph{Roassal} y \emph{Spec}, las principales dependencias de TestSurgeon. \emph{Spy} es un framework de profiling~\cite{Berg11h} usado en TestSurgeon, se comentará en detalle sobre éste en la \secref{impl-spy}. \emph{Roassal} es un software que permite desarrollar visualizaciones interactivas en forma fácil y rápida. Es usado por TestSurgeon para implementar la \emph{Test Difference blueprint} (ver \secref{test-diff-blueprint}), en la \secref{impl-viz} se hablará de esta. Finalmente \emph{Spec} es un framework para construir interfaces gráficas y fue usado para la implementación del navegador de tests, ver \secref{impl-browser}.
 
@@ -28,17 +23,16 @@
 \par La clase {\tt MethodSpy} técnicamente es un \emph{wrapper} de un método en Pharo (una instancia de la clase {\tt CompiledMethod}) que acumula datos sobre el contexto de su ejecución. Para esto, la clase provee los métodos {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: } que son ejecutados justo antes e inmediatamente después de ejecutado el método instrumentado. Así se obtienen los datos del impacto de la ejecución de dicho método en el objeto y en los objetos con los cuales colabora. Estos métodos son abtractos y deben concretarse en las aplicaciones que decidan usar Spy extendiendo sus clases. 
 
 %== Figura: (UML) Clases y extensión
-\fig{H}{0.95}{impl/spy-testsurgeon.pdf}{Diagrama de clases de {\tt Spy-Core} y {\tt TestSurgeon-Core-Spy}}
+\fig{H}{1}{impl/spy-testsurgeon.pdf}{Diagrama de clases de {\tt Spy-Core} y {\tt TestSurgeon-Core-Spy}}
 
-
-\par Para hacer uso de Spy se deben entonces extender las clases antes mencionadas y acondicionarlas al dominio específico del problema. Estas clases son: {\tt TSProfiler}, {\tt TSPackage}, {\tt TSClass}, {\tt TSMethod}. Para las aplicaciones que usan esta información, se necesitan obtener datos de ejecución tanto de los tests como del código testeado, es por eso, que para representar un método de test se tiene también la clase {\tt TSTestMethod} que es un wrapper de la clase {\tt TSMethod} donde se guardan métricas y datos procesados de ésta que corresponden a un test method y no a un método testeado, como por ejemplo: {\tt testedMethods}, {\tt testedClasses} o {\tt visualizeDifferencesWith:}, entre otros.
+\par Para hacer uso de Spy se deben entonces extender las clases antes mencionadas y acondicionarlas al dominio específico del problema. Estas clases son: {\tt TSProfiler}, {\tt TSPackage}, {\tt TSClass}, {\tt TSMethod}. Para las aplicaciones que usan esta información, se necesitan obtener datos de ejecución tanto de los tests como del código testeado. Es por esto que para representar un método de test se tiene también la clase {\tt TSTestMethod} que encapsula una instancia de {\tt TSMethod} correspondiente a un test method.
 
 \par En el resto de la sección se describe en detalle las clases que componen al paquete {\tt TestSurgeon-Core-Spy}.
 
 %  ---* TSProfiler *---
 \subsection{La clase {\tt TSProfiler}}
 
-\par Es la clase principal, su interfaz componen los siguientes constructores {\tt buildForClassCategory:} y {\tt buildForPackagesMatching:}. En ambos, el argumento es un objeto String, en el primero especifica una categoría y en el segundo una expresión regular que representa un grupo de categorías o paquetes de software de Pharo. Luego de obtenidos la categoría o las categorías, las instrumenta creando las clases {\tt TSPackage}, {\tt TSClass} y {\tt TSMethod}, posteriormente corre los tests y finalmente retorna la instancia del profiler.
+\par Es la clase principal. Su interfaz componen los siguientes constructores {\tt buildForClassCategory:} y {\tt buildForPackagesMatching:}. En ambos, el argumento es un objeto String, en el primero especifica una categoría y en el segundo una expresión regular que representa un grupo de categorías o paquetes de software de Pharo. Luego de obtenida la categoría o las categorías, las instrumenta creando las clases {\tt TSPackage}, {\tt TSClass} y {\tt TSMethod}, posteriormente corre los tests y finalmente retorna la instancia del profiler.
 
 \par La instancia de {\tt TSProfiler} tiene los siguientes métodos:
 
@@ -90,7 +84,8 @@
     \tablabel{impl-tsmethod}
 \end{table} 
 
-\par Su comportamiento está dividido en dos partes principalmente: los métodos de profiling donde se registran los datos de ejecución, y sus accesores, métodos que entregan la información obtenida. Los métodos de profiling son dos: {\tt beforeRun: with: in:} y {\tt aftefRun: with: in: }, a continuación se muestra el código del primero. 
+\newpage
+\par Su comportamiento está dividido en dos partes principalmente: los métodos de profiling donde se registran los datos de ejecución, y sus accesores: métodos que entregan la información obtenida. Los métodos de profiling son dos: {\tt beforeRun: with: in:} y {\tt aftefRun: with: in:}, a continuación se muestra el código del primero. 
 
 %== Codigo: \ref{code:before-run} y en \ref{code:after-run}
 \begin{codeWithLineNumbers}
@@ -110,7 +105,7 @@
 
 \end{codeWithLineNumbers}
 
-\par Los dos métodos señalados son ejecutados por todos los métodos dentro de la ejecución del test, incluso este último. Sin embargo, la estrategia de obtención de los datos de ejecución es que los métodos instrumentados del código base sean los que almacenen los datos de esta. 
+%\par Los dos métodos señalados son ejecutados por todos los métodos dentro de la ejecución del test, incluso este último. Sin embargo, la estrategia de obtención de los datos de ejecución es que los métodos instrumentados del código base sean los que almacenen los datos de esta. 
 
 \par En el código de {\tt beforeRun:with:in:}, una instancia de {\tt TSMethod} lo recibe. Lo primero que realiza es obtener el test que originó la ejecución. Para esto, realiza un llamado al profiler para solicitar el test que se está ejecutando en ese moomento. El test se agrega al diccionario {\tt spyMethodMapping} que representa una biyección entre los tests como {\tt CompiledMethod} y su método Spy que lo encapsula. 
 
@@ -180,16 +175,16 @@
 %% Method Shape: hablar del ajuste logaritmico.
 \par La implementación de \emph{Test Difference Blueprint} es la clase {\tt TSTestDifferenceBlueprint}. Para crear la visualización necesita de los datos de los tests a comparar, por lo cual dentro de sus atributos están {\tt redTest} y {\tt blueTest}, instancias de {\tt TSTestMethod}. Además, posee un comparador de similitud dinámica (instancia de {\tt TSDynCoverageOtoOComp}) el cual está almacenado en el atributo {\tt comparator}. Para la información general sobre toda la instrumentación y ejecución es que se necesita una instancia de {\tt TSProfiler} la cual está referenciada por el atributo {\tt profiler}. 
 
-\par La visualización como tal corresponde instancia de la {\tt ROView}, que es básicamente un contenedor de los elementos gráficos y es responsable de mostrarlos apropiadamente. Por otro lado, enviando el mensaje {\tt exportAs:}, el objeto crea un archivo de imagen vectorial (formato {\tt SVG}) con el {\tt String} entregado como parámetro como nombre. Técnicamente no hay más aspectos destacables que no se puedan apreciar en forma directa desde el código fuente. Más información sobre la visualización se puede encontrar en la \secref{test-diff-blueprint}. 
+\par La visualización como tal corresponde instancia de {\tt ROView}, que es, en palabras simples, un contenedor de los elementos gráficos de la visualización y es el responsable de mostrarlos apropiadamente. Por otro lado, enviando el mensaje {\tt exportAs:}, el objeto crea un archivo de imagen vectorial (formato {\tt SVG}) con el {\tt String} entregado como parámetro como nombre. Técnicamente no hay más aspectos destacables que no se puedan apreciar en forma directa desde el código fuente. Más información sobre la visualización se puede encontrar en la \secref{test-diff-blueprint}. 
 
 %=======
 \section{Browser}\seclabel{impl-browser}
 %http://hal.inria.fr/docs/00/70/80/67/PDF/SpecTechReport.pdf
-\par El browser o navegador permite acceder rápidamente a los métodos a través de menúes que permiten seleccionar unit tests y los tests para realizar comparaciones rápidamente.  Esta interfaz está implementada completamente usando el framework Spec, y gráficamente consiste en cuatro espacios: Selector de Unit Tests, Selector de Test methods, Zona de Visualización y Zona de Código. La disposición de estas zonas es como se muestra en la \figref{caso-uso/2.png}. Para lanzar el browser se envía el mensaje {\tt openOn:} a {\tt TSBrowser} donde el argumento corresponde a una expresión regular que calza con el nombre de los paquetes a analizar. Por ejemplo, para analizar los tests de Spec, se debe ejecutar el comando {\tt TSBrowser openOn: 'Spec-*'} porque los paquetes de Spec siguen la regla de nombrarse con {\tt Spec-} como prefijo, y los paquetes instrumentados entonces serán: {\tt Spec-Core}, {\tt Spec-Examples}, {\tt Spec-Layout}, {\tt Spec-Tools}, {\tt Spec-Tools-Editor}, {\tt Spec-Widgets}, entre otros.  
+\par El browser o navegador permite acceder rápidamente a los métodos a través de menúes que permiten seleccionar unit tests y los tests para realizar comparaciones rápidamente.  Esta interfaz está implementada completamente usando el framework Spec. Gráficamente consiste en cuatro espacios: Selector de Unit Tests, Selector de Test methods, Zona de Visualización y Zona de Código. La disposición de estas zonas es como se muestra en la \figref{caso-uso/2.png}. Para lanzar el browser se envía el mensaje {\tt openOn:} a {\tt TSBrowser} donde el argumento corresponde a una expresión regular que calza con el nombre de los paquetes a analizar. Por ejemplo, para analizar los tests de Spec, se debe ejecutar el comando {\tt TSBrowser openOn: 'Spec-*'} porque los paquetes de Spec siguen la regla de nombrarse con {\tt Spec-} como prefijo, y los paquetes instrumentados entonces serán: {\tt Spec-Core}, {\tt Spec-Examples}, {\tt Spec-Layout}, {\tt Spec-Tools}, {\tt Spec-Tools-Editor}, {\tt Spec-Widgets}, entre otros.  
 
-\par Como las comparaciones entre ejecuciones de tests son 1-a-1, necesitamos primero escoger dos unit tests, uno para los candidatos a test rojo y otro para los candidatos azules. Cada uno de estos menúes de selección única son una instancia {\tt IconListModel} y muestran una lista de los unit tests ordenados por tamaño (cantidad de tests) de mayor a menor. Una vez seleccionados ambos unit tests, se despliegan los menúes inferiores, los selectores de Test Methods. Estos, también {\tt IconListModel} tienen algunas diferencias: el menú para escoger test rojo ordena los tests en orden alfabético; por su parte el menú para test azul inicialmente está en orden alfabético pero una vez se haya seleccionado un test azul se ordena según similitud dinámica descendente con respecto al test rojo. 
+\par Como las comparaciones entre ejecuciones de tests son 1-a-1, necesitamos primero escoger dos unit tests, uno para los candidatos a test rojo y otro para los candidatos azules. Cada uno de estos menúes de selección única son una instancia {\tt IconListModel} y muestran una lista de los unit tests ordenados por tamaño (cantidad de tests) de mayor a menor. Una vez seleccionados ambos unit tests, se despliegan los menúes inferiores, los selectores de test methods. Estos, también son objetos {\tt IconListModel} pero con algunas diferencias: el menú para escoger test rojo ordena los tests en orden alfabético; por su parte el menú para test azul inicialmente está en orden alfabético pero una vez se haya seleccionado un test azul se ordena según similitud dinámica descendente con respecto al test rojo. 
 
-\par Cuando hay un test rojo y azul seleccionados, se refresca la visualización para mostrar la comparación de los elementos seleccionados y la zona de comparación de código. Sobre la última, para ahorrar tiempo, se reutilizó esta componente ({\tt DiffMorph}) desde el browser de administración y descarga de paquetes(\emph{Monticello Browser}). El comparador de código, éste compara línea a línea el código y marca de color (rojo y verde, no sigue la convención de TestSurgeon) las diferencias entre estos. 
+\par Cuando hay un test rojo y azul seleccionados, se refresca la visualización para mostrar la comparación de los elementos seleccionados y la zona de comparación de código. Sobre la última, para ahorrar tiempo, se reutilizó esta componente ({\tt DiffMorph}) desde el browser de administración y descarga de paquetes(\emph{Monticello Browser}\footnote{Dynamic Web Development with Seaside . Saving your Package to Monticello [en línea] \textless \url{http://book.seaside.st/book/getting-started/pharo/monticello} \textgreater [Consulta: 12/08/2013] }). El comparador de código, éste compara línea a línea el código y marca de color (rojo y verde, no sigue la convención de TestSurgeon) las diferencias entre estos. 
 %=======
 \section{Clustering y Comparación de tests}\seclabel{impl-clustering}
 
@@ -227,17 +222,17 @@
 
 \par Finalmente el experimento de agrupamiento consistió en ejecutar el algoritmo de agrupación aglomerativo jerárquico para cada distancia y cada similitud interna mínima, con lo cual se obtuvo 15 particiones distintas de {\tt ROMondrianViewBuilderTest}. Luego de evaluados los resultados (ver \apref{exp-clustering}) se obtuvo que la mejor configuración corresponde a imponer una \textbf{similitud interna mínima} de \textbf{85\%} y usando la métrica de distancia \textbf{Complete Link}.
 
-\clearpage
+
 \subsection{Diagrama de Clases}
 
 \par La implementación del algoritmo y el experimento descritos anteriormente consiste en 3 paquetes principales: {\tt TestSurgeon-Clustering},  {\tt TestSurgeon-Comparator} y {\tt TestSurgeon-Experiments}. 
 
-\fig{H}{0.75}{impl/comparator.pdf}{Diagrama de clases del paquete {\tt TestSurgeon-Comparator}}
-\fig{H}{0.75}{impl/clustering.pdf}{Diagrama de clases del paquete {\tt TestSurgeon-Clustering}}
+\fig{H}{1}{impl/comparator.pdf}{Diagrama de clases del paquete {\tt TestSurgeon-Comparator}}
+\fig{H}{1}{impl/clustering.pdf}{Diagrama de clases del paquete {\tt TestSurgeon-Clustering}}
 
 \par El paquete {\tt TestSurgeon-Clustering} contiene las clases necesarias para agrupar tests. La clase {\tt TSHACDistance} define solamente el método abstracto {\tt distanceBetween:and:} que recibe como argumentos dos instancias de la clase {\tt TSTestCluster}, el cual debe ser sobrescrito por sus subclases. Estas son {\tt TSSingleLinkDistance}, {\tt TSCompleteLinkDistance} y {\tt TSAverageLinkDistance} los cuales implementan dicho método según la definición de distancia correspondiente. Por su parte la clase {\tt TSHierarchicalAgglomerativeClustering} contiene todo el comportamiento necesario para ejecutar el algoritmo salvo la métrica de distancia, que está representada por el método {\tt distanceMetric} y es sobrescrito por sus tres subclases: {\tt TSHACSingleLink}, {\tt TSHACCompleteLink} y {\tt TSHACAverageLink} los cuales retornan la clase que implementa dicha métrica. A continuación se muestra el código del método principal que ejecuta el algoritmo.
 
-\vspace*{2cm}
+\newpage
 
 \begin{codeWithLineNumbers}
 <i>TSHierarchicalAgglomerativeClustering>>run</i>
@@ -263,8 +258,7 @@ run
 	
 	^ clusters
 \end{codeWithLineNumbers}
-
-\clearpage
+ 
 \par La clase {\tt TSTestCluster} representa un grupo de test el cual responde a las siguientes mensajes: 
 
 \begin{table}[h] 
@@ -290,7 +284,7 @@ run
     \tablabel{impl-tstestcluster}
 \end{table}  
 
-\vspace*{2cm}
+\vspace*{1cm}
 
 \par El paquete {\tt TestSurgeon-Comparator} contiene a comparadores de test methods que ofrecen diversas métricas según el tipo de comparación que se realice. Las comparaciones pueden ser entre dos métodos de test ({\tt TSOneToOneComp}), entre un método de test y un grupo de tests ({\tt TSOneToManyComp}) y entre dos grupos de test ({\tt TSManyToManyComp}). Los dos últimos comparadores reutilizan el comparador uno-a-uno aplicandolo a colecciones de test, por lo cual detallaremos el primero. La clase {\tt TSOneToOneComp} es una clase abstracta que contiene dos atributos: {\tt redTest} y {\tt blueTest}, los tests a comparar. El comportamiento mínimo que cualquier extensión de esta clase debe implementar es de retornar el valor de similitud entre el test rojo y azul a través del método {\tt similarity}. Las dos clases que lo extienden son: {\tt TSDynCoverageOtoOComp} y {\tt TSStaticOtoOComp}. El primero implementa la métrica $g$ presentada anteriormente, y la segunda implementa la métrica $f$ (ver \secref{exp1-metricas-sim}) que mide la similitud de test según su código fuente. A continuacion presentamos las API pública de cada una de estas clases.
 
@@ -321,7 +315,7 @@ run
     \tablabel{impl-gcomp}
 \end{table} 
 
-
+\vspace*{1cm}
 
 \begin{table}[h] 
     \centering 
@@ -345,7 +339,7 @@ run
 \end{table} 
 
 \clearpage
-\par Finalmente, en el paquete {\tt TestSurgeon-Experiments}, la clase {\tt TSClusteringExp} realiza el experimento de correr el algoritmo de clustering bajo distintas tolerancias de similitud interna y distintas distancias de clustering. El método principal de esta clase se presenta a continuación.
+\par Finalmente, en el paquete {\tt TestSurgeon-Experiments}, la clase {\tt TSClusteringExp} realiza el experimento de correr el algoritmo de clustering bajo distintas tolerancias de similitud interna y distintas distancias de clustering cuyos resultados se pueden consultar en el \apref{exp-clustering}. El método principal de esta clase se presenta a continuación.
 
 \begin{codeWithLineNumbers}
 <i>TSClusteringExp>>run</i>

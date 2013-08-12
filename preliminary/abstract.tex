@@ -4,23 +4,17 @@
 \par Actualmente la actividad de Testing es fundamental dentro del ciclo de desarrollo de cualquier proyecto de software serio. Es más, las metodologías ágiles elevan su relevancia dentro de la construcción del software a tal nivel que está prohibido añadir una nueva funcionalidad sin que se haya escrito previamente un test que la valide.
 
 % Relevancia
-\par A medida que el software crece en funcionalidades y cambian los requerimientos se vuelve más complejo. Es por eso que existen varias técnicas para restructurar el código para hacerlo más flexible a los cambios y permitir que crezca. 
+\par A medida que el software crece en funcionalidades y cambian los requerimientos se vuelve más complejo. Es por eso que existen varias técnicas para restructurar el código haciéndolo más flexible a los cambios y permitiendo que crezca. 
 
-\par Sin embargo, los test también crecen en número y en complejidad. Escenario en el cual abundan problemas de redundancia tanto en el código fuente de éstos como en su ejecución. Pero, a difernecia con el código ``funcional'', poco esfuerzo se ha realizado por parte de la industria y la academia para mantener una estructura y diseño limpio de los tests. 
+\par Sin embargo, los test también crecen en número y en complejidad. Por lo que no son raros los casos de test redudantes tanto desde el punto de vista de su código fuente (duplicación de test) como de su ejecución. Pero a diferencia con el código ``funcional'', poco esfuerzo se ha realizado por parte de la industria por promover técnicas y crear herramientas que faciliten la tarea de mantener su estructura y diseño limpio. 
 
-\par Una de las consecuencias importantes de este problema es el gran tiempo que toma ejecutar todos los tests. Al tener tests redundantes, la ejecución tarda más tiempo del necesario lo hace que los desarrolladores disminuyan la frecuencia de la ejecución de estos, e inclusive minimicen la cobertura de sus tests. Esto último atenta críticamente en la confiabilidad del código funcional y por ende de la aplicación completa.
+\par Una de las consecuencias importantes de este problema, es el gran tiempo que toma ejecutar todos los tests. Al haber redundancia, la ejecución tarda más tiempo del necesario lo hace que los desarrolladores los corran con menos frecuencia e inclusive invierten menos tiempo en escribir nuevos test lo cual minimiza la cobertura. Esto último atenta críticamente en la confiabilidad del código base y por ende de la aplicación.
 
-\par En este trabajo se propone una herramienta para detectar problemas de diseño de los tests o \emph{test smells}. \emph{TestSurgeon} aborda este problema desde distintos aspectos de análsis de un test, tales como: su código fuente y su ejecución. A través de una intuitiva intefaz, el desarrollador puede navegar sobre las pruebas unitarias y realizar comparaciones entre tests ayudado por métricas dedicadas que lo guían para encontrar casos interesantes de posible restructuración. Además provee una completa visualización que condensa armónicamente una serie de métricas que describen y a su vez diferencian la ejecución de dos tests. Esto permite realizar un análisis comparativo eficaz entre dos tests. De esta manera, TestSurgeon permite detectar diferencias semánticas entre tests y encontrar redundancias entre estos para una posterior refactorización.
+\par En este trabajo se propone una herramienta para detectar problemas de diseño de los tests o \emph{test smells}. \emph{TestSurgeon} aborda este problema desde dos perspectivas de análisis principales: su código fuente y su ejecución. A través de una intuitiva intefaz, el desarrollador puede navegar sobre las pruebas unitarias y realizar comparaciones entre tests, guiado por métricas dedicadas que facilitan la detección de casos interesantes de comparación. Además provee una completa visualización que condensa dos métricas que describen y a su vez diferencian la ejecución de los test en comparación, permitiendo realizar un análisis eficaz. De esta manera, TestSurgeon permite detectar diferencias semánticas entre tests y encontrar redundancias entre estos para una posible refactorización.
 
 \par Se presenta también en detalle una experiencia de la aplicación de \emph{TestSurgeon} sobre los tests de \emph{Roassal}, un motor de visualización ágil. Se detallan tres escenarios de refactorización y restructuración de test que la herramienta permite detectar.  
 % Este problema es particularmente importante cuando se automatiza el proceso de liberación de código a través de integración contínua. Donde antes de liberar una nueva funcionalidad se ejecutan todos los tests para verificar que no se ha roto ninguna funcionalidad previamente liberada. Por tanto, el tener tests redundantes tiempo valioso se pierde y provoca disminución en la velocidad del equipo de desarrollo.  
 
-% Approach
-\par 
-
-% Resultados
-
-% Conclusiones
 
 
 

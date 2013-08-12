@@ -1,8 +1,8 @@
 \chapter{¿Por qué la cobertura no es suficiente para comparar dos tests?}\aplabel{pq-cobertura}
 
-\par La cobertura de tests~\cite{Horwi02a} intenta determinar qué proporción de una parte de un programa es ejecutada durante el ciclo de pruebas. La cobertura de test se reporta comúnmente como la proporción de paquetes, clases, métodos y líneas de código fuente que fueron ejecutados por los tests. Revisar el código cubierto por los tests es una técnica efectiva para idenficar cual porción un software está asegurado por los tests. La medida tradicional de cobertura~\cite{Mock09a,Piwo93a} de test recae en marcar elementos estructurales del software tales como sentencias (o statements), métodos o clases que son cubiertos durante la ejecución.
+\par La cobertura de tests~\cite{Horwi02a} intenta determinar qué proporción de una parte de un programa es ejecutada durante el ciclo de pruebas. La cobertura de test se reporta comúnmente como la proporción de paquetes, clases, métodos y líneas de código fuente que fueron ejecutados por los tests. Revisar el código cubierto por los tests es una técnica efectiva para idenficar la porción de un software está asegurado por los tests. La medida tradicional de cobertura~\cite{Mock09a,Piwo93a} de test recae en marcar elementos estructurales del software tales como sentencias (o statements), métodos o clases que son cubiertos durante la ejecución.
 
-\par Como sea la forma de marcar aquellos elementos, es igualmente útil para identificar cual porción del código está siendo cubierta o no por los tests. Sin embargo, para conocer realmente si dos test están intentando testear lo mismo,  hacer diferenciarlos por lo su cobertura parece no ser suficiente~\cite{van2001refactoring,greiler2012test}.    
+\par Como sea la forma de marcar aquellos elementos, es igualmente útil para identificar y medir cual porción del código está siendo cubierta o no por los tests. Sin embargo, para conocer realmente si dos test están intentando testear lo mismo, diferenciarlos por lo su cobertura parece no ser suficiente~\cite{van2001refactoring,greiler2012test}.    
 
 \par Para ilustrar lo anterior, se presenta el código de los tests: {\tt testAddingColoredElement} y {\tt testVisualizingBigClasses} :
 
@@ -27,8 +27,8 @@
 
 \par El código de {\tt testAddingColoredElement} crea un \emph{canvas} (lienzo donde se dibujan los elementos gráficos) para posionar sobre esta una caja verde y otra roja. Por su parte, en {\tt testVisualizingBigClasses} se crea una visualizacion que representa algunas clases coloreadas según una condición particular. Cada subclase de {\tt Collection} está asociada a una caja. Si la clase tiene más de 10 métodos, la caja se pinta en rojo, de lo contrario en verde. 
 
-\par Los dos tests tienen un 95\% de metodos testeados en común, el 5\% que los diferencia se debe a algunos cachés están activados cuando el número de cajas excede cierto número límite (este comportamiento no se muestra en el código presentado arriba). 
+\par Los dos tests tienen un 95\% de metodos testeados en común, el 5\% que los diferencia se debe a algunos cachés que se activan cuando el número de cajas excede cierto número límite (este comportamiento no se muestra en el código presentado arriba). 
 
 \par Aunque exista un solapamiento considerable desde el punto de vista de los métodos que cubren, estos dos tests no deberían ser considerados redundantes pues el escenario mostrado en cada uno tiene su propia relevancia y no son comparables. 
 
-\par Por lo tanto, dos tests que son similares por su cobertura pueden ser semánticamente muy distintos. Esta diferencia semántica no es expresada por la cobertura y para revelarla se hace necesaria mayor información como por ejemplo mayor información acerca de su ejecución e información experta por parte de los desarrolladores. 
+\par Por lo tanto, dos tests que son similares por su cobertura pueden ser semánticamente muy distintos. Esta diferencia semántica no es expresada por la cobertura y para revelarla se hace necesaria mayor información como por ejemplo más datos característicos de su ejecución e información experta por parte de los desarrolladores. 
