@@ -7,7 +7,7 @@
 
 \par Para esto se decidió utilizar el algoritmo de \textbf{Agrupación Aglomerativo Jerárquico} (o \textbf{Hierarchical Agglomerative Clustering }, \textbf{HAC}). El comienza con $N$ clusters que contienen 1 (o clusters \textit{unitarios}) solo elemento y en cada paso fusiona los dos clusters más cercanos repitiendo esto hasta que quede 1 cluster con $N$ elementos formando una jerarquía. Entonces, al terminar su ejecución, el usuario puede solicitar la partición con $k$ clusters. 
 
-\par Sin embargo no se sabe cuántos clusters se necesitan. Pero sí se sabe que los clusters deben tener una similitud interna suficiente para que las comparaciones sean fructíferas y no una pérdida de tiempo. La experiencia indica que para que esto suceda la similitud entre un par de tests debe ser de al menos un 80\%, por lo cual la similitud interna de cada cluster (promedio entre las similitudes de todos los pares de tests en el cluster) debe ser al menos de un 75\%. 
+\par Sin embargo no se sabe cuántos clusters se necesitan. Pero sí se sabe que  deben tener una similitud interna suficiente para que las comparaciones sean fructíferas y no una pérdida de tiempo. La experiencia indica que para que esto suceda la similitud entre un par de tests debe ser de al menos un 80\%, por lo cual la similitud interna de cada cluster (promedio entre las similitudes de todos los pares de tests en el cluster) debe ser al menos de un 75\%. 
 
 \par Por otro lado, tampoco se sabe qué medida de distancia entre clusters es la más apropiada para este problema: \emph{Single Link}, \emph{Complete Link} o \emph{Average Link} \footnote{La definición formal de cada una de la métricas de distancia se presenta en la \secref{impl-hac}}.  
 
@@ -100,7 +100,7 @@
 \end{figure}
 
 
-\par Entre las dos alternativas restantes se realizó una comparación mas minuciosa. Por un lado, la alternativa (\emph{Complete Link}, 85\%) genera dos clusters más que (\emph{Average Link}, 85\%) (ver \figref{ap-clustering} (k) y (l)), los dos casos presentan igual número de clusters unitarios. La \figref{ap-comp-clus} muestra los gráficos comparativos según tamaño y similitud interna. En ambos graficos los clusters están ordenados de izquierda a derecha según su tamaño (número de elementos) y en orden decreciente. 
+\par Entre las dos alternativas restantes se realizó una comparación mas minuciosa. Por un lado, la alternativa (\emph{Complete Link}, 85\%) genera dos clusters más que (\emph{Average Link}, 85\%) (ver \figref{ap-clustering} (k) y (l)), los dos casos presentan igual número de clusters unitarios. La \figref{ap-comp-clus} muestra los gráficos comparativos según tamaño y similitud interna. En ambos gráficos los clusters están ordenados de izquierda a derecha según su tamaño (número de elementos) y en orden decreciente. 
 
 \par La \figref{ap-comp-clus}(a) permite revisar la condición 2. Allí se aprecia que la mejor distribución de los tests se da en (\emph{Complete Link}, 85\%) ya que los clusters no difieren tanto en tamaño. Además en el caso de (\emph{Average Link}, 85\%) se observa un escenario similar al de (\emph{Single Link}, 85\%) con un cluster de gran tamaño, el siguiente la mitad del primero, y así sucesivamente. Inicialmente se pensó en el caso en que el cluster $C_{1,AL}$ del caso \emph{Average Link} fueran los clusters $C_{1,CL}$ y $C_{2,CL}$ de \emph{Complete Link} fusionados, pero luego de una inspección con TestSurgeon determinó que esto no era así y que de hecho los dos clusters $C_{1,CL}$ y $C_{2,CL}$ eran bastante distintos ya que la similitud entre sus elementos en general era menor al 80\% (menor que la $s_{min}$). 
 
@@ -112,7 +112,7 @@
 
 \section{Conclusión}
 
-\par En conclusión se obtuvo una reducción de comparaciones que incialmente eran 4.560 a 405. Luego del agrupamiento se descartó el 91\% de las comparaciones iniciales las cuales eran innecesarias puesto que la cobertura entre los elementos no daba lugar a un caso de interés. Esto significa una inmensa reducción de tiempo para el desarrollador y le permite enfocarse en los casos realmente interesantes donde existe la posibilidad de restructuración o refactorización. 
+\par En conclusión se obtuvo una reducción de comparaciones que inicialmente eran 4.560 a 405. Luego del agrupamiento se descartó el 91\% de las comparaciones iniciales las cuales eran innecesarias puesto que la cobertura entre los elementos no daba lugar a un caso de interés. Esto significa una inmensa reducción de tiempo para el desarrollador y le permite enfocarse en los casos realmente interesantes donde existe la posibilidad de restructuración o refactorización. 
 
 
 

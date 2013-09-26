@@ -14,7 +14,7 @@
 \par El objetivo de TestSurgeon es apoyar a los ingenieros de software a reestructurar y refactorizar sus tests unitarios a través de un análisis sobre las diferencias de ejecución de los tests.
 
 \subsection{Caso de uso}
-\par A modo de resumen, para usar TestSurgeon se siguen las siguientes estapas: primero se lanza TestSurgeon sobre conjunto de paquetes, inmediatamente después se realiza el profiling sobre los paquetes seleccionados. Una vez finalizada esta etapa, se abre una ventana con el browser (o navegador) donde se escogen dos unit tests (no necesariamente distintos), posteriormente se seleccionan dos métodos de test pertenecientes a los unit tests escodigos. Finalmente se realiza la comparación entre los test methods seleccionados através de la visualización y la zona de comparación de código. En TestSurgeon se realizan comparaciones de métodos de test uno-a-uno por lo cual, para diferenciarlos, se denominan \emph{test rojo} y \emph{test azul} en concordancia a los colores en la visualización.
+\par A modo de resumen, para usar TestSurgeon se siguen las siguientes etapas: primero se lanza TestSurgeon sobre conjunto de paquetes, inmediatamente después se realiza el profiling sobre los paquetes seleccionados. Una vez finalizada esta etapa, se abre una ventana con el browser (o navegador) donde se escogen dos unit tests (no necesariamente distintos), posteriormente se seleccionan dos métodos de test pertenecientes a los unit tests escodigos. Finalmente se realiza la comparación entre los test methods seleccionados a través de la visualización y la zona de comparación de código. En TestSurgeon se realizan comparaciones de métodos de test uno-a-uno por lo cual, para diferenciarlos, se denominan \emph{test rojo} y \emph{test azul} en concordancia a los colores en la visualización.
 
 \par Para ilustrar el uso de TestSurgeon se muestra a continuación un ejemplo sobre el software: \emph{Roassal}.
 
@@ -24,10 +24,10 @@
 
 \par Luego, TestSurgeon realiza un profiling sobre la ejecución de los tests encontrados en todos los paquetes de Roassal. Esto consiste en: ejecutarlos, recolectar datos y generar los objetos según el modelo de objetos de Spy(ver \secref{impl-spy}). Este proceso puede tardar desde unos segundos o algunos pocos minutos según la cantidad de tests encontrados y las operaciones propias dentro de cada test.
 
-\par Una vez concluida la etapa de profiling, se desplega una ventana con cuatro zonas principales(ver \figref{caso-uso/2.png}): 
+\par Una vez concluida la etapa de profiling, se despliega una ventana con cuatro zonas principales(ver \figref{caso-uso/2.png}): 
 \begin{itemize}
 \item {\bf Test Unitarios}: En la zona superior-izquierda aparecen dos listas. Se puede seleccionar solo un unit test por cada lista.
-\item {\bf Métodos de Test}: Justo abajo de los test unitarios aparecen dos listas con los métodos de test de los unit tests seleccionados. En cada lista se pueden seleccionar un metodo. El método seleccionado de la izquieda se denomina \emph{test rojo} y el de la derecha \emph{test azul}.
+\item {\bf Métodos de Test}: Justo abajo de los test unitarios aparecen dos listas con los métodos de test de los unit tests seleccionados. En cada lista se pueden seleccionar un método. El método seleccionado de la izquierda se denomina \emph{test rojo} y el de la derecha \emph{test azul}.
 \item {\bf Visualización}: Luego de seleccionados los tests rojo y azul se despliega una visualización que muestra la diferencia en la ejecución de ambos tests.
 \item {\bf Código Fuente}: Junto con la visualización se muestra el código fuente de cada test.
 \end{itemize}
@@ -78,7 +78,7 @@
 %=============
 \subsection{Métricas para caracterizar la ejecución de los métodos }\seclabel{viz-metricas}
 
-\par Hasta ahora, la visualización sólo grafica lo que ha sido ejecutado por uno, otro u ambos tests, es decir, la cobertura. Sin embargo este acercamiento no parece ser tan preciso ni suficiente\footnote{En el \apref{pq-cobertura} se explica a través de un ejempo que efectivamente es necesaria más información que la cobertura para realizar una comparación efectiva.} para tener una idea real de cómo se ejecutaron dichos métodos. Allí es donde emerge la característica más distintiva e innovadora de la visualización de TestSurgeon: incorporar métricas que dan un contexto en el cual un método fue llamado durante la ejecución de los tests en comparación. Así no tan solo se visualiza cuáles fueron los métodos ejecutados por el test rojo o azul (o ambos) y cuales no, sino que también muestra de qué manera tal método fue ejecutado y cuan distinta fue su ejecución entre ambos tests.
+\par Hasta ahora, la visualización sólo grafica lo que ha sido ejecutado por uno, otro u ambos tests, es decir, la cobertura. Sin embargo este acercamiento no parece ser tan preciso ni suficiente\footnote{En el \apref{pq-cobertura} se explica a través de un ejemplo que efectivamente es necesaria más información que la cobertura para realizar una comparación efectiva.} para tener una idea real de cómo se ejecutaron dichos métodos. Allí es donde emerge la característica más distintiva e innovadora de la visualización de TestSurgeon: incorporar métricas que dan un contexto en el cual un método fue llamado durante la ejecución de los tests en comparación. Así no tan solo se visualiza cuáles fueron los métodos ejecutados por el test rojo o azul (o ambos) y cuales no, sino que también muestra de qué manera tal método fue ejecutado y cuan distinta fue su ejecución entre ambos tests.
 
 \par El \emph{Número de Llamadas} a un método ({\tt NOC} - Number of Calls, en inglés) es una de las dos métricas escogidas para esto. Tal como su nombre lo indica, representa la cantidad de veces que un método fue llamado para su ejecución. De esta manera, entre más veces fue llamado, más relevante es para ese test.
 
@@ -95,19 +95,19 @@
 
 \par En caso que se necesite aun más detalle sobre las métricas de un método, es posible ver los valores exactos de estas al posicionar el cursor sobre un método. Al cabo de unos segundos aparece una ventana emergente (también conocidas como pop-up) con los valores respectivos de cada métrica, en rojo los correspondientes a ese método y el test rojo, y en azul las métricas correspondientes al test azul y el método seleccionado.
 
-\fig{h}{0.85}{pop-up-view.pdf}{Vemtana emergente con detalles de las métricas para el método {\tt deltaFor:}.}
+\fig{h}{0.85}{pop-up-view.pdf}{Ventana emergente con detalles de las métricas para el método {\tt deltaFor:}.}
 
 %========
 \section{Resumen: Interpretando la visualización}
 
 
-\par La \emph{Test difference blueprint} facilita la comprensión de la diferencia de ejecuciones entre dos test methods diferenciandolas sobre lo que efectivamente testearon y contrastando la forma en que lo hicieron. Los colores ayudan a percibir características de cobertura, por lo que una alta porción de métodos grises significa que su cobertura es similar, es decir, en su ejecución hay varios métodos en común que se llamaron, lo cual los hace más similares.
+\par La \emph{Test difference blueprint} facilita la comprensión de la diferencia de ejecuciones entre dos test methods diferenciándolas sobre lo que efectivamente testearon y contrastando la forma en que lo hicieron. Los colores ayudan a percibir características de cobertura, por lo que una alta porción de métodos grises significa que su cobertura es similar, es decir, en su ejecución hay varios métodos en común que se llamaron, lo cual los hace más similares.
 
 \par La forma y tamaño de los métodos en la visualización habla de cómo fueron ejecutados los métodos y las métricas que describen esto son: cuantas veces fue llamado(altura) y cuantos objetos distintos ejecutaron lo ejecutaron(ancho). Dado que la visualización se enfoca en diferencias y se están comparando dos tests, el ancho y alto de un método es la diferencia entre dichas métricas para cada ejecución de test. Entonces, si un método gris se ve pequeño en tamaño quiere decir que no hubo mucha diferencia entre cuantas veces fue ejecutado por el test rojo y azul, y la cantidad de instancias que ejecutaron ese método en ambos test fue similar. 
 
 \par En caso contrario, si un método gris es grande, quiere decir que ese método es particularmente relevante para uno de los dos tests ya que se ejecuta muchas más veces en uno de los dos casos o es ejecutado por una cantidad mucho mayor de instancias, o bien ambos casos. 
 
-\par Ahora, considerando los métodos de color rojo o azul, estos se intepretan en una forma ligeramente diferente. Primero, es importante considerar su proporción con respecto al total de métodos ejecutados. Si existe gran presencia de métodos rojos y/o azules estamos en un caso de dos tests con cobertura bastante distinta. Por lo tanto, su ejecución se enfoca en características distintas del software. Ahora bien, para casos en que la cobertura es similar (pocos métodos rojos y/o azules), el siguiente aspecto a observar es su forma. Si estos métodos son grandes, quiere decir que son muy relevantes para el test correspondiente porque fue ejecutado muchas veces o bien porque varios objetos de los creados en la ejecución, recibieron ese mensaje.
+\par Ahora, considerando los métodos de color rojo o azul, estos se interpretan en una forma ligeramente diferente. Primero, es importante considerar su proporción con respecto al total de métodos ejecutados. Si existe gran presencia de métodos rojos y/o azules estamos en un caso de dos tests con cobertura bastante distinta. Por lo tanto, su ejecución se enfoca en características distintas del software. Ahora bien, para casos en que la cobertura es similar (pocos métodos rojos y/o azules), el siguiente aspecto a observar es su forma. Si estos métodos son grandes, quiere decir que son muy relevantes para el test correspondiente porque fue ejecutado muchas veces o bien porque varios objetos de los creados en la ejecución, recibieron ese mensaje.
 
 \par Recapitulando, y a grandes rasgos, se puede decir que la ejecución de dos test es similar si la visualización presenta una gran cantidad de métodos grises pequeños y en mucho menor grado algunos métodos rojos y/o azules. Por el contrario, dos tests habrán tenido una ejecución muy diferente si se aprecian métodos grandes y con gran presencia de azules y rojos. 
 
