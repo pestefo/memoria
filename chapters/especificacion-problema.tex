@@ -6,9 +6,9 @@
 \section{Contexto: Test como ``conductores'' del diseño}
 \par Durante el desarrollo de un software una de las actividades principales es el testeo de los requerimientos. Existen variadas técnicas, metodologías y artefactos relacionados a esta actividad. En particular, la creación de pruebas automatizadas es una práctica cotidiana en cualquier proyecto de software y comprende parte importante de los artefactos generados. \\
 
-\par En particular los proyectos de software ágiles dan gran importancia a estos artefactos, ya que cada historia de usuario (requerimiento) debe tener pruebas de aceptación (tests de alto nivel). Estos se escriben y detallan en conjunto con el cliente para asegurar que el código que se creará cumple lo que este pide: ni menos ni más.
+\par En particular, los proyectos de software ágiles dan gran importancia a estos artefactos, ya que cada historia de usuario (requerimiento) debe tener pruebas de aceptación (tests de alto nivel). Estos se escriben y detallan en conjunto con el cliente para asegurar que el código que se creará cumple lo que éste pide: ni menos ni más.
 
-\par Estas historias de usuario están escritas en lenguaje natural por lo que se deben \emph{transcribir} al lenguaje técnico: código fuente. Entonces, antes de escribir una funcionalidad, los desarrolladores crean los tests: código fuente que garantiza que una característica se comporta como es requerida. Este proceso se denomina \emph{Test-Driven Development} (o TDD)~\cite{Beck02a}  o Desarrollo Dirigido por Pruebas: se escribe el test, se ejecuta y este falla (ya que no se ha escrito el código que suple dicha característica). Luego se escriben las clases y métodos que hace el test funcionar, éste se vuelve a ejecutar y esta vez ``pasa''. Finalmente se refactoriza el código recién escrito para mantener un diseño limpio y mantenible en el tiempo.
+\par Estas historias de usuario están escritas en lenguaje natural por lo que se deben \emph{transcribir} al lenguaje técnico: código fuente. Entonces, antes de escribir una funcionalidad, los desarrolladores crean los tests: código fuente que garantiza que una característica se comporta como es requerida. Este proceso se denomina \emph{Test-Driven Development} (o TDD)~\cite{Beck02a}  o Desarrollo Dirigido por Pruebas: se escribe el test, se ejecuta y este falla (ya que no se ha escrito el código que suple dicha característica). Luego se escriben las clases y métodos que hace que el test funcione, éste se vuelve a ejecutar y esta vez ``pasa''. Finalmente se refactoriza el código recién escrito para mantener un diseño limpio y mantenible en el tiempo.
 
 \par Esta práctica está dentro del núcleo de la filosofía que enmarca la agilidad a tal nivel que está prohibido agregar una nueva funcionalidad sin, previamente, haber escrito un test que lo valide~\cite{Beck02a}. Esta queda documentado en el libro de Robert Cecil Martin (más conocido como``Uncle Bob'')~\cite{Mart02b} uno de los escritores del manifiesto ágil~\cite{Fowl01a} quien declara:
 
@@ -28,11 +28,11 @@
 
 \par Estas deficiencias en el diseño y calidad del código de las pruebas unitarias tienen consecuencias importantes en la calidad del código testeado y en el mismo proceso de desarrollo:
 \begin{itemize}
-\item \textbf{Performance} Debido a los solapamientos previamente mencionados, muchas veces existe \textbf{ejecución redundante} que va en contra de las características deseables de una suite de tests. Muchas veces los tests dejan de ejecutarse con la frecuencia necesaria.
-\item \textbf{Debugging} Otra deficiencia conocida es que al correr los tests en presencia de un \emph{bug}, éste queda en evidencia por muchos tests, lo cual dificulta la identificación de su causa y su corrección. Coloquialmente se hace más difícil responder la pregunta: \emph{¿Cuál test miro primero?}
+\item \textbf{Rendimiento} Debido a los solapamientos previamente mencionados, muchas veces existe \textbf{ejecución redundante} que va en contra de las características deseables de una suite de tests. Muchas veces los tests dejan de ejecutarse con la frecuencia necesaria.
+\item \textbf{Depuración}\footnote{o \emph{Debugging}.} Otra deficiencia conocida es que al correr los tests en presencia de un \emph{bug}, éste queda en evidencia por muchos tests, lo cual dificulta la identificación de su causa y su corrección. Coloquialmente se hace más difícil responder la pregunta: \emph{¿Cuál test miro primero?}
 \end{itemize}
  
-\par De esta manera la confiabilidad en el producto y su calidad se ven impactadas negativamente. 
+\par De esta manera, la confiabilidad en el producto y su calidad se ven impactadas negativamente. 
 
 \par Un caso muy claro de la influencia del mal diseño y poco cuidado en los tests ocurre cuando el ciclo de desarrollo utiliza mecanismos de \textbf{Integración Contínua} (Continuous Integration). En esta práctica cada \emph{feature} se implementa tan pronto como es posible, se testea y se pasa a producción de inmediato. De esta manera el equipo de desarrollo realiza varias integraciones por día y el cliente obtiene rápidamente las nuevas funcionalidades a medida que las solicita. \\
 
