@@ -1,10 +1,12 @@
-\chapter{Experimento: ¿Dos códigos de test parecidos prueban lo mismo? }\aplabel{exp-static-vs-dynamic}
+\chapter{Investigación Previa}
+
+\section{Experimento: ¿Dos códigos de test parecidos prueban lo mismo? }\seclabel{exp-static-vs-dynamic}
 
 \par Uno de los primeras actividades al enfrentar el problema de modularidad de los tests es mirar el código fuente. Luego de una breve y ligera inspección del código fuente podemos encontrar varios tests similares que difieren en pocas líneas lo cual motiva distintas estrategias de refactorización~\cite{roy2007survey,rattan2013software,Kosc13a}. Sin embargo, surge la siguiente interrogante, ¿En qué afecta esto en la cobertura de estos tests? Es más, la pregunta motiva ir un paso atrás: si estos dos tests son similares en su código, ¿cubren los mismos métodos?.
 
 \par De esta pregunta se desprenden dos enfoques para analizar similitud de test: estático y dinámico. En el análisis estático determinando similitud en el código fuente, y en el dinámico observando qué tan similar es su cobertura~\cite{Horwi02a} lo cual solo se puede determinar ejecutándolo. Para responder esta pregunta se realizó un experimento que compara la correlación entre dos métricas que apuntan a comparar las pruebas de software desde estos dos aspectos.
 
-\section{Metodología}
+\subsection{Metodología}
 
 \par El experimento consta entonces de verificar si existe o no correlación entre la similitud de código (o \emph{estática}) y la similitud de ejecución (o \emph{dinámica}). Para ello se escogió dos métricas de similitud, una por cada acercamiento al problema, y se realizó comparaciones entre todos los tests de todos los unit tests de un software. Este experimento se realizó sobre los unit tests de 2 softwares con propósitos muy distintos. Estos son: 
 
@@ -16,7 +18,7 @@
 
 \par El experimento fue implementado y ejecutado en la plataforma Pharo. Además las aplicaciones previamente descritas fueron seleccionadas pues ya han sido utilizadas en trabajos previos~\cite{Berg11d}.
 
-\subsection{Métricas de similitud}\seclabel{exp1-metricas-sim}
+\subsubsection{Métricas de similitud}\seclabel{exp1-metricas-sim}
 \par Las métricas de similitud escogidas fueron normalizadas para obtener valores entre $\left[ 0 , 1 \right]$. Un valor muy cercano a $0$ significa que los elementos son muy diferentes, y por el contrario, un valor muy cercano a 1 indica que los elementos son muy parecidos. 
 
 % 0<delta(tr,tb)<1 --> $0\leq \delta(t_r,t_b) \leq 1$
@@ -29,7 +31,7 @@
 \[ g(t_a,t_b)= \dfrac{\abs{T_{a} \cap T_{b}}}{\abs{T_{a} \cup T_{b}}} , \quad g(t_a,t_b) \in \left[ 0 , 1 \right] \]
 
 
-\section{Resultados y Conclusiones}
+\subsection{Resultados y Conclusiones}
 
 \par Luego de realizar el experimentos en los dos softwares mencionados, los resultados se presentan en los gráficos de puntos (o scatterplot) de la \figref{ap-stat-dyn}, donde cada punto en el gráfico corresponde a un par ($f(t_a,t_b),g(t_a,t_b)$).
 
@@ -80,3 +82,44 @@
 % \par El código de {\tt testAddingColoredElement} crea un canvas (lienzo donde se dibujan los elementos gráficos) para posionar sobre esta una caja verde y otra roja. Por su parte, en {\tt testVisualizingBigClasses} se crea una visualizacion que representa algunas clases coloreadas según una condición particular. Cada subclase de {\tt Collection} está asociada a una caja. Si la clase tiene más de 10 métodos, la caja se pinta en rojo, de lo contrario en verde. 
 
 % \par Los dos tests tienen un 95\% de metodos testeados en común, el 5\% que los diferencia se debe a algunos cachés están activados cuando el número de cajas excede cierto número límite. 
+
+
+%====================
+%====================
+%====================
+
+
+\section{¿Por qué la cobertura no es suficiente para comparar dos tests?}\seclabel{pq-cobertura}
+
+\par La cobertura de tests~\cite{Horwi02a} intenta determinar qué proporción de una parte de un programa es ejecutada durante el ciclo de pruebas. La cobertura de test se reporta comúnmente como la proporción de paquetes, clases, métodos y líneas de código fuente que fueron ejecutados por los tests. Revisar el código cubierto por los tests es una técnica efectiva para identificar la porción de un software está asegurado por los tests. La medida tradicional de cobertura~\cite{Mock09a,Piwo93a} de test recae en marcar elementos estructurales del software tales como sentencias (o statements), métodos o clases que son cubiertos durante la ejecución.
+
+\par Como sea la forma de marcar aquellos elementos, es igualmente útil para identificar y medir cual porción del código está siendo cubierta o no por los tests. Sin embargo, para conocer realmente si dos test están intentando testear lo mismo, diferenciarlos por lo su cobertura parece no ser suficiente~\cite{van2001refactoring,greiler2012test}.    
+
+\par Para ilustrar lo anterior, se presenta el código de los tests: {\tt testAddingColoredElement} y {\tt testVisualizingBigClasses} :
+
+%=== Ejemplo
+\begin{codeWithLineNumbers}
+<i>testAddingColoredElement</i>
+	canvas := ROView new.
+	el1 := ROBox green element.
+	el2 := ROBox red element.
+	canvas add: el1; add: el2.
+	self shouldnt: [ canvas open ] raise: Error
+
+<i>testVisualizingBigClasses</i>
+	canvas := ROView new.
+	Collection withAllSubclasses do: [ :cls |
+		cls numberOfMethods > 10
+			ifTrue: [ el := ROBox red element ]
+			ifFalse: [ el := ROBox green element ].
+		canvas add: el ].
+	self shouldnt: [ canvas open ] raise: Error
+\end{codeWithLineNumbers}\codelabel{ejemplo-stat-dyn} 
+
+\par El código de {\tt testAddingColoredElement} crea un \emph{canvas} (lienzo donde se dibujan los elementos gráficos) para posicionar sobre ésta una caja verde y otra roja. Por su parte, en {\tt testVisualizingBigClasses} se crea una visualización que representa algunas clases coloreadas según una condición particular. Cada subclase de {\tt Collection} está asociada a una caja. Si la clase tiene más de 10 métodos, la caja se pinta en rojo, de lo contrario en verde. 
+
+\par Los dos tests tienen un 95\% de metodos testeados en común, el 5\% que los diferencia se debe a algunos cachés que se activan cuando el número de cajas excede cierto número límite (este comportamiento no se muestra en el código presentado arriba). 
+
+\par Aunque exista un solapamiento considerable desde el punto de vista de los métodos que cubren, estos dos tests no deberían ser considerados redundantes pues el escenario mostrado en cada uno tiene su propia relevancia y no son comparables. 
+
+\par Por lo tanto, dos tests que son similares por su cobertura pueden ser semánticamente muy distintos. Esta diferencia semántica no es expresada por la cobertura y para revelarla se hace necesaria mayor información como por ejemplo más datos característicos de su ejecución e información experta por parte de los desarrolladores. 
