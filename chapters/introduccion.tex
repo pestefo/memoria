@@ -1,6 +1,6 @@
 \chapter{Introducción} 
 %% Intro
-\par El Testing es una actividad importante en el desarrollo de los proyectos de software en nuestro días. Los tests automatizados ayudan al desarrollador a asegurar la calidad del código y a detectar posibles \emph{bugs} o defectos en el código de la aplicación. Más aún, los tests pueden también ser considerados como  una ``documentación ejecutable'', y ser utilizados también para entender código ajeno.
+\par El Testing es una actividad importante en el desarrollo de los proyectos de software en nuestro días. Los tests automatizados ayudan al desarrollador a asegurar calidad en su código y a detectar posibles \emph{bugs} o defectos en la aplicación. Más aún, los tests pueden también ser considerados como  una ``documentación ejecutable'', evitan tiempo de depuración, y pueden ser utilizados también como una primera aproximación a entender código ajeno.
 
 \par Dada la naturaleza de las pruebas de software, su estudio e investigación se ha focalizado en mejorar su efectividad para hacer software cada vez más confiables y robustos. Al igual que el software funcional, los tests son parte del código fuente de la aplicación. La comunidad de ingeniería de software ha desarrollado diversas técnicas y metodologías para mantener limpio el diseño del código base (o funcional). Sin embargo, poco trabajo se ha realizado para que  el código de los tests mantenga una estructura y diseño limpios. Situación que pasa a ser cada vez más problemática a medida que el software crece en tamaño y en complejidad.
 
@@ -19,13 +19,13 @@
 %% Motivacion (pq toi haciendo esto?)
 \section{Motivación}
 % - Contexto: Práctica de Testing, Unit Testing
-\par Actualmente el \emph{testing} es una actividad clave dentro del desarrollo de cualquier proyecto de software serio. De hecho, las metodologías ágiles de desarrollo consideran la creación de tests como el punto de partida de la iteración o ciclo de desarrollo. Ejemplos de estas son el Test-Driven Development (TDD) o Behavior-Driven Development (BDD). El escribir tests que describen la funcionalidad esperada de una unidad de software (TDD) y/o el comportamiento esperado de un conjunto de unidades (BDD), son formas de producir código en el cual se puede confiar, puesto que no se agrega otra funcionalidad sino hasta que existe un test que lo simula y describe el funcionamiento esperado.
+\par Actualmente el \emph{testing} es una actividad clave dentro del desarrollo de cualquier proyecto de software serio. De hecho, las metodologías ágiles de desarrollo consideran la creación de tests como el punto de partida de la iteración o ciclo de desarrollo. Ejemplos de estas son: Test-Driven Development (TDD) y Behavior-Driven Development (BDD). El escribir tests que describen la funcionalidad esperada de una unidad de software (TDD) y/o el comportamiento esperado de un conjunto de unidades (BDD), son formas de producir código confiable, puesto que no se agrega otra funcionalidad sino hasta que existe un test que lo simula y describe su funcionamiento esperado.
 
-\par A medida que el software crece en complejidad y tamaño, de igual manera el código se va volviendo más complejo, lo cual atenta contra el crecimiento del proyecto. Para esto, la industria y la academia han desarrollado diversas formas de reestructurar y/o refactorizar el código base para enfrentar el \emph{cambio} de la forma menos costosa. Sin embargo esto no ha sido igual para el código que corresponde a los tests. A medida que el sistema evoluciona los tests necesitan también evolucionar para mantenerse actualizados con el sistema~\cite{reichhart2007rule}.  Pero muchas veces esto no sucede, los tests carecen del mismo cuidado que el código base por lo cual se hace necesario reescribir los tests. Incluso no es raro que se deje de escribir tests por el costo en tiempo que esto implica.
+\par A medida que el software crece en complejidad y tamaño, de igual manera el código se va volviendo más complejo, lo cual atenta contra el crecimiento del proyecto. Para esto, la industria y la academia han desarrollado diversas formas de reestructurar y/o refactorizar el código base para enfrentar el \emph{cambio} de la forma menos costosa. Sin embargo esto no ha sido igual para el código que corresponde a los tests. A medida que el sistema evoluciona los tests necesitan hacerlo también para mantenerse actualizados con el sistema~\cite{reichhart2007rule}.  Pero muchas veces esto no sucede, los tests carecen del mismo cuidado que el código base por lo cual se hace necesario reescribir los tests. Es más, no es raro que se deje de escribir tests por el costo en tiempo que esto implica.
 
-\par Por otro lado, la aplicación estricta de estas metodologías ágiles incrementa rápidamente la cantidad de tests. Estos pueden ser de bajo o alto nivel. Los de bajo nivel testean las unidades fundamentales del sistema,  mientras que los de alto nivel testean la interacción entre estas. Esto significa que al ejecutar tests de alto nivel, implícitamente se está siendo redundante con respecto a los de bajo nivel ya que está testeando una pieza de código que fue previamente ejecutada por uno o más tests de bajo nivel. Y esto puede repetirse en varios tests de alto nivel.
+\par Por otro lado, la aplicación estricta de estas metodologías ágiles incrementa rápidamente la cantidad de tests. Y estos pueden clasificarse como: de bajo o alto nivel. Los  tests de bajo nivel prueban las unidades fundamentales del sistema,  mientras que los de alto nivel testean la interacción entre estas. Esto significa que al ejecutar tests de alto nivel, implícitamente se está siendo redundante con respecto a los de bajo nivel ya que está testeando una pieza de código que fue previamente ejecutada por uno o más tests de bajo nivel. Y esto puede repetirse en varios tests de alto nivel.
 
-\par Esta redundancia representa un alto costo en tiempo considerando que los tests se ejecutan frecuentemente cada vez que se agrega o modifica el código. 
+\par Esta redundancia representa un costo en tiempo que en algunos casos puede ser considerable, teniendo en cuenta que los tests se ejecutan frecuentemente cada vez que se agrega o modifica el código. 
 
 \par Bajo este escenario, se hace necesaria una forma de reducir esta brecha entre el código base y el código de test, y facilitar la detección de \emph{test smells} que significan un gran costo tanto para los desarrolladores como el cliente.
 
@@ -33,7 +33,7 @@
 \newpage
 %% Objetivos
 \section{Objetivos}
-\par El objetivo general de este trabajo es desarrollar una herramienta que permita a los programadores refactorizar y reestructurar sus tests de una manera más fácil y mejorar el rendimiento de éstos.
+\par El objetivo general de este trabajo es desarrollar una herramienta que permita a los programadores refactorizar y reestructurar sus tests de una manera más fácil, segura y que considere la versatilidad de su uso.
 
 \subsection*{Objetivos Específicos}
 \begin{enumerate}
@@ -46,7 +46,7 @@
 %% Organizacion del documento
 \section{Estructura del documento}
 
-\par En el \chapref{espec-prob} se presenta el problema de la mantenibilidad de tests en detalle, su contexto y relevancia. En el capítulo siguiente, un marco teórico entrega los conceptos técnicos necesarios (\secref{marco-teorico}), y se presenta una serie de antecedentes que muestra el trabajo realizado tanto por la academia como por la industria sobre el problema de diseño del código de tests. (\secref{trabajo-relacionado}). 
+\par En el \chapref{espec-prob} se presenta el problema de la mantenibilidad de tests en detalle, su contexto y relevancia. En el capítulo siguiente, un marco teórico entrega los conceptos técnicos necesarios (\secref{marco-teorico}), y se presenta una serie de antecedentes que muestra el trabajo realizado tanto por la academia como por la industria sobre el problema de diseño del código de tests (\secref{trabajo-relacionado}). A continuación se presentan dos estudios (\secref{exp-static-vs-dynamic} y \secref{pq-cobertura}) realizados durante el desarrollo de esta memoria que revelan aspectos no estudiados del problema. El aprendizaje obtenido y las conclusiones de éstos determinaron varias decisiones de diseño de la solución. 
 
 \par Luego, con la base conceptual y contextual del problema presente, se describe en detalle la solución propuesta: \emph{TestSurgeon}. Primero en forma conceptual en el \chapref{descripcion-solucion} y después en forma técnica, su implementación, en el \chapref{implementacion}. Junto con esto, en el \chapref{caso-de-estudio} se muestra una aplicación de la herramienta sobre las pruebas unitarias de un software no-trivial. 
 
