@@ -4,13 +4,25 @@
 
 
 \section{Contexto: Test como ``conductores'' del diseño}
-\par Durante el desarrollo de un software una de las actividades principales es el testeo de los requerimientos. Existen variadas técnicas, metodologías y artefactos relacionados a esta actividad. En particular, la creación de pruebas automatizadas es una práctica cotidiana en cualquier proyecto de software y comprende parte importante de los artefactos generados. \\
+\par Durante el desarrollo de un software una de las actividades principales es el testeo de los requerimientos. Existen variadas técnicas, metodologías y artefactos relacionados a esta actividad. Las pruebas automatizadas consisten en trozos de código donde interactúan distintas entidades del sistema para luego verificar su estados y, de esta forma, asegurarse de que el software funciona como se espera. La creación de pruebas automatizadas es una práctica cotidiana en cualquier proyecto de software y comprende parte importante de los artefactos generados. \\
 
-\par En particular, los proyectos de software ágiles dan gran importancia a estos artefactos, ya que cada historia de usuario (requerimiento) debe tener pruebas de aceptación (tests de alto nivel). Estos se escriben y detallan en conjunto con el cliente para asegurar que el código que se creará cumple lo que éste pide: ni menos ni más.
+\par En particular, los proyectos de software ágiles dan gran importancia a estos artefactos, ya que cada historia de usuario (requerimiento) debe tener pruebas de aceptación (tests de alto nivel) que validen el comportamiento del sistema que el cliente espera. Estos se escriben y detallan en conjunto con el cliente para asegurar que el código que se creará cumple lo que éste pide: ni menos, ni más.
 
-\par Estas historias de usuario están escritas en lenguaje natural por lo que se deben \emph{transcribir} al lenguaje técnico: código fuente. Entonces, antes de escribir una funcionalidad, los desarrolladores crean los tests: código fuente que garantiza que una característica se comporta como es requerida. Este proceso se denomina \emph{Test-Driven Development} (o TDD)~\cite{Beck02a}  o Desarrollo Dirigido por Pruebas: se escribe el test, se ejecuta y este falla (ya que no se ha escrito el código que suple dicha característica). Luego se escriben las clases y métodos que hace que el test funcione, éste se vuelve a ejecutar y esta vez ``pasa''. Finalmente se refactoriza el código recién escrito para mantener un diseño limpio y mantenible en el tiempo.
+\par Estas historias de usuario están escritas en lenguaje natural por lo que se deben \emph{transcribir} a lenguaje técnico: código fuente. Entonces, antes de escribir una funcionalidad, los desarrolladores crean los tests: código fuente que garantiza que una característica se comporta como es requerida. Este proceso se denomina \emph{Test-Driven Development} (o TDD)~\cite{Beck02a}  o Desarrollo Dirigido por Pruebas y consiste en los siguientes pasos: 
+\begin{enumerate}
+\item Escribir el test
+\item Ejecutarlo. Falla ya que no se ha escrito el código que suple la nueva característica
+\item Se escriben las clases y métodos que hacen que el test funcione
+\item Se vuelve a ejecutar el test. Pasa.
+\item Refactorizar el código recién escrito para mantener un diseño limpio y mantenible en el tiempo.
+\end{enumerate}
 
-\par Esta práctica está dentro del núcleo de la filosofía que enmarca la agilidad a tal nivel que está prohibido agregar una nueva funcionalidad sin, previamente, haber escrito un test que lo valide~\cite{Beck02a}. Esta queda documentado en el libro de Robert Cecil Martin (más conocido como``Uncle Bob'')~\cite{Mart02b} uno de los escritores del manifiesto ágil~\cite{Fowl01a} quien declara:
+%
+%  IMAGEN TDD
+%
+
+
+\par Esta práctica está dentro del núcleo de la filosofía que enmarca la agilidad a tal nivel que está prohibido agregar una nueva funcionalidad sin, previamente, haber escrito un test que lo valide~\cite{Beck02a}. Esta queda documentado en el libro de Robert Cecil Martin (más conocido como ``Uncle Bob'')~\cite{Mart02b} uno de los escritores del manifiesto ágil~\cite{Fowl01a} quien declara:
 
 \begin{quote}
 \emph{``The iteration between writing test cases and code is very rapid [...]. As a result, a very complete body of test cases grows along with the code.''}
@@ -19,23 +31,33 @@
 
 \par En la práctica, aplicando TDD se obtiene una gran cantidad de pruebas unitarias (unit tests) que representan los casos de prueba de la aplicación (Test Cases). Cada Unit Test contiene varios métodos de tests (test methods) que cubren los distintos aspectos a verificar en la funcionalidad que se está testeando.
 
+\par Finalmente, de esta manera, los tests van empujando y a la vez conduciendo el desarrollo del código base o funcional.
+
 
 \section{Problema: ¿Cómo mantener los tests?}
 
 \par La comunidad de ingeniería de software ha producido herramientas efectivas y buenas prácticas para lograr refactorizaciones en el código base que otorguen un buen diseño. Sin embargo, en cuanto al código de las pruebas de software no sucede en igual proporción. Es más, éstos son raramente modificados y carecen del cuidado que se le da al código base, sin pensar su modularidad ni extensibilidad. 
 
-\par Por lo cual no es difícil encontrar deficiencias como \textbf{solapamientos} entre test methods o más general, entre test cases. Estos solapamientos pueden ser de carácter estático ( duplicación de código ), o bien dinámicos, es decir que dos test methods tienen ejecuciones similares y por consiguiente representan una ineficiencia de tiempo.
+\par Esto sucede, en parte, por la importancia primaria de los tests: asegurar calidad. Cualquier modificación a los tests podría, eventualmente, mermar la confiabilidad en el software. Es decir, debilitar los tests. 
+
+\par Por tanto es fácil encontrar deficiencias como \textbf{solapamientos} entre test methods o más general, entre test cases. Estos solapamientos pueden corresponder a duplicación de código, o bien a reduncancia en ejecución: es decir que dos test methods tienen ejecuciones similares y por consiguiente representan una ineficiencia de tiempo.
 
 \par Estas deficiencias en el diseño y calidad del código de las pruebas unitarias tienen consecuencias importantes en la calidad del código testeado y en el mismo proceso de desarrollo:
+
 \begin{itemize}
-\item \textbf{Rendimiento} Debido a los solapamientos previamente mencionados, muchas veces existe \textbf{ejecución redundante} que va en contra de las características deseables de una suite de tests. Muchas veces los tests dejan de ejecutarse con la frecuencia necesaria.
+\item \textbf{Rendimiento} Debido a los solapamientos previamente mencionados, muchas veces existe \textbf{ejecución redundante} que va en contra de las características deseables de una suite de tests. Este es un incentivo a dejar de ejecutar la batería de pruebas con la frecuencia necesaria.
+
 \item \textbf{Depuración}\footnote{o \emph{Debugging}.} Otra deficiencia conocida es que al correr los tests en presencia de un \emph{bug}, éste queda en evidencia por muchos tests, lo cual dificulta la identificación de su causa y su corrección. Coloquialmente se hace más difícil responder la pregunta: \emph{¿Cuál test miro primero?}
+
+\item \textbf{Documentación} Los tests son considerados también documentación ejecutable, por lo cual, cualquier cambio o restructuración altera su calidad como documentación (o ``readability'' en inglés).
+
 \end{itemize}
  
-\par De esta manera, la confiabilidad en el producto y su calidad se ven impactadas negativamente. 
+\par Lo anterior ilustra la versatilidad de las pruebas automatizadas en comparación a los demás artefactos de software. Sus múltiples usos y funciones hacen del problema de refactorización y restructuración una labor compleja. Sin embargo, la característica prioritaria en cualquier alternativa de solución es la inocuidad: la confiabilidad del código fuente no puede disminuír por mejoras en el diseño u optimizaciones en los tests.
 
-\par Un caso muy claro de la influencia del mal diseño y poco cuidado en los tests ocurre cuando el ciclo de desarrollo utiliza mecanismos de \textbf{Integración Contínua} (Continuous Integration). En esta práctica cada \emph{feature} se implementa tan pronto como es posible, se testea y se pasa a producción de inmediato. De esta manera el equipo de desarrollo realiza varias integraciones por día y el cliente obtiene rápidamente las nuevas funcionalidades a medida que las solicita. \\
 
-\par A modo de ejemplo, la empresa MediaGeniX\footnote{MediaGeniX [en línea] \textless\url{http://www.mediagenix.tv}\textgreater [Consulta: 12/08/2013]} realiza la integración continua desde hace algunos años. Ahí, 30 desarrolladores trabajan sobre el mismo producto y cada uno de ellos construye varias versiones al día. Cada versión que se va a pasar a producción debe pasar su suite de pruebas que comprende alrededor de 30.000 tests. Ellos realizan 3 integraciones diarias en promedio, por lo cual recurren a técnicas de paralelización de ejecución de tests para lograrlo. Esto introduce un alto costo económico asociado al los recursos de hardware(servidores, clusters) y además un alto costo en tiempo. Esto se podría optimizar detectando redundancia en la ejecución. \\
+\par Un caso muy claro de la influencia del mal diseño y poco cuidado en los tests ocurre cuando el ciclo de desarrollo utiliza mecanismos de \textbf{Integración Contínua} (o \emph{Continuous Integration}\footnote{ Continuous Integration \textless\url{http://www.martinfowler.com/articles/continuousIntegration.html}\textgreater [Consulta: 12/08/2013] } ). Esta práctica intenta integrar a producción tan pronto como sea posible. Entonces, cada nueva característica ( o \emph{feature} ) se divide en partes más pequeñas que puedan ser desarrolladas rápidamente para que queden en producción. Entonces se crean los tests, se implementa la funcionalidad y se realiza la integración: compilación (de ser necesario) y pruebas de regresión (o \emph{regression testing}). De esta manera se verifica que el código nuevo funciona y pasa los tests escritos anteriormente. De esta manera el equipo de desarrollo realiza varias integraciones por día y el cliente obtiene rápidamente las nuevas funcionalidades a medida que las solicita. \\
+
+\par Este proceso requiere ejecutar muchas veces las pruebas (al menos una vez por cada integración), por tanto, la redundancia en ejecución implica redundancia en tiempo. A modo de ejemplo, la empresa MediaGeniX\footnote{MediaGeniX [en línea] \textless\url{http://www.mediagenix.tv}\textgreater [Consulta: 12/08/2013]} realiza la integración continua desde hace algunos años. En ella, treinta desarrolladores trabajan sobre el mismo producto y cada uno de ellos construye varias versiones al día. Cada versión que se va a pasar a producción debe pasar su suite de pruebas que comprende alrededor de 30.000 tests. Ellos realizan, en promedio, 3 integraciones diarias, por lo cual recurren a técnicas de paralelización de ejecución de tests para lograrlo. Independientemente de la estrategia, el costo en tiempo es alto. Esto se podría optimizar detectando redundancia en la ejecución. \\
 
 % \par Esto evidencia la relevancia de mejorar la performance mediante la refactorización y restructuración de los unit tests.
